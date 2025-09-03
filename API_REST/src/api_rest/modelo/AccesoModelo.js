@@ -1,6 +1,6 @@
 import sql from 'mssql';
 import { obtenerConexion } from './conexion/ConfiguracionConexion.js';
-import { MensajesAcceso } from '../utilidades/Constantes.js';
+import { MensajesAcceso,MensajeGeneralesBD } from '../utilidades/Constantes.js';
 
 export class ModeloAcceso{
     static async InsertarNuevaCuenta({datos})
@@ -28,7 +28,7 @@ export class ModeloAcceso{
             .execute('sp_RegistrarAcceso');
             const idAcceso = ResultadoSolicitud.output.idAcceso;            
             if (idAcceso === -1) {
-                resultadoInsercion = MensajesAcceso.ERROR_DB;
+                resultadoInsercion = MensajeGeneralesBD.ERROR_DB;
             } else if (idAcceso === -2){
                 resultadoInsercion = MensajesAcceso.USUARIO_DUPLICADO;
             } else {
@@ -74,13 +74,13 @@ export class ModeloAcceso{
             .execute('sp_ActualizarAcceso');            
             const resultadoProcedimiento=ResultadoSolicitud.output.resultado;
             if (resultadoProcedimiento === -1) {
-                resultadoEdicion = { estado: 500, mensaje: MensajesAcceso.ERROR_DB };                
+                resultadoEdicion = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };                
             } else if (resultadoProcedimiento === -2){
                 resultadoEdicion = { estado: 409, mensaje: MensajesAcceso.USUARIO_DUPLICADO };
             } else if(resultadoProcedimiento === 1) {
                 resultadoEdicion = { estado: 200, mensaje: MensajesAcceso.ACTUALIZACION_EXITOSA };
             } else {
-                resultadoEdicion = { estado: 500, mensaje: MensajesAcceso.ERROR_DB };                
+                resultadoEdicion = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };                
             }
             } catch (error) {
                 throw error;
@@ -109,7 +109,7 @@ export class ModeloAcceso{
                 if(usuario.idAcceso>0){
                     resultadoConsulta = {estado: 200, usuarioEncontrado:ResultadoQueryAcceso}
                 }else if(usuario.idAcceso==-1){
-                    resultadoConsulta = { estado: 500, mensaje: MensajesAcceso.ERROR_DB };
+                    resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
                 }else{
                     resultadoConsulta = {estado: 404, mensaje: MensajesAcceso.USUARIO_PERDIDO};        
                 }
@@ -126,4 +126,133 @@ export class ModeloAcceso{
             return resultadoConsulta;
         }
     }
+
+    static async BuscarUsuarioPorNombreUsuario({datos})
+    {
+        let resultadoConsulta;
+        let conexion;
+        try
+        {
+            conexion=await obtenerConexion();
+            const {usuario}=datos;
+            const Solicitud = await conexion.request()
+            .input('usuario',sql.VarChar,usuario)
+            .execute('sp_ObtenerAccesoPorUsuario');
+            const ResultadoQueryAcceso = Solicitud.recordset;
+            if(ResultadoQueryAcceso.length > 0){
+                const usuarioConsultado = ResultadoQueryAcceso[0];                
+                if(usuarioConsultado.idAcceso>0){
+                    resultadoConsulta = {estado: 200, usuarioEncontrado:ResultadoQueryAcceso}
+                }else if(usuarioConsultado.idAcceso==-1){
+                    resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
+                }else{
+                    resultadoConsulta = {estado: 404, mensaje: MensajesAcceso.USUARIO_PERDIDO};        
+                }
+            }else{
+                resultadoConsulta = {estado: 404, mensaje: MensajesAcceso.USUARIO_PERDIDO};
+            }
+        }
+        catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close(); 
+            }
+            return resultadoConsulta;
+        }   
+    }
+
+    static async DesactivarUsuarioPorIdAcceso({datos})
+    {
+        let resultadoDesactivacion;
+        let conexion;
+        try
+        {
+            conexion = await obtenerConexion();
+            const {idAcceso} = datos;
+            const Solicitud = await conexion.request()
+            .input('idAcceso',sql.Int,idAcceso)
+            .execute('sp_DesactivarUsuario'); 
+            const ResultadoQuery = Solicitud.recordset[0];
+            if (ResultadoQuery.Resultado === 1){
+                resultadoDesactivacion = { estado: 200, mensaje: MensajesAcceso.DESACTIVACION_EXITOSA };
+            }else if (ResultadoQuery.Resultado === 0){
+                resultadoDesactivacion = { estado: 404, mensaje: MensajesAcceso.USUARIO_PERDIDO };
+            }else{
+                resultadoDesactivacion = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB }
+            }
+        }catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close();
+            }
+        }
+        return resultadoDesactivacion;
+    }
+
+    static async LoginAcceso({datos})
+    {
+        let resultadoDeLogin;
+        let conexion;
+        try
+        {
+            conexion = await obtenerConexion();
+            const {usuario,contrasenia} = datos;
+            const Solicitud = await conexion.request()
+            .input('usuario',sql.VarChar,usuario)
+            .input('contrasenia',sql.VarChar,contrasenia)
+            .execute('sp_LoginAcceso');
+            const ResultadoQuery = Solicitud.recordset[0];
+            if(ResultadoQuery.Resultado === 0)
+            {
+                resultadoDeLogin = { 
+                    estado: 200, 
+                    mensaje: MensajesAcceso.LOGIN_EXITOSO,
+                    usuario: ResultadoQuery 
+                };
+            } else if (ResultadoQuery.Resultado === 1){
+                resultadoDeLogin = { estado: 404, mensaje: MensajesAcceso.USUARIO_PERDIDO };
+            } else if (ResultadoQuery.Resultado === 2){
+                resultadoDeLogin = { estado: 401, mensaje: MensajesAcceso.CONTRASENIA_INCORRECTA };
+            } else if (ResultadoQuery.Resultado === 3){
+                resultadoDeLogin = { estado: 401, mensaje: MensajesAcceso.USUARIO_INACTIVO };
+            }else {
+                resultadoDeLogin = { estado: 401, mensaje: MensajeGeneralesBD.ERROR_DB };
+            }
+        }catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close();
+            }
+        }
+        return resultadoDeLogin;
+    }
+
+    static async ObtenerTodosTiposDeAcceso()
+    {
+        let resultadoConsulta;
+        let conexion;
+        try
+        {
+            conexion = await obtenerConexion();
+            const Solicitud = await conexion.request()
+                .execute('sp_ObtenerTodosTiposAcceso');
+            const tiposAcceso = Solicitud.recordset;
+            if(tiposAcceso.length > 0){
+                resultadoConsulta = {estado: 200, tiposAcceso};
+            }else{
+                resultadoConsulta = {estado: 400, mensaje: MensajesAcceso.TIPOS_ACCESO_PERDIDOS}
+            }
+        }catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close();
+            }
+        } 
+        return resultadoConsulta;
+    }
+    
 }

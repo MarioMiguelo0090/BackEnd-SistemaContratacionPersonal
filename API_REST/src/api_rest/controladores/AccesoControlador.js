@@ -1,4 +1,4 @@
-import { ValidarInsercionAcceso,ValidarEdicionParcialAcceso } from "../esquemas/AccesoValidador.js";
+import { ValidarInsercionAcceso,ValidarEdicionParcialAcceso,ValidarInicioSesion } from "../esquemas/AccesoValidador.js";
 
 export class AccesoControlador
 {
@@ -52,7 +52,7 @@ export class AccesoControlador
                 {
                     error: true,
                     estado: 500,
-                    mensaje: "Ha ocurrido un error al querer registrar el Acceso."
+                    mensaje: "Ha ocurrido un error en el servidor"
                 }
             )
         }        
@@ -98,13 +98,12 @@ export class AccesoControlador
             }
         }
         catch(error)
-        {
-            console.error("Error real en EditarAcceso:", error);
+        {            
             res.status(500).json(
                 {
                     error: true,
                     estado: 500,
-                    mensaje: 'Ha ocurrido un error al editar el acceso del usuario.'
+                    mensaje: "Ha ocurrido un error en el servidor"
                 });
         }
     }
@@ -129,6 +128,45 @@ export class AccesoControlador
                         )
                 });
             }
+            else        
+            {
+                res.status(400).json({
+                    error: true,
+                    estado: 400,
+                    mensaje: 'Datos con formato inválido, por favor verifique los datos enviados.'
+                });
+            }
+        }
+        catch(error)
+        {
+            res.status({
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
+            });
+        }
+    }
+
+    BuscarUsuarioPorNombreDeUsuario = async (req,res) => 
+    {
+        try
+        {
+            const usuario = req.params['usuario'];
+            const Datos = {usuario};
+            const ResultadoValidacion = ValidarEdicionParcialAcceso(Datos);
+            if(ResultadoValidacion.success)
+            {
+                const ResultadoConsulta = await this.modeloAcceso.BuscarUsuarioPorNombreUsuario({datos: ResultadoValidacion.data});
+                let resultadoConsulta = parseInt(ResultadoConsulta.estado);
+                res.status(resultadoConsulta).json({
+                    error: resultadoConsulta !==200,
+                    estado: resultadoConsulta,
+                    ...(resultadoConsulta === 200
+                        ? {usuario: ResultadoConsulta.usuarioEncontrado}
+                        : {mensaje: ResultadoConsulta.mensaje}                        
+                        )
+                });
+            }
             else
             {
                 res.status(400).json({
@@ -143,7 +181,93 @@ export class AccesoControlador
             res.status({
                 error: true,
                 estado: 500,
-                mensaje: "Ha ocurrido un error al querer buscar su usuario por ID"
+                mensaje: "Ha ocurrido un error en el servidor"
+            });
+        }
+    }
+
+    DesactivarUsuarioPorId = async (req,res) =>
+    {
+        try
+        {
+            const idAcceso = parseInt(req.params['idAcceso']);
+            const Datos = {idAcceso};
+            const ResultadoValidacion = ValidarEdicionParcialAcceso(Datos);
+            if(ResultadoValidacion.success)
+            {
+                const ResultadoDesactivacion = await this.modeloAcceso.DesactivarUsuarioPorIdAcceso({datos: ResultadoValidacion.data});
+                let resultado = parseInt(ResultadoDesactivacion.estado);
+                res.status(resultado).json({
+                    error: resultado !== 200,
+                    estado: resultado,
+                    mensaje: ResultadoDesactivacion.mensaje
+                });
+            }
+            else        
+            {
+                res.status(400).json({
+                    error: true,
+                    estado: 400,
+                    mensaje: 'Datos con formato inválido, por favor verifique los datos enviados.'
+                });
+            }
+        }
+        catch(error)
+        {
+            res.status({
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
+            });
+        }
+    }
+
+    RealizarLogin = async (req,res) => 
+    {
+        try
+        {            
+            const ResultadoValidacion = ValidarInicioSesion(req.body);
+            if(ResultadoValidacion.success){
+                const ResultadoLogin = await this.modeloAcceso.LoginAcceso({datos: ResultadoValidacion.data});                
+                res.status(ResultadoLogin.estado).json({
+                error: ResultadoLogin.estado !== 200,
+                estado: ResultadoLogin.estado,
+                mensaje: ResultadoLogin.mensaje,
+                ...(ResultadoLogin.estado === 200 ? { usuario: ResultadoLogin.usuario } : {})
+                });
+            }
+        }
+        catch(error)
+        {
+            res.status({
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
+            });
+        }
+    }
+
+    ObtenerTiposDeAccesos = async (req,res) => 
+    {
+        try
+        {
+            const ResultadoConsulta = await this.modeloAcceso.ObtenerTodosTiposDeAcceso();
+            let resultadoConsulta = parseInt(ResultadoConsulta.estado);
+            res.status(resultadoConsulta).json({
+                error: resultadoConsulta !== 200,
+                estado: resultadoConsulta,
+                ...(resultadoConsulta === 200
+                    ? {tiposAcceso: ResultadoConsulta.tiposAcceso}
+                    : {mensaje: ResultadoConsulta.mensaje}
+                )
+            });  
+        }
+        catch(error)
+        {
+            res.status({
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
             });
         }
     }

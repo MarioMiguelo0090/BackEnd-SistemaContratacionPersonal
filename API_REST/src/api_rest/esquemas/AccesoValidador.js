@@ -21,6 +21,11 @@ const CuentaEsquemaEdicion = zod.object({
   estado: zod.union([zod.boolean(), zod.number().int().min(0).max(1)])
 });
 
+const CuentaLogin = zod.object({
+  usuario: zod.string({ invalid_type_error: 'El nombre de usuario no es válido',required_error: 'El nombre de usuario es un campo requerido'}).regex(SoloLetrasYNumeros),
+  contrasenia: zod.string({ invalid_type_error: 'La contraseña ingresado no es válido',required_error: 'El contraseña es un campo requerido'}).min(8).max(64)
+});
+
 export function ValidarInsercionAcceso(entrada)
 {
     return CuentaEsquema.safeParse(entrada);
@@ -29,5 +34,9 @@ export function ValidarInsercionAcceso(entrada)
 export function ValidarEdicionParcialAcceso(entrada)
 {
     return CuentaEsquemaEdicion.partial().safeParse(entrada);
+}
+
+export function ValidarInicioSesion(entrada){
+  return CuentaLogin.safeParse(entrada);
 }
 
