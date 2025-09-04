@@ -2,11 +2,11 @@ import express, { json } from 'express';
 import { CrearRutaAcceso } from './rutas/AccesoRuta.js';
 import { CrearRutaCatalogo } from './rutas/CatalogoRuta.js';
 import { CrearRutaProcesoContratacion } from './rutas/ProcesoContratacionRuta.js';
+import { CrearRutaCedula } from './rutas/CedulaRuta.js';
 
 import dotenv from 'dotenv';
 
-
-export const CrearServidor = ({ModeloAcceso,ModeloCatalogo,ModeloProcesoContratacion}) => 
+export const CrearServidor = ({ModeloAcceso,ModeloCatalogo,ModeloProcesoContratacion,ModeloCedula}) => 
 {
   const app = express();
   dotenv.config();
@@ -18,6 +18,7 @@ export const CrearServidor = ({ModeloAcceso,ModeloCatalogo,ModeloProcesoContrata
   app.use('/rysuv/acceso',CrearRutaAcceso({ModeloAcceso}));
   app.use('/rysuv/catalogo',CrearRutaCatalogo({ModeloCatalogo}));
   app.use('/rysuv/procesoContratacion',CrearRutaProcesoContratacion({ModeloProcesoContratacion}));
+  app.use('/rysuv/cedula',CrearRutaCedula({ModeloCedula}));
   const PUERTO = process.env.PUERTO;
   app.use((err, req, res, next) => {
     if (err.message === 'CORS Invalido'){
