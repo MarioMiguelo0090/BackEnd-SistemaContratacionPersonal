@@ -1,0 +1,355 @@
+import sql from 'mssql';
+import { obtenerConexion } from './conexion/ConfiguracionConexion.js';
+import { MensajeGeneralesBD, MensajeProcesoContratacion } from '../utilidades/Constantes.js';
+
+export class ModeloProcesoContratacion
+{
+    static async InsertarNuevoProcesoContratacion({datos})
+    {
+        let resultadoInsercion;
+        let conexion;
+        try
+        {
+            conexion = await obtenerConexion();
+            const{
+                folio,
+                numPlaza,
+                fechaRecibido,
+                fechaEntrevista,
+                resultadoEvaluacionConocimiento,
+                fechaEnvioDEyDP,
+                fechaNotificacion,
+                categoriaPuestoOrigen,
+                diasProceso,
+                beneficiado,
+                FKIdTipoProceso,
+                FKIdTipoPersonal,
+                FKIdEstadoProcesoContratacion,
+                FKIdTemporalDefinitiva,
+                FKIdDependencia,
+                hermesNotificacion,
+                titularPlaza,
+                lineamientoOficioContinuidad,
+                motivo,
+                fechaElaboracionPropuesta,
+                fechaLiberacionOficio,
+                periodoAutorizadoOficioInicio,
+                periodoAutorizadoOficioFin,
+                observaciones,
+                numCarpeta,
+                nombreCandidato,
+                funcionDesempeniar,
+                familiaFuncional,
+                fechaEvaluacionCompetencias,
+                fechaInicioProcesamiento,
+                resultadoEvaluacionCompetencias,
+                experienciaLaboralSolicitada,
+                resultadoReferenciasLaborales,
+                fechaEnvioEvaluacionDesempenio,
+                resultadoHabilidadesWord,
+                resultadoHabilidadesExcel,
+                resultadoOrtografia,
+                resultadoProcesoEvaluacion,
+                fechaRevisionOfiEval,
+                observacionesAnalista,
+                consecutivoExpediente,
+                resultadoSeguimientoEvaluacionDesempenio,
+                FKIdAcceso
+            } = datos;            
+            const Solicitud = await conexion.request()
+            .input('folio', sql.VarChar(20), folio)
+            .input('numPlaza', sql.VarChar(10), numPlaza)
+            .input('fechaRecibido', sql.Date, fechaRecibido)
+            .input('fechaEntrevista', sql.Date, fechaEntrevista)
+            .input('resultadoEvaluacionConocimiento', sql.VarChar(6), resultadoEvaluacionConocimiento)
+            .input('fechaEnvioDEyDP', sql.Date, fechaEnvioDEyDP)
+            .input('fechaNotificacion', sql.Date, fechaNotificacion)
+            .input('categoriaPuestoOrigen', sql.VarChar(50), categoriaPuestoOrigen)
+            .input('diasProceso', sql.VarChar(3), diasProceso)
+            .input('beneficiado', sql.Bit, beneficiado)
+            .input('FKIdTipoProceso', sql.Int, FKIdTipoProceso)
+            .input('FKIdTipoPersonal', sql.Int, FKIdTipoPersonal)
+            .input('FKIdEstadoProcesoContratacion', sql.Int, FKIdEstadoProcesoContratacion)
+            .input('FKIdTemporalDefinitiva', sql.Int, FKIdTemporalDefinitiva)
+            .input('FKIdDependencia', sql.Int, FKIdDependencia)
+            .input('hermesNotificacion', sql.VarChar(20), hermesNotificacion)
+            .input('titularPlaza', sql.VarChar(20), titularPlaza)
+            .input('lineamientoOficioContinuidad', sql.VarChar(20), lineamientoOficioContinuidad)
+            .input('motivo', sql.VarChar(sql.MAX), motivo)
+            .input('fechaElaboracionPropuesta', sql.Date, fechaElaboracionPropuesta)
+            .input('fechaLiberacionOficio', sql.Date, fechaLiberacionOficio)
+            .input('periodoAutorizadoOficioInicio', sql.VarChar(50), periodoAutorizadoOficioInicio)
+            .input('periodoAutorizadoOficioFin', sql.VarChar(50), periodoAutorizadoOficioFin)
+            .input('observaciones', sql.VarChar(sql.MAX), observaciones)
+            .input('numCarpeta', sql.VarChar(10), numCarpeta)
+            .input('nombreCandidato', sql.VarChar(100), nombreCandidato)
+            .input('funcionDesempeniar', sql.VarChar(sql.MAX), funcionDesempeniar)
+            .input('familiaFuncional', sql.VarChar(sql.MAX), familiaFuncional)
+            .input('fechaEvaluacionCompetencias', sql.Date, fechaEvaluacionCompetencias)
+            .input('fechaInicioProcesamiento', sql.Date, fechaInicioProcesamiento)
+            .input('resultadoEvaluacionCompetencias', sql.VarChar(6), resultadoEvaluacionCompetencias)
+            .input('experienciaLaboralSolicitada', sql.VarChar(50), experienciaLaboralSolicitada)
+            .input('resultadoReferenciasLaborales', sql.VarChar(50), resultadoReferenciasLaborales)
+            .input('fechaEnvioEvaluacionDesempenio', sql.Date, fechaEnvioEvaluacionDesempenio)
+            .input('resultadoHabilidadesWord', sql.VarChar(5), resultadoHabilidadesWord)
+            .input('resultadoHabilidadesExcel', sql.VarChar(5), resultadoHabilidadesExcel)
+            .input('resultadoOrtografia', sql.VarChar(5), resultadoOrtografia)
+            .input('resultadoProcesoEvaluacion', sql.VarChar(50), resultadoProcesoEvaluacion)
+            .input('fechaRevisionOfiEval', sql.Date, fechaRevisionOfiEval)
+            .input('observacionesAnalista', sql.VarChar(sql.MAX), observacionesAnalista)
+            .input('consecutivoExpediente', sql.VarChar(10), consecutivoExpediente)
+            .input('resultadoSeguimientoEvaluacionDesempenio', sql.VarChar(10), resultadoSeguimientoEvaluacionDesempenio)
+            .input('FKIdAcceso', sql.Int, FKIdAcceso)
+            .execute('sp_RegistrarProcesoContratacion');
+            const ResultadoProcesoContratacion = Solicitud.recordset;
+            if(ResultadoProcesoContratacion.length>0){
+                const ProcesoContratacion = ResultadoProcesoContratacion[0];
+                if(ProcesoContratacion.idProceso>0){
+                    resultadoInsercion = {
+                        ...MensajeProcesoContratacion.REGISTRO_EXITOSO,
+                        estado:MensajeProcesoContratacion.REGISTRO_EXITOSO.resultado
+                    };
+                }else if (ProcesoContratacion.idProceso ==-2){
+                    resultadoInsercion = {
+                        ...MensajeProcesoContratacion.REGISTRO_DUPLICADO,
+                        estado: MensajeProcesoContratacion.REGISTRO_DUPLICADO.resultado
+                    };
+                }else{    
+                    resultadoInsercion = {
+                        ...MensajeGeneralesBD.ERROR_DB,
+                        estado: MensajeGeneralesBD.ERROR_DB.resultado
+                    };
+                }
+            }
+        }catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close(); 
+            }
+        }
+        return resultadoInsercion;
+    }
+
+    static async EditarProcesoContratacion({datos})
+    {
+        let resultadoEdicion;
+        let conexion;
+        try
+        {
+            conexion = await obtenerConexion();
+            const{
+                idProceso,
+                folio,
+                numPlaza,
+                fechaRecibido,
+                fechaEntrevista,
+                resultadoEvaluacionConocimiento,
+                fechaEnvioDEyDP,
+                fechaNotificacion,
+                categoriaPuestoOrigen,
+                diasProceso,
+                beneficiado,
+                FKIdTipoProceso,
+                FKIdTipoPersonal,
+                FKIdEstadoProcesoContratacion,
+                FKIdTemporalDefinitiva,
+                FKIdDependencia,
+                hermesNotificacion,
+                titularPlaza,
+                lineamientoOficioContinuidad,
+                motivo,
+                fechaElaboracionPropuesta,
+                fechaLiberacionOficio,
+                periodoAutorizadoOficioInicio,
+                periodoAutorizadoOficioFin,
+                observaciones,
+                numCarpeta,
+                nombreCandidato,
+                funcionDesempeniar,
+                familiaFuncional,
+                fechaEvaluacionCompetencias,
+                fechaInicioProcesamiento,
+                resultadoEvaluacionCompetencias,
+                experienciaLaboralSolicitada,
+                resultadoReferenciasLaborales,
+                fechaEnvioEvaluacionDesempenio,
+                resultadoHabilidadesWord,
+                resultadoHabilidadesExcel,
+                resultadoOrtografia,
+                resultadoProcesoEvaluacion,
+                fechaRevisionOfiEval,
+                observacionesAnalista,
+                consecutivoExpediente,
+                resultadoSeguimientoEvaluacionDesempenio,
+                FKIdAcceso
+            } = datos;
+            const Solicitud = await conexion.request()
+            .input('idProceso',sql.Int,idProceso)
+            .input('folio', sql.VarChar(20), folio)
+            .input('numPlaza', sql.VarChar(10), numPlaza)
+            .input('fechaRecibido', sql.Date, fechaRecibido)
+            .input('fechaEntrevista', sql.Date, fechaEntrevista)
+            .input('resultadoEvaluacionConocimiento', sql.VarChar(6), resultadoEvaluacionConocimiento)
+            .input('fechaEnvioDEyDP', sql.Date, fechaEnvioDEyDP)
+            .input('fechaNotificacion', sql.Date, fechaNotificacion)
+            .input('categoriaPuestoOrigen', sql.VarChar(50), categoriaPuestoOrigen)
+            .input('diasProceso', sql.VarChar(3), diasProceso)
+            .input('beneficiado', sql.Bit, beneficiado ? 1 : 0)
+            .input('FKIdTipoProceso', sql.Int, FKIdTipoProceso)
+            .input('FKIdTipoPersonal', sql.Int, FKIdTipoPersonal)
+            .input('FKIdEstadoProcesoContratacion', sql.Int, FKIdEstadoProcesoContratacion)
+            .input('FKIdTemporalDefinitiva', sql.Int, FKIdTemporalDefinitiva)
+            .input('FKIdDependencia', sql.Int, FKIdDependencia)
+            .input('hermesNotificacion', sql.VarChar(20), hermesNotificacion)
+            .input('titularPlaza', sql.VarChar(20), titularPlaza)
+            .input('lineamientoOficioContinuidad', sql.VarChar(20), lineamientoOficioContinuidad)
+            .input('motivo', sql.VarChar(sql.MAX), motivo)
+            .input('fechaElaboracionPropuesta', sql.Date, fechaElaboracionPropuesta)
+            .input('fechaLiberacionOficio', sql.Date, fechaLiberacionOficio)
+            .input('periodoAutorizadoOficioInicio', sql.VarChar(50), periodoAutorizadoOficioInicio)
+            .input('periodoAutorizadoOficioFin', sql.VarChar(50), periodoAutorizadoOficioFin)
+            .input('observaciones', sql.VarChar(sql.MAX), observaciones)
+            .input('numCarpeta', sql.VarChar(10), numCarpeta)
+            .input('nombreCandidato', sql.VarChar(100), nombreCandidato)
+            .input('funcionDesempeniar', sql.VarChar(sql.MAX), funcionDesempeniar)
+            .input('familiaFuncional', sql.VarChar(sql.MAX), familiaFuncional)
+            .input('fechaEvaluacionCompetencias', sql.Date, fechaEvaluacionCompetencias)
+            .input('fechaInicioProcesamiento', sql.Date, fechaInicioProcesamiento)
+            .input('resultadoEvaluacionCompetencias', sql.VarChar(6), resultadoEvaluacionCompetencias)
+            .input('experienciaLaboralSolicitada', sql.VarChar(50), experienciaLaboralSolicitada)
+            .input('resultadoReferenciasLaborales', sql.VarChar(50), resultadoReferenciasLaborales)
+            .input('fechaEnvioEvaluacionDesempenio', sql.Date, fechaEnvioEvaluacionDesempenio)
+            .input('resultadoHabilidadesWord', sql.VarChar(5), resultadoHabilidadesWord)
+            .input('resultadoHabilidadesExcel', sql.VarChar(5), resultadoHabilidadesExcel)
+            .input('resultadoOrtografia', sql.VarChar(5), resultadoOrtografia)
+            .input('resultadoProcesoEvaluacion', sql.VarChar(50), resultadoProcesoEvaluacion)
+            .input('fechaRevisionOfiEval', sql.Date, fechaRevisionOfiEval)
+            .input('observacionesAnalista', sql.VarChar(sql.MAX), observacionesAnalista)
+            .input('consecutivoExpediente', sql.VarChar(10), consecutivoExpediente)
+            .input('resultadoSeguimientoEvaluacionDesempenio', sql.VarChar(10), resultadoSeguimientoEvaluacionDesempenio)
+            .input('FKIdAcceso', sql.Int, FKIdAcceso)
+            .execute('sp_ActualizarProcesoContratacion');
+            const ResultadoSP = Solicitud.recordset[0]?.Resultado;
+            if (ResultadoSP === 1) {
+                resultadoEdicion = { 
+                    ...MensajeProcesoContratacion.ACTUALIZACION_EXITOSA, 
+                    estado: MensajeProcesoContratacion.ACTUALIZACION_EXITOSA.resultado };
+            }else if(ResultadoSP == 2){
+                resultadoEdicion = { 
+                    ...MensajeProcesoContratacion.PROCESO_INEXISTENTE, 
+                    estado: MensajeProcesoContratacion.PROCESO_INEXISTENTE.resultado };
+            } else  {
+                resultadoEdicion = {
+                        ...MensajeGeneralesBD.ERROR_DB,
+                        estado: MensajeGeneralesBD.ERROR_DB.resultado                        
+                    };
+            }
+        }catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close(); 
+            }
+        }
+        return resultadoEdicion;   
+    }
+
+    static async ObtenerProcesoContratacionPorFolioHermesNotificacion({datos})
+    {
+        let resultadoConsulta;
+        let conexion;
+        try
+        {
+            conexion = await obtenerConexion();
+            const {folio,hermesNotificacion} = datos;
+            const Solicitud = await conexion.request()
+            .input('folio',sql.VarChar,folio)
+            .input('hermesNotificacion',sql.VarChar,hermesNotificacion)
+            .execute('sp_ObtenerProcesoPorFolioHermes');
+            const ResultadoQueryProceso = Solicitud.recordset;
+            if(ResultadoQueryProceso.length > 0){
+                const procesoContratacionConsultado = ResultadoQueryProceso[0];
+                if(procesoContratacionConsultado.idProceso>0){
+                    resultadoConsulta = {estado: 200, procesoContratacion:ResultadoQueryProceso}
+                }else{
+                    resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
+                }
+            }else{
+                resultadoConsulta = {estado: 404, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE};
+            }
+        }catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close(); 
+            }
+            return resultadoConsulta;
+        }
+    }
+
+    static async ObtenerProcesosPorIdAcceso({datos})
+    {
+        let resultadoConsulta;
+        let conexion;
+        try
+        {
+            conexion = await obtenerConexion();
+            const {FKIdAcceso} = datos;
+            const Solicitud = await conexion.request()
+            .input('FKIdAcceso',sql.Int,FKIdAcceso)
+            .execute('sp_ObtenerProcesosPorIdAcceso');
+            const ResultadoQueryProceso = Solicitud.recordset;
+            if(ResultadoQueryProceso.length > 0){
+                const procesoContratacionConsultado = ResultadoQueryProceso[0];
+                if(procesoContratacionConsultado.idProceso>0){
+                    resultadoConsulta = {estado: 200, procesoContratacion:ResultadoQueryProceso}
+                }else{
+                    resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
+                }
+            }else{
+                resultadoConsulta = {estado: 404, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE};
+            }
+        }catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close(); 
+            }
+            return resultadoConsulta;
+        }
+    }
+
+    static async ObtenerProcesosPorIdEstado({datos})
+    {
+        let resultadoConsulta;
+        let conexion;
+        try
+        {
+            conexion = await obtenerConexion();
+            const {FKIdEstadoProcesoContratacion} = datos;
+            const Solicitud = await conexion.request()
+            .input('FKIdEstadoProcesoContratacion',sql.Int,FKIdEstadoProcesoContratacion)
+            .execute('sp_ObtenerProcesosPorIdEstado');
+            const ResultadoQueryProceso = Solicitud.recordset;
+            if(ResultadoQueryProceso.length > 0){
+                const procesoContratacionConsultado = ResultadoQueryProceso[0];
+                if(procesoContratacionConsultado.idProceso>0){
+                    resultadoConsulta = {estado: 200, procesoContratacion:ResultadoQueryProceso}
+                }else{
+                    resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
+                }
+            }else{
+                resultadoConsulta = {estado: 404, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE};
+            }
+        }catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close(); 
+            }
+            return resultadoConsulta;
+        }
+    }
+    
+}

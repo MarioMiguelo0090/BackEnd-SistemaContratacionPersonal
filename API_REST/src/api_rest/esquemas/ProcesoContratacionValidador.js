@@ -1,0 +1,57 @@
+import zod from 'zod';
+import { SoloLetras, SoloLetrasNumerosCaracteres, SoloLetrasYNumeros, SoloRutas } from '../utilidades/RegexValidador.js';
+
+const ProcesoContratacionEsquema = zod.object({
+    idProceso: zod.number().int().optional(),
+    folio: zod.string().max(20).optional(),
+    numPlaza: zod.string().max(10).optional(),
+    fechaRecibido: zod.string().optional(), 
+    fechaEntrevista: zod.string().optional(),
+    resultadoEvaluacionConocimiento: zod.string().max(6).optional(),
+    fechaEnvioDEyDP: zod.string().optional(),
+    fechaNotificacion: zod.string().optional(),
+    categoriaPuestoOrigen: zod.string().max(50).optional(),
+    diasProceso: zod.string().max(3).optional(),
+    beneficiado: zod.boolean().optional(),
+    FKIdTipoProceso: zod.number().int().optional(),
+    FKIdTipoPersonal: zod.number().int().optional(),
+    FKIdEstadoProcesoContratacion: zod.number().int().optional(),
+    FKIdTemporalDefinitiva: zod.number().int().optional(),
+    FKIdDependencia: zod.number().int().optional(),
+    hermesNotificacion: zod.string().max(20).optional(),
+    titularPlaza: zod.string().max(20).optional(),
+    lineamientoOficioContinuidad: zod.string().max(20).optional(),
+    motivo: zod.string().optional(),
+    fechaElaboracionPropuesta: zod.string().optional(),
+    fechaLiberacionOficio: zod.string().optional(),
+    periodoAutorizadoOficioInicio: zod.string().max(50).optional(),
+    periodoAutorizadoOficioFin: zod.string().max(50).optional(),
+    observaciones: zod.string().optional(),
+    numCarpeta: zod.string().max(10).optional(),
+    nombreCandidato: zod.string().max(100).optional(),
+    funcionDesempeniar: zod.string().optional(),
+    familiaFuncional: zod.string().optional(),
+    fechaEvaluacionCompetencias: zod.string().optional(),
+    fechaInicioProcesamiento: zod.string().optional(),
+    resultadoEvaluacionCompetencias: zod.string().max(6).optional(),
+    experienciaLaboralSolicitada: zod.string().max(50).optional(),
+    resultadoReferenciasLaborales: zod.string().max(50).optional(),
+    fechaEnvioEvaluacionDesempenio: zod.string().optional(),
+    fechaEntregaEvaluacionDesempenio: zod.string().optional(),
+    resultadoEvaluacionDesempenio: zod.string().max(10).optional(),
+    resultadoHabilidadesWord: zod.string().max(5).optional(),
+    resultadoHabilidadesExcel: zod.string().max(5).optional(),
+    resultadoOrtografia: zod.string().max(5).optional(),
+    resultadoProcesoEvaluacion: zod.string().max(50).optional(),
+    fechaRevisionOfiEval: zod.string().optional(),
+    observacionesAnalista: zod.string().optional(),
+    consecutivoExpediente: zod.string().max(10).optional(),
+    seguimientoEvaluacionDesempenio: zod.boolean().optional(),
+    fechaEvaluacionDesempenio: zod.string().optional(),
+    resultadoSeguimientoEvaluacionDesempenio: zod.string().max(10).optional(),
+    FKIdAcceso: zod.number().int().optional()
+});
+
+export function ValidarEdicionParcialProcesoContratacion(entrada) {
+    return ProcesoContratacionEsquema.partial().safeParse(entrada);
+}

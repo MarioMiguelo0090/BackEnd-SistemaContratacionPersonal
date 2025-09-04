@@ -26,6 +26,8 @@ const CuentaLogin = zod.object({
   contrasenia: zod.string({ invalid_type_error: 'La contraseña ingresado no es válido',required_error: 'El contraseña es un campo requerido'}).min(8).max(64)
 });
 
+
+
 export function ValidarInsercionAcceso(entrada)
 {
     return CuentaEsquema.safeParse(entrada);
@@ -40,3 +42,6 @@ export function ValidarInicioSesion(entrada){
   return CuentaLogin.safeParse(entrada);
 }
 
+export function ValidarEdicionParcialProcesoContratacion(entrada) {
+    return ProcesoContratacionEsquema.partial().safeParse(entrada);
+}

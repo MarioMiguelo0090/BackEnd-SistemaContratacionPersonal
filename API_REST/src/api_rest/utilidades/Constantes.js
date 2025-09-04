@@ -13,3 +13,10 @@ export const MensajesAcceso = {
 export const MensajeGeneralesBD = {
     ERROR_DB: { resultado: 500, mensaje: "Ha ocurrido un error en la base de datos" }
 };
+
+export const MensajeProcesoContratacion = {
+    REGISTRO_EXITOSO: { resultado: 200, mensaje: "Registro exitoso" }, 
+    REGISTRO_DUPLICADO: {resultado: 400, mensaje: "El registro que intenta realizar ya existe en el sistema"},   
+    ACTUALIZACION_EXITOSA: {resultado:200, mensaje: "Los datos han sido actualizados correctamente"},
+    PROCESO_INEXISTENTE: {resultado: 404, mensaje: "El proceso no fue encontrado"}
+};
