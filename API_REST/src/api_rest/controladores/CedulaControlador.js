@@ -1,4 +1,4 @@
-import { ValidarEdicionParcialCedula } from "../esquemas/CedulaValidador.js";
+import { ValidarEdicionParcialCedula,ValidarEdicionParcialResultado } from "../esquemas/CedulaValidador.js";
 export class CedulaControlador
 {
     constructor({ModeloCedula})
@@ -54,6 +54,160 @@ export class CedulaControlador
         }
         catch(error)
         {
+            res.status(500).json({
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
+            });
+        }
+    }
+
+    ObtenerCedulaPorFKIdProceso = async (req,res) =>
+    {
+        try
+        {
+            const FKIdProceso = parseInt(req.params['FKIdProceso']);
+            const Datos =  {FKIdProceso};
+            const ResultadoValidacion = ValidarEdicionParcialCedula(Datos);
+            if(ResultadoValidacion.success){
+                const ResultadoConsulta = await this.modeloCedula.ObtenerCedulaPorIdProceso({datos: ResultadoValidacion.data});
+                let resultadoConsulta = parseInt(ResultadoConsulta.estado);
+                res.status(resultadoConsulta).json({
+                    error: resultadoConsulta !== 200,
+                    estado: resultadoConsulta,
+                    ...(resultadoConsulta === 200
+                        ? {cedula: ResultadoConsulta.cedula}
+                        : {mensaje: ResultadoConsulta.mensaje}
+                    )
+                });
+            }else{
+                res.status(400).json({
+                    error: true,
+                    estado: 400,
+                    mensaje: 'Datos con formato inválido, por favor verifique los datos enviados.'
+                });
+            }
+        }catch(error){                      
+            res.status(500).json({
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
+            });
+        }
+    }
+
+    ObtenerCedulaPorFKIdClasificacionCedula = async (req,res) =>
+    {
+        try
+        {
+            const FKIdClasificacionCedula = parseInt(req.params['FKIdClasificacionCedula']);
+            const Datos = {FKIdClasificacionCedula};
+            const ResultadoValidacion = ValidarEdicionParcialCedula(Datos);
+            if(ResultadoValidacion.success){
+                const ResultadoConsulta = await this.modeloCedula.ObtenerCompetenciasPorClasificacionCedula({datos: ResultadoValidacion.data});
+                let resultadoConsulta = parseInt(ResultadoConsulta.estado);
+                res.status(resultadoConsulta).json({
+                    error: resultadoConsulta !== 200,
+                    estado: resultadoConsulta,
+                    ...(resultadoConsulta === 200
+                        ? {competencias: ResultadoConsulta.competencias}
+                        : {mensaje: ResultadoConsulta.mensaje}
+                    )
+                });
+            }else{
+                res.status(400).json({
+                    error: true,
+                    estado: 400,
+                    mensaje: 'Datos con formato inválido, por favor verifique los datos enviados.'
+                });
+            }
+        }catch(error){                      
+            res.status(500).json({
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
+            });
+        }
+    }
+
+    RegistrarNuevoResultado = async(req, res) =>
+    {
+        try
+        {
+            const ResultadoValidacion = ValidarEdicionParcialResultado(req.body);
+            if(ResultadoValidacion.success){
+                const ResultadoInsercion = await this.modeloCedula.InsertarNuevoResultado({datos: ResultadoValidacion.data});
+                res.status(ResultadoInsercion.estado).json({
+                    error: ResultadoInsercion.estado !== 200,
+                    estado: ResultadoInsercion.estado,
+                    mensaje: ResultadoInsercion.mensaje
+                });
+            }else {
+                res.status(400).json({
+                    error: true,
+                    estado: 400,
+                    mensaje: 'Datos con formato inválido, por favor verifique los datos enviados.'
+                });
+            }
+        }catch(error){                      
+            res.status(500).json({
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
+            });
+        }            
+    }
+
+    EditarResultados = async(req,res) =>
+    {
+        try
+        {            
+            const idResultado = parseInt(req.params['idResultado']);
+            const Datos = {idResultado,...req.body};
+            const ResultadoValidacion = ValidarEdicionParcialResultado(Datos);
+            if(ResultadoValidacion.success){
+                const ResultadoEdicion = await this.modeloCedula.EditarResultadoExistente({datos: ResultadoValidacion.data});
+                res.status(ResultadoEdicion.estado).json({
+                    error: ResultadoEdicion.estado !== 200,
+                    estado: ResultadoEdicion.estado,
+                    mensaje: ResultadoEdicion.mensaje
+                });
+            }
+        }catch(error){
+            res.status(500).json({
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
+            });
+        }
+    }
+
+    ObtenerResultadosPorCedula = async(req,res) =>
+    {
+        try
+        {
+            const FKIdCedula = parseInt(req.params['FKIdCedula']);
+            const Datos = {FKIdCedula};
+            const ResultadoValidacion = ValidarEdicionParcialResultado(Datos);
+            if(ResultadoValidacion.success){
+                const ResultadoConsulta = await this.modeloCedula.ObtenerResultadosPorIdCedula({datos: ResultadoValidacion.data});
+                let resultadoConsulta = parseInt(ResultadoConsulta.estado);
+                res.status(resultadoConsulta).json({
+                    error: resultadoConsulta !== 200,
+                    estado: resultadoConsulta,
+                    ...(resultadoConsulta === 200
+                        ? {resultados: ResultadoConsulta.resultados}
+                        : {mensaje: ResultadoConsulta.mensaje}
+                    )
+                });
+            }else{
+                res.status(400).json({
+                    error: true,
+                    estado: 400,
+                    mensaje: 'Datos con formato inválido, por favor verifique los datos enviados.'
+                });
+            }
+        }catch(error){                      
             res.status(500).json({
                 error: true,
                 estado: 500,

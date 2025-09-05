@@ -25,7 +25,31 @@ const CedulaEsquema = zod.object({
     puesto: zod.string().optional()
 });
 
+const ResultadoEsquema = zod.object({
+    idResultado: zod.number().int().optional(),
+    FKIdCedula: zod.number().int(),
+    psicometriaComunicacion: zod.number().nullable().optional(),
+    psicometriaTrabajoEnEquipo: zod.number().nullable().optional(),
+    psicometriaOrientacionAlServicio: zod.number().nullable().optional(),
+    psicometriaSensibilidadALineamientos: zod.number().nullable().optional(),
+    psicometriaPlaneacionOrganizacion: zod.number().nullable().optional(),
+    psicometriaAnalisisProblemas: zod.number().nullable().optional(),
+    psicometriaEnfoqueResultados: zod.number().nullable().optional(),
+    psicometriaControlActividades: zod.number().nullable().optional(),
+    psicometriaEnfoqueCalidad: zod.number().nullable().optional(),
+    psicometriaRelacionesInterpersonales: zod.number().nullable().optional(),
+    psicometriaLiderazgo: zod.number().nullable().optional(),
+    psicometriaTomaDecisiones: zod.number().nullable().optional(),
+    psicometriaDinamismo: zod.number().nullable().optional(),
+    psicometriaInnovacion: zod.number().nullable().optional(),
+    psicometriaPensamientoEstrategico: zod.number().nullable().optional(),
+    psicometriaNegociacion: zod.number().nullable().optional()
+});
 
 export function ValidarEdicionParcialCedula(entrada) {
     return CedulaEsquema.partial().safeParse(entrada);
+}
+
+export function ValidarEdicionParcialResultado(entrada) {
+    return ResultadoEsquema.partial().safeParse(entrada);
 }
