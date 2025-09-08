@@ -1,4 +1,6 @@
 import { ValidarInsercionAcceso,ValidarEdicionParcialAcceso,ValidarInicioSesion } from "../esquemas/AccesoValidador.js";
+import { logger } from "../utilidades/logger.js";
+import { GenerarJWT } from "../utilidades/generadorjwt.js";
 
 export class AccesoControlador
 {
@@ -47,7 +49,7 @@ export class AccesoControlador
         }
         catch(error)
         {
-            //logger({mensaje:error});            
+            logger({mensaje:error});
             res.status(500).json(
                 {
                     error: true,
@@ -98,7 +100,8 @@ export class AccesoControlador
             }
         }
         catch(error)
-        {            
+        {           
+            logger({mensaje:error}); 
             res.status(500).json(
                 {
                     error: true,
@@ -139,6 +142,7 @@ export class AccesoControlador
         }
         catch(error)
         {
+            logger({mensaje:error});
             res.status({
                 error: true,
                 estado: 500,
@@ -178,6 +182,7 @@ export class AccesoControlador
         }
         catch(error)
         {
+            logger({mensaje:error});
             res.status(500).json({
                 error: true,
                 estado: 500,
@@ -214,6 +219,7 @@ export class AccesoControlador
         }
         catch(error)
         {
+            logger({mensaje:error});
             res.status({
                 error: true,
                 estado: 500,
@@ -226,20 +232,34 @@ export class AccesoControlador
     {
         try
         {            
-            const ResultadoValidacion = ValidarInicioSesion(req.body);
+            const ResultadoValidacion = ValidarInicioSesion(req.body);            
             if(ResultadoValidacion.success){
                 const ResultadoLogin = await this.modeloAcceso.LoginAcceso({datos: ResultadoValidacion.data});                
+                const DatosUsuario = {
+                    correo: req.body.correo,
+                    usuario: req.body.usuario
+                };
+                const token = await GenerarJWT(DatosUsuario);
+                console.log("JWT generado:", token);
+                res.header('access_token',token);
                 res.status(ResultadoLogin.estado).json({
-                error: ResultadoLogin.estado !== 200,
-                estado: ResultadoLogin.estado,
-                mensaje: ResultadoLogin.mensaje,
-                ...(ResultadoLogin.estado === 200 ? { usuario: ResultadoLogin.usuario } : {})
+                    error: ResultadoLogin.estado !== 200,
+                    estado: ResultadoLogin.estado,
+                    mensaje: ResultadoLogin.mensaje,
+                    ...(ResultadoLogin.estado === 200 ? { usuario: ResultadoLogin.usuario } : {})
+                });
+            }else{
+                res.status(400).json({
+                    error: true,
+                    estado: 400,
+                    mensaje: "Datos de inicio de sesión inválidos"
                 });
             }
         }
         catch(error)
         {
-            res.status({
+            logger({mensaje:error});
+            res.status(500).json({
                 error: true,
                 estado: 500,
                 mensaje: "Ha ocurrido un error en el servidor"
@@ -264,6 +284,7 @@ export class AccesoControlador
         }
         catch(error)
         {
+            logger({mensaje:error});
             res.status({
                 error: true,
                 estado: 500,

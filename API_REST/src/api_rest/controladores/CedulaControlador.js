@@ -1,4 +1,6 @@
 import { ValidarEdicionParcialCedula,ValidarEdicionParcialResultado } from "../esquemas/CedulaValidador.js";
+import { logger } from "../utilidades/logger.js";
+
 export class CedulaControlador
 {
     constructor({ModeloCedula})
@@ -28,6 +30,7 @@ export class CedulaControlador
         }
         catch(error)
         {
+            logger({mensaje:error});
             res.status(500).json({
                 error: true,
                 estado: 500,
@@ -54,6 +57,7 @@ export class CedulaControlador
         }
         catch(error)
         {
+            logger({mensaje:error});
             res.status(500).json({
                 error: true,
                 estado: 500,
@@ -88,6 +92,7 @@ export class CedulaControlador
                 });
             }
         }catch(error){                      
+            logger({mensaje:error});
             res.status(500).json({
                 error: true,
                 estado: 500,
@@ -121,7 +126,8 @@ export class CedulaControlador
                     mensaje: 'Datos con formato inválido, por favor verifique los datos enviados.'
                 });
             }
-        }catch(error){                      
+        }catch(error){    
+            logger({mensaje:error});                  
             res.status(500).json({
                 error: true,
                 estado: 500,
@@ -149,7 +155,8 @@ export class CedulaControlador
                     mensaje: 'Datos con formato inválido, por favor verifique los datos enviados.'
                 });
             }
-        }catch(error){                      
+        }catch(error){     
+            logger({mensaje:error});                 
             res.status(500).json({
                 error: true,
                 estado: 500,
@@ -174,6 +181,7 @@ export class CedulaControlador
                 });
             }
         }catch(error){
+            logger({mensaje:error});
             res.status(500).json({
                 error: true,
                 estado: 500,
@@ -207,7 +215,8 @@ export class CedulaControlador
                     mensaje: 'Datos con formato inválido, por favor verifique los datos enviados.'
                 });
             }
-        }catch(error){                      
+        }catch(error){    
+            logger({mensaje:error});                  
             res.status(500).json({
                 error: true,
                 estado: 500,

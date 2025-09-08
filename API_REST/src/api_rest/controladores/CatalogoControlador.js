@@ -1,3 +1,5 @@
+import { logger } from "../utilidades/logger.js";
+
 export class CatalogoControlador
 {
     constructor({ModeloCatalogo})
@@ -23,6 +25,7 @@ export class CatalogoControlador
         }
         catch(error)
         {
+            logger({mensaje:error});
             res.status({
                 error: true,
                 estado: 500,
@@ -48,6 +51,7 @@ export class CatalogoControlador
         }
         catch(error)
         {
+            logger({mensaje:error});
             res.status({
                 error: true,
                 estado: 500,
@@ -73,6 +77,7 @@ export class CatalogoControlador
         }
         catch(error)
         {
+            logger({mensaje:error});
             res.status({
                 error: true,
                 estado: 500,
@@ -98,6 +103,7 @@ export class CatalogoControlador
         }
         catch(error)
         {
+            logger({mensaje:error});
             res.status({
                 error: true,
                 estado: 500,
@@ -123,6 +129,7 @@ export class CatalogoControlador
         }
         catch(error)
         {
+            logger({mensaje:error});
             res.status({
                 error: true,
                 estado: 500,
@@ -148,6 +155,7 @@ export class CatalogoControlador
         }
         catch(error)
         {
+            logger({mensaje:error});
             res.status({
                 error: true,
                 estado: 500,
@@ -173,6 +181,7 @@ export class CatalogoControlador
         }
         catch(error)
         {
+            logger({mensaje:error});
             res.status({
                 error: true,
                 estado: 500,

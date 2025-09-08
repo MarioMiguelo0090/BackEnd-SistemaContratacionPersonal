@@ -1,16 +1,17 @@
 import { Router } from "express";
 import { AccesoControlador } from "../controladores/AccesoControlador.js";
+import { ValidarJwt } from "../middlewares/jwt.js";
 
 export const CrearRutaAcceso = ({ModeloAcceso}) =>
 {
     const AccesoEnrutador = Router();
     const ControladorAccesoEnrutador = new AccesoControlador({ModeloAcceso});
-    AccesoEnrutador.post('/',ControladorAccesoEnrutador.RegistrarAcceso);
+    AccesoEnrutador.post('/',ValidarJwt,ControladorAccesoEnrutador.RegistrarAcceso);
     AccesoEnrutador.post('/login',ControladorAccesoEnrutador.RealizarLogin);
     AccesoEnrutador.get('/tiposAcceso',ControladorAccesoEnrutador.ObtenerTiposDeAccesos);
-    AccesoEnrutador.get('/usuario/:usuario',ControladorAccesoEnrutador.BuscarUsuarioPorNombreDeUsuario);
-    AccesoEnrutador.put('/usuario/:idAcceso',ControladorAccesoEnrutador.DesactivarUsuarioPorId);
-    AccesoEnrutador.put('/:idAcceso',ControladorAccesoEnrutador.EditarAcceso);
-    AccesoEnrutador.get('/:idAcceso',ControladorAccesoEnrutador.BuscarUsuarioPorId);
+    AccesoEnrutador.get('/usuario/:usuario',ValidarJwt,ControladorAccesoEnrutador.BuscarUsuarioPorNombreDeUsuario);
+    AccesoEnrutador.put('/usuario/:idAcceso',ValidarJwt,ControladorAccesoEnrutador.DesactivarUsuarioPorId);
+    AccesoEnrutador.put('/:idAcceso',ValidarJwt,ControladorAccesoEnrutador.EditarAcceso);
+    AccesoEnrutador.get('/:idAcceso',ValidarJwt,ControladorAccesoEnrutador.BuscarUsuarioPorId);
     return AccesoEnrutador;
 }
