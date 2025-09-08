@@ -29,6 +29,7 @@ export class ProcesoContratacionControlador
         }
         catch(error)
         {
+            logger({mensaje:error});
             res.status(500).json({
                 error: true,
                 estado: 500,
@@ -148,6 +149,7 @@ export class ProcesoContratacionControlador
         }
         catch(error)
         {            
+            logger({mensaje:error});
             res.status(500).json({
                 error: true,
                 estado: 500,
@@ -182,7 +184,7 @@ export class ProcesoContratacionControlador
                 });
             }
         }catch(error){    
-            console.log("Error real",error);        
+            logger({mensaje:error});
             res.status(500).json({
                 error: true,
                 estado: 500,
@@ -216,7 +218,8 @@ export class ProcesoContratacionControlador
                     mensaje: 'Datos con formato inválido, por favor verifique los datos enviados.'
                 });
             }
-        }catch(error){                
+        }catch(error){  
+            logger({mensaje:error});              
             res.status(500).json({
                 error: true,
                 estado: 500,
@@ -250,7 +253,8 @@ export class ProcesoContratacionControlador
                     mensaje: 'Datos con formato inválido, por favor verifique los datos enviados.'
                 });
             }
-        }catch(error){                
+        }catch(error){  
+            logger({mensaje:error});              
             res.status(500).json({
                 error: true,
                 estado: 500,
