@@ -246,7 +246,7 @@ export class AccesoControlador
                     error: ResultadoLogin.estado !== 200,
                     estado: ResultadoLogin.estado,
                     mensaje: ResultadoLogin.mensaje,
-                    ...(ResultadoLogin.estado === 200 ? { usuario: ResultadoLogin.usuario } : {})
+                    ...(ResultadoLogin.estado === 200 ? { usuario: ResultadoLogin.usuario, token } : {})
                 });
             }else{
                 res.status(400).json({

@@ -5,12 +5,14 @@ import { CrearRutaProcesoContratacion } from './rutas/ProcesoContratacionRuta.js
 import { CrearRutaCedula } from './rutas/CedulaRuta.js';
 
 import dotenv from 'dotenv';
+import { CorsMiddleware } from './middlewares/cors.js';
 
 export const CrearServidor = ({ModeloAcceso,ModeloCatalogo,ModeloProcesoContratacion,ModeloCedula}) => 
 {
   const app = express();
   dotenv.config();
   app.use(json());
+  app.use(CorsMiddleware());
   app.disable('x-powered-by');
   app.get('/rysuv',(req,res)=>{
     res.json({message:'Bienvenido al servidor de RySUV'});
