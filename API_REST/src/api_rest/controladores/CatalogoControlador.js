@@ -156,9 +156,8 @@ export class CatalogoControlador
         catch(error)
         {
             logger({mensaje:error});
-            res.status({
+            res.status(500).json({
                 error: true,
-                estado: 500,
                 mensaje: "Ha ocurrido un error en el servidor"
             });
         }

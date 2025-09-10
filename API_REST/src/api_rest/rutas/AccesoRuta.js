@@ -5,9 +5,10 @@ import { ValidarJwt } from "../middlewares/jwt.js";
 export const CrearRutaAcceso = ({ModeloAcceso}) =>
 {
     const AccesoEnrutador = Router();
-    const ControladorAccesoEnrutador = new AccesoControlador({ModeloAcceso});
-    AccesoEnrutador.post('/',ValidarJwt,ControladorAccesoEnrutador.RegistrarAcceso);
+    const ControladorAccesoEnrutador = new AccesoControlador({ModeloAcceso});    
     AccesoEnrutador.post('/login',ControladorAccesoEnrutador.RealizarLogin);
+    AccesoEnrutador.post('/',ValidarJwt,ControladorAccesoEnrutador.RegistrarAcceso);
+    AccesoEnrutador.get('/usuarios',ValidarJwt,ControladorAccesoEnrutador.ObtenerUsuarios);
     AccesoEnrutador.get('/tiposAcceso',ControladorAccesoEnrutador.ObtenerTiposDeAccesos);
     AccesoEnrutador.get('/usuario/:usuario',ValidarJwt,ControladorAccesoEnrutador.BuscarUsuarioPorNombreDeUsuario);
     AccesoEnrutador.put('/usuario/:idAcceso',ValidarJwt,ControladorAccesoEnrutador.DesactivarUsuarioPorId);
