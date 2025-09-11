@@ -212,9 +212,9 @@ export class ModeloAcceso{
                     usuario: ResultadoQuery 
                 };
             } else if (ResultadoQuery.Resultado === 1){
-                resultadoDeLogin = { estado: 404, mensaje: MensajesAcceso.USUARIO_PERDIDO };
+                resultadoDeLogin = { estado: 404, mensaje: MensajesAcceso.CREDENCIALES_INVALIDAS };
             } else if (ResultadoQuery.Resultado === 2){
-                resultadoDeLogin = { estado: 401, mensaje: MensajesAcceso.CONTRASENIA_INCORRECTA };
+                resultadoDeLogin = { estado: 401, mensaje: MensajesAcceso.CREDENCIALES_INVALIDAS };
             } else if (ResultadoQuery.Resultado === 3){
                 resultadoDeLogin = { estado: 401, mensaje: MensajesAcceso.USUARIO_INACTIVO };
             }else {

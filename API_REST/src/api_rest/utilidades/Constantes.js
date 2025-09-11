@@ -7,7 +7,8 @@ export const MensajesAcceso = {
     LOGIN_EXITOSO: {resultado: 200, mensaje: "Login exitoso"},
     CONTRASENIA_INCORRECTA: {resultado: 401, mensaje: "Contraseña incorrecta"},
     USUARIO_INACTIVO: {resultado: 403, mensaje: "El usuario se encuentra inactivo"},
-    TIPOS_ACCESO_PERDIDOS: {resultado: 404, mensaje:"Los tipos de accso no fueron encontrados"}
+    TIPOS_ACCESO_PERDIDOS: {resultado: 404, mensaje:"Los tipos de accso no fueron encontrados"},
+    CREDENCIALES_INVALIDAS: {resultado: 401, mensaje: "Las credenciales de acceso son inválidas"}
 };
 
 export const MensajeGeneralesBD = {
