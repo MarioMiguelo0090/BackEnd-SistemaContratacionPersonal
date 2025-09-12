@@ -212,9 +212,9 @@ export class ModeloAcceso{
                     usuario: ResultadoQuery 
                 };
             } else if (ResultadoQuery.Resultado === 1){
-                resultadoDeLogin = { estado: 404, mensaje: MensajesAcceso.USUARIO_PERDIDO };
+                resultadoDeLogin = { estado: 404, mensaje: MensajesAcceso.CREDENCIALES_INVALIDAS };
             } else if (ResultadoQuery.Resultado === 2){
-                resultadoDeLogin = { estado: 401, mensaje: MensajesAcceso.CONTRASENIA_INCORRECTA };
+                resultadoDeLogin = { estado: 401, mensaje: MensajesAcceso.CREDENCIALES_INVALIDAS };
             } else if (ResultadoQuery.Resultado === 3){
                 resultadoDeLogin = { estado: 401, mensaje: MensajesAcceso.USUARIO_INACTIVO };
             }else {
@@ -244,6 +244,31 @@ export class ModeloAcceso{
                 resultadoConsulta = {estado: 200, tiposAcceso};
             }else{
                 resultadoConsulta = {estado: 400, mensaje: MensajesAcceso.TIPOS_ACCESO_PERDIDOS}
+            }
+        }catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close();
+            }
+        } 
+        return resultadoConsulta;
+    }
+
+    static async ObtenerTodosLosUsuarios()
+    {
+        let resultadoConsulta;
+        let conexion;
+        try
+        {
+            conexion = await obtenerConexion();
+            const Solicitud = await conexion.request()
+            .execute('sp_ObtenerTodosAccesos');
+            const usuarios = Solicitud.recordset;
+            if(usuarios.length > 0){
+                resultadoConsulta = {estado: 200, usuarios};
+            }else{
+                resultadoConsulta = {estado: 400, mensaje: MensajesAcceso.USUARIO_PERDIDO};
             }
         }catch (error) {
             throw error;

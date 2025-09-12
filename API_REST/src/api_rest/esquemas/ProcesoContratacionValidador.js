@@ -3,7 +3,7 @@ import { SoloLetras, SoloLetrasNumerosCaracteres, SoloLetrasYNumeros, SoloRutas 
 
 const ProcesoContratacionEsquema = zod.object({
     idProceso: zod.number().int().optional(),
-    folio: zod.string().max(20).optional(),
+    folio: zod.string().optional(),
     numPlaza: zod.string().max(10).optional(),
     fechaRecibido: zod.string().optional(), 
     fechaEntrevista: zod.string().optional(),
@@ -18,9 +18,9 @@ const ProcesoContratacionEsquema = zod.object({
     FKIdEstadoProcesoContratacion: zod.number().int().optional(),
     FKIdTemporalDefinitiva: zod.number().int().optional(),
     FKIdDependencia: zod.number().int().optional(),
-    hermesNotificacion: zod.string().max(20).optional(),
-    titularPlaza: zod.string().max(20).optional(),
-    lineamientoOficioContinuidad: zod.string().max(20).optional(),
+    hermesNotificacion: zod.string().optional(),
+    titularPlaza: zod.string().optional(),
+    lineamientoOficioContinuidad: zod.string().optional(),
     motivo: zod.string().optional(),
     fechaElaboracionPropuesta: zod.string().optional(),
     fechaLiberacionOficio: zod.string().optional(),

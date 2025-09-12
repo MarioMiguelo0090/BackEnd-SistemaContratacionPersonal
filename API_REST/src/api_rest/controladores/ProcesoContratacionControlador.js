@@ -1,4 +1,5 @@
 import { ValidarEdicionParcialProcesoContratacion } from "../esquemas/ProcesoContratacionValidador.js";
+import { logger } from "../utilidades/logger.js";
 
 export class ProcesoContratacionControlador 
 {
