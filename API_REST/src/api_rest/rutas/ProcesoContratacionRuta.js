@@ -7,6 +7,7 @@ export const CrearRutaProcesoContratacion = ({ModeloProcesoContratacion}) =>
     const ProcesoContratacionEnrutador = Router();
     const ControladorProcesoContratacionEnrutador = new ProcesoContratacionControlador({ModeloProcesoContratacion});
     ProcesoContratacionEnrutador.post('/',ValidarJwt,ControladorProcesoContratacionEnrutador.RegistrarProcesoContratacion);
+    ProcesoContratacionEnrutador.get('/noBeneficiados',ValidarJwt,ControladorProcesoContratacionEnrutador.ObtenerTodosNoBeneficiados);
     ProcesoContratacionEnrutador.get('/busqueda/procesos/',ValidarJwt,ControladorProcesoContratacionEnrutador.ObtenerProcesosContratacion);
     ProcesoContratacionEnrutador.put('/:idProceso',ValidarJwt,ControladorProcesoContratacionEnrutador.EditarProcesoContratacionExistente);
     ProcesoContratacionEnrutador.get('/busqueda',ValidarJwt,ControladorProcesoContratacionEnrutador.ObtenerProcesoContratacionPorFolioHermes);

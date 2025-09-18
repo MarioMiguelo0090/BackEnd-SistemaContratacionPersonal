@@ -288,4 +288,30 @@ export class ProcesoContratacionControlador
             });
         }
     }
+
+    ObtenerTodosNoBeneficiados = async (req,res) =>
+    {
+        try
+        {
+            const ResultadoConsulta = await this.modeloProcesoContratacion.ObtenerNoBeneficiados();
+            let resultadoConsulta = parseInt(ResultadoConsulta.estado);
+            res.status(resultadoConsulta).json({
+                error: resultadoConsulta !== 200,
+                estado: resultadoConsulta,
+                ...(resultadoConsulta === 200
+                    ? {procesos: ResultadoConsulta.procesos}
+                    : {mensaje: ResultadoConsulta.mensaje}
+                )
+            });            
+        }catch(error)
+        {
+            logger({mensaje:error});
+            res.status({
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
+            });
+        }
+
+    }
 }

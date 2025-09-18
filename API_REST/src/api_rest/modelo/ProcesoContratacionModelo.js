@@ -376,5 +376,30 @@ export class ModeloProcesoContratacion
         } 
         return resultadoConsulta;
     }
+
+    static async ObtenerNoBeneficiados()
+    {
+        let resultadoConsulta;
+        let conexion;
+        try
+        {
+            conexion = await obtenerConexion();
+            const Solicitud = await conexion.request()
+            .execute('sp_ObtenerProcesosNoBeneficiadosBolsa');
+            const procesos = Solicitud.recordset;
+            if(procesos.length > 0){
+                resultadoConsulta = {estado: 200, procesos};
+            }else{
+                resultadoConsulta = {estado: 400, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE};
+            }
+        }catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close();
+            }
+        } 
+        return resultadoConsulta;
+    }
     
 }
