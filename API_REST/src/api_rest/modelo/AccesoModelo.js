@@ -280,4 +280,28 @@ export class ModeloAcceso{
         return resultadoConsulta;
     }
     
+    static async ObtenerTodosLosAnalistas()
+    {
+        let resultadoConsulta;
+        let conexion;
+        try
+        {
+            conexion = await obtenerConexion();
+            const Solicitud = await conexion.request()
+            .execute('ObtenerAccesosAnalistas');
+            const usuarios = Solicitud.recordset;
+            if(usuarios.length > 0){
+                resultadoConsulta = {estado: 200, usuarios};
+            }else{
+                resultadoConsulta = {estado: 400, mensaje: MensajesAcceso.USUARIO_PERDIDO};
+            }
+        }catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close();
+            }
+        } 
+        return resultadoConsulta;
+    }
 }
