@@ -1,34 +1,48 @@
+import dotenv from 'dotenv';
 import express, { json } from 'express';
+import fs from 'fs';
+import https from 'https';
+import { CorsMiddleware } from './middlewares/cors.js';
 import { CrearRutaAcceso } from './rutas/AccesoRuta.js';
 import { CrearRutaCatalogo } from './rutas/CatalogoRuta.js';
-import { CrearRutaProcesoContratacion } from './rutas/ProcesoContratacionRuta.js';
 import { CrearRutaCedula } from './rutas/CedulaRuta.js';
-
-import dotenv from 'dotenv';
-import { CorsMiddleware } from './middlewares/cors.js';
+import { CrearRutaProcesoContratacion } from './rutas/ProcesoContratacionRuta.js';
 
 export const CrearServidor = ({ModeloAcceso,ModeloCatalogo,ModeloProcesoContratacion,ModeloCedula}) => 
 {
-  const app = express();
   dotenv.config();
+  const app = express();
   app.use(json());
   app.use(CorsMiddleware());
   app.disable('x-powered-by');
-  app.get('/rysuv',(req,res)=>{
-    res.json({message:'Bienvenido al servidor de RySUV'});
+
+  // Rutas
+  app.get('/rysuv', (req, res) => {
+    res.json({ message: 'Bienvenido al servidor de RySUV' });
   });
-  app.use('/rysuv/acceso',CrearRutaAcceso({ModeloAcceso}));
-  app.use('/rysuv/catalogo',CrearRutaCatalogo({ModeloCatalogo}));
-  app.use('/rysuv/procesoContratacion',CrearRutaProcesoContratacion({ModeloProcesoContratacion}));
-  app.use('/rysuv/cedula',CrearRutaCedula({ModeloCedula}));
-  const PUERTO = process.env.PUERTO;
+  app.use('/rysuv/acceso', CrearRutaAcceso({ ModeloAcceso }));
+  app.use('/rysuv/catalogo', CrearRutaCatalogo({ ModeloCatalogo }));
+  app.use('/rysuv/procesoContratacion', CrearRutaProcesoContratacion({ ModeloProcesoContratacion }));
+  app.use('/rysuv/cedula', CrearRutaCedula({ ModeloCedula }));
+
+  // Manejo de errores CORS
   app.use((err, req, res, next) => {
-    if (err.message === 'CORS Invalido'){
-      return res.status(401).json({error: 'No se puede enviar solicitudes ni recibir respuestas del servidor'});
+    if (err.message === 'CORS Invalido') {
+      return res.status(401).json({ error: 'No se puede enviar solicitudes ni recibir respuestas del servidor' });
     }
     next(err);
   });
-  app.listen(PUERTO,()=>{ 
-    console.log(`Servidor activo en la siguiente ruta http://localhost:${PUERTO}`);
-  });
+
+  const PUERTO = process.env.PUERTO || 3000;
+
+  // ✅ Aquí ponemos HTTPS con certificado
+  const httpsOptions = {
+    key: fs.readFileSync('./ssl/server.key'),   // <- tu ruta al .key
+    cert: fs.readFileSync('./ssl/server.crt')   // <- tu ruta al .crt
+  };
+
+  https.createServer(httpsOptions, app)
+    .listen(PUERTO, () => {
+      console.log(`Servidor HTTPS activo en https://148.226.9.229:${PUERTO}`);
+    });
 }

@@ -1,6 +1,6 @@
 import sql from 'mssql';
-import { obtenerConexion } from './conexion/ConfiguracionConexion.js';
 import { MensajeGeneralesBD, MensajeProcesoContratacion } from '../utilidades/Constantes.js';
+import { obtenerConexion } from './conexion/ConfiguracionConexion.js';
 
 export class ModeloProcesoContratacion
 {
@@ -350,6 +350,31 @@ export class ModeloProcesoContratacion
             }
             return resultadoConsulta;
         }
+    }
+
+    static async ObtenerTodosLosProcesosContratacion()
+    {
+        let resultadoConsulta;
+        let conexion;
+        try
+        {
+            conexion = await obtenerConexion();
+            const Solicitud = await conexion.request()
+            .execute('sp_ObtenerTodosProcesosContratacion');
+            const procesos = Solicitud.recordset;
+            if(procesos.length > 0){
+                resultadoConsulta = {estado: 200, procesos};
+            }else{
+                resultadoConsulta = {estado: 400, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE};
+            }
+        }catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close();
+            }
+        } 
+        return resultadoConsulta;
     }
     
 }
