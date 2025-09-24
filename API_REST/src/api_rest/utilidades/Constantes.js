@@ -27,7 +27,8 @@ export const MensajeCedula = {
     CEDULA_DUPLICADA: {resultado: 400, mensaje:"El registro que intenta realizar ya existe en el sistema"},
     ACTUALIZACION_EXITOSA: {resultado: 200, mensaje:"Los datos han sido actualizados correctamente"},
     CEDULA_INEXISTENTE: {resultado: 404, mensaje: "La cédula no fue encontrada"},
-    COMPETENCIA_INEXISTENTE: {resultado: 404, mensaje: "La competencia no fue encontrada"}
+    COMPETENCIA_INEXISTENTE: {resultado: 404, mensaje: "La competencia no fue encontrada"},
+    CEDULA_INEXISTENTE: {resultado: 404, mensaje: "No hay cédulas que mostrar"}
 };
 
 export const MensajeResultado = {

@@ -18,7 +18,8 @@ export class CedulaControlador
                 res.status(ResultadoInsercion.estado).json({
                     error: ResultadoInsercion.estado !== 200,
                     estado: ResultadoInsercion.estado,
-                    mensaje: ResultadoInsercion.mensaje
+                    mensaje: ResultadoInsercion.mensaje,
+                    idCedula: ResultadoInsercion.idCedula,
                 });
             }else {
                 res.status(400).json({
@@ -218,6 +219,31 @@ export class CedulaControlador
         }catch(error){    
             logger({mensaje:error});                  
             res.status(500).json({
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
+            });
+        }
+    }
+
+    ObtenerTodasLasCedulas = async (req,res) => 
+    {
+        try
+        {
+            const ResultadoConsulta = await this.modeloCedula.ObtenerTodasCedulas();
+            let resultadoConsulta = parseInt(ResultadoConsulta.estado);
+            res.status(resultadoConsulta).json({
+                error: resultadoConsulta !== 200,
+                estado: resultadoConsulta,
+                ...(resultadoConsulta === 200
+                    ? {cedulas: ResultadoConsulta.cedulas}
+                    : {mensaje: ResultadoConsulta.mensaje}
+                )
+            });            
+        }catch(error)
+        {
+            logger({mensaje:error});
+            res.status({
                 error: true,
                 estado: 500,
                 mensaje: "Ha ocurrido un error en el servidor"

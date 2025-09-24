@@ -63,7 +63,8 @@ export class ModeloCedula
                 if(CedulaRegistrada.idCedula>0){
                     resultadoInsercion = {
                         ...MensajeCedula.REGISTRO_EXITOSO,
-                        estado:MensajeCedula.REGISTRO_EXITOSO.resultado
+                        estado:MensajeCedula.REGISTRO_EXITOSO.resultado,
+                        idCedula: CedulaRegistrada.idCedula
                     };
                 }else if(CedulaRegistrada.idCedula==-2){
                     resultadoInsercion = {
@@ -404,6 +405,31 @@ export class ModeloCedula
                 conexion.close(); 
             }            
         }
+        return resultadoConsulta;
+    }
+
+    static async ObtenerTodasCedulas()
+    {
+        let resultadoConsulta;
+        let conexion;
+        try
+        {
+            conexion = await obtenerConexion();
+            const Solicitud = await conexion.request()
+            .execute('sp_ObtenerTodasCedulas');
+            const cedulas = Solicitud.recordset;
+            if(cedulas.length > 0){
+                resultadoConsulta = {estado: 200, cedulas};
+            }else{
+                resultadoConsulta = {estado: 400, mensaje:MensajeCedula.CEDULA_INEXISTENTE};
+            }
+        }catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close();
+            }
+        } 
         return resultadoConsulta;
     }
 }
