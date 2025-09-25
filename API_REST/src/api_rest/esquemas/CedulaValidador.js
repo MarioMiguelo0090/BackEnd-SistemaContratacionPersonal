@@ -22,7 +22,8 @@ const CedulaEsquema = zod.object({
     FKIdResultado: zod.number().int().nullable().optional(),
     motivoCedulaInterna: zod.string().optional(),
     motivoCedulaResultados: zod.string().optional(),
-    puesto: zod.string().optional()
+    puesto: zod.string().optional(),
+    hermesNotificacion: zod.string().optional()
 });
 
 const ResultadoEsquema = zod.object({

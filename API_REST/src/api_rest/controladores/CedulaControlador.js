@@ -250,4 +250,39 @@ export class CedulaControlador
             });
         }
     }
+
+    ObtenerCedulaPorHermes = async (req,res) =>
+    {
+        try
+        {
+            const hermesNotificacion = req.body.hermesNotificacion;
+            const Datos =  {hermesNotificacion};
+            const ResultadoValidacion = ValidarEdicionParcialCedula(Datos);
+            if(ResultadoValidacion.success){
+                const ResultadoConsulta = await this.modeloCedula.ObtenerCedulaPorHermes({datos: ResultadoValidacion.data});
+                let resultadoConsulta = parseInt(ResultadoConsulta.estado);
+                res.status(resultadoConsulta).json({
+                    error: resultadoConsulta !== 200,
+                    estado: resultadoConsulta,
+                    ...(resultadoConsulta === 200
+                        ? {cedula: ResultadoConsulta.cedula}
+                        : {mensaje: ResultadoConsulta.mensaje}
+                    )
+                });
+            }else{
+                res.status(400).json({
+                    error: true,
+                    estado: 400,
+                    mensaje: 'Datos con formato inválido, por favor verifique los datos enviados.'
+                });
+            }
+        }catch(error){                      
+            logger({mensaje:error});
+            res.status(500).json({
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
+            });
+        }
+    }
 }

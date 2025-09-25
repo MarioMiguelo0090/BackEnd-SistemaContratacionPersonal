@@ -432,4 +432,36 @@ export class ModeloCedula
         } 
         return resultadoConsulta;
     }
+
+    static async ObtenerCedulaPorHermes({datos})
+    {
+        let resultadoConsulta;
+        let conexion;
+        try
+        {
+            conexion = await obtenerConexion();
+            const {hermesNotificacion} = datos;
+            const Solicitud = await conexion.request()
+            .input('hermesNotificacion',sql.VarChar(sql.MAX),hermesNotificacion)
+            .execute('sp_ObtenerCedulaPorHermesNotificacion');
+            const ResultadoQueryCedula = Solicitud.recordset;
+            if(ResultadoQueryCedula.length>0){
+                const cedulaConsultada=ResultadoQueryCedula[0];
+                if(cedulaConsultada.idCedula>0){
+                    resultadoConsulta = {estado: 200, cedula:ResultadoQueryCedula}
+                }else{
+                    resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
+                }
+            }else {
+                resultadoConsulta = { estado: 404, mensaje: MensajeCedula.CEDULA_INEXISTENTE};
+            }
+        }catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close(); 
+            }            
+        }    
+        return resultadoConsulta;    
+    }
 }
