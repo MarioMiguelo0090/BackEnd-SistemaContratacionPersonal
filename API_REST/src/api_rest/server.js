@@ -15,17 +15,13 @@ export const CrearServidor = ({ModeloAcceso,ModeloCatalogo,ModeloProcesoContrata
   app.use(json());
   app.use(CorsMiddleware());
   app.disable('x-powered-by');
-
-  // Rutas
   app.get('/rysuv', (req, res) => {
     res.json({ message: 'Bienvenido al servidor de RySUV' });
   });
   app.use('/rysuv/acceso', CrearRutaAcceso({ ModeloAcceso }));
   app.use('/rysuv/catalogo', CrearRutaCatalogo({ ModeloCatalogo }));
   app.use('/rysuv/procesoContratacion', CrearRutaProcesoContratacion({ ModeloProcesoContratacion }));
-  app.use('/rysuv/cedula', CrearRutaCedula({ ModeloCedula }));
-
-  // Manejo de errores CORS
+  app.use('/rysuv/cedula', CrearRutaCedula({ ModeloCedula }));  
   app.use((err, req, res, next) => {
     if (err.message === 'CORS Invalido') {
       return res.status(401).json({ error: 'No se puede enviar solicitudes ni recibir respuestas del servidor' });
@@ -33,16 +29,14 @@ export const CrearServidor = ({ModeloAcceso,ModeloCatalogo,ModeloProcesoContrata
     next(err);
   });
 
-  const PUERTO = process.env.PUERTO || 3000;
-
-  // ✅ Aquí ponemos HTTPS con certificado
+  const PUERTO = process.env.PUERTO || 3000;  
   const httpsOptions = {
-    key: fs.readFileSync('./ssl/server.key'),   // <- tu ruta al .key
-    cert: fs.readFileSync('./ssl/server.crt')   // <- tu ruta al .crt
+    key: fs.readFileSync('./ssl/server.key'),  
+    cert: fs.readFileSync('./ssl/server.crt')  
   };
 
   https.createServer(httpsOptions, app)
     .listen(PUERTO, () => {
-      console.log(`Servidor HTTPS activo en https://148.226.9.229:${PUERTO}`);
+      console.log(`Servidor HTTPS activo en https://localhost:${PUERTO}/rysuv`);
     });
 }

@@ -12,7 +12,8 @@ const conexionUsuario = {
     options:{
         encrypt: process.env.BD_ENCRIPTADO === 'true',
         trustServerCertificate: process.env.BD_CONFIAR_SERVIDOR === 'true'
-    }
+    },
+    requestTimeout: 60000
 };
 
 export async function obtenerConexion() {
