@@ -26,7 +26,10 @@ const CedulaEsquema = zod.object({
     hermesNotificacion: zod.string().optional(),
     competenciasSobresaliente: zod.string().optional(),
     descripcionDesarrollar: zod.string().optional(),
-    descripcionReforzar: zod.string().optional()
+    descripcionReforzar: zod.string().optional(),
+    plaza: zod.string().optional(),
+    oficioAutorizacionDeOcupacion: zod.string().optional(),
+    evaluacionConocimientos: zod.string().optional()
 });
 
 const ResultadoEsquema = zod.object({
