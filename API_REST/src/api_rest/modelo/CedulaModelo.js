@@ -1,6 +1,6 @@
 import sql from 'mssql';
+import { MensajeCedula, MensajeGeneralesBD, MensajeResultado } from '../utilidades/Constantes.js';
 import { obtenerConexion } from './conexion/ConfiguracionConexion.js';
-import { MensajeGeneralesBD,MensajeCedula, MensajeResultado } from '../utilidades/Constantes.js';
 
 export class ModeloCedula
 {
@@ -66,7 +66,7 @@ export class ModeloCedula
             .input('descripcionReforzar',sql.VarChar(sql.MAX),descripcionReforzar)
             .input('puesto', sql.VarChar(sql.MAX), puesto)
             .input('plaza',sql.VarChar(sql.MAX), plaza)
-            .input('oficioAutorizacionDeOcupacion',sql.VarChar,(sql.MAX),oficioAutorizacionDeOcupacion)
+            .input('oficioAutorizacionDeOcupacion',sql.VarChar(sql.MAX),oficioAutorizacionDeOcupacion)
             .input('evaluacionConocimientos',sql.VarChar(sql.MAX),evaluacionConocimientos)
             .execute('sp_RegistrarCedula');
             const ResultadoCedula = Solicitud.recordset;
@@ -164,7 +164,7 @@ export class ModeloCedula
             .input('descripcionReforzar',sql.VarChar(sql.MAX),descripcionReforzar)
             .input('puesto', sql.VarChar(sql.MAX), puesto)
             .input('plaza',sql.VarChar(sql.MAX), plaza)
-            .input('oficioAutorizacionDeOcupacion',sql.VarChar,(sql.MAX),oficioAutorizacionDeOcupacion)
+            .input('oficioAutorizacionDeOcupacion',sql.VarChar(sql.MAX),oficioAutorizacionDeOcupacion)
             .input('evaluacionConocimientos',sql.VarChar(sql.MAX),evaluacionConocimientos)
             .execute('sp_ActualizarCedula');
             const ResultadoSP = Solicitud.recordset[0]?.Resultado;

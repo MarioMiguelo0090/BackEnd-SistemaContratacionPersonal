@@ -1,4 +1,4 @@
-import { ValidarEdicionParcialCedula,ValidarEdicionParcialResultado } from "../esquemas/CedulaValidador.js";
+import { ValidarEdicionParcialCedula, ValidarEdicionParcialResultado } from "../esquemas/CedulaValidador.js";
 import { logger } from "../utilidades/logger.js";
 
 export class CedulaControlador
@@ -85,7 +85,7 @@ export class CedulaControlador
                         : {mensaje: ResultadoConsulta.mensaje}
                     )
                 });
-            }else{
+            }else{  
                 res.status(400).json({
                     error: true,
                     estado: 400,
