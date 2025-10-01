@@ -85,6 +85,7 @@ export class ProcesoContratacionControlador
                 fechaRevisionOfiEval,
                 observacionesAnalista,
                 consecutivoExpediente,
+                seguimientoEvaluacionDesempenio,
                 resultadoSeguimientoEvaluacionDesempenio,
                 FKIdAcceso}=req.body;
             const Datos = {
@@ -130,6 +131,7 @@ export class ProcesoContratacionControlador
                 fechaRevisionOfiEval,
                 observacionesAnalista,
                 consecutivoExpediente,
+                seguimientoEvaluacionDesempenio,
                 resultadoSeguimientoEvaluacionDesempenio,
                 FKIdAcceso };
             const ResultadoValidacion = ValidarEdicionParcialProcesoContratacion(Datos);

@@ -182,7 +182,8 @@ export class ModeloProcesoContratacion
                 observacionesAnalista,
                 consecutivoExpediente,
                 resultadoSeguimientoEvaluacionDesempenio,
-                FKIdAcceso
+                FKIdAcceso,
+                seguimientoEvaluacionDesempenio
             } = datos;
             const Solicitud = await conexion.request()
             .input('idProceso',sql.Int,idProceso)
@@ -227,6 +228,7 @@ export class ModeloProcesoContratacion
             .input('fechaRevisionOfiEval', sql.Date, fechaRevisionOfiEval)
             .input('observacionesAnalista', sql.VarChar(sql.MAX), observacionesAnalista)
             .input('consecutivoExpediente', sql.VarChar(10), consecutivoExpediente)
+            .input('seguimientoEvaluacionDesempenio', sql.Bit, seguimientoEvaluacionDesempenio ? 1:0)
             .input('resultadoSeguimientoEvaluacionDesempenio', sql.VarChar(10), resultadoSeguimientoEvaluacionDesempenio)
             .input('FKIdAcceso', sql.Int, FKIdAcceso)
             .execute('sp_ActualizarProcesoContratacion');
