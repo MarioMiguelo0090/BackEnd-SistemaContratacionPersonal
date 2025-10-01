@@ -61,13 +61,13 @@ export class ModeloCedula
             .input('FKIdResultado', sql.Int, FKIdResultado)
             .input('motivoCedulaInterna', sql.VarChar(sql.MAX), motivoCedulaInterna)
             .input('motivoCedulaResultados', sql.VarChar(sql.MAX), motivoCedulaResultados)
-            .input('competenciasSobresaliente',sql.VarChar(sql.MAX),competenciasSobresaliente)
-            .input('descripcionDesarrollar',sql.VarChar(sql.MAX),descripcionDesarrollar)
-            .input('descripcionReforzar',sql.VarChar(sql.MAX),descripcionReforzar)
+            .input('competenciasSobresaliente', sql.VarChar(sql.MAX), competenciasSobresaliente)
+            .input('descripcionDesarrollar', sql.VarChar(sql.MAX), descripcionDesarrollar)
+            .input('descripcionReforzar', sql.VarChar(sql.MAX), descripcionReforzar)
             .input('puesto', sql.VarChar(sql.MAX), puesto)
-            .input('plaza',sql.VarChar(sql.MAX), plaza)
-            .input('oficioAutorizacionDeOcupacion',sql.VarChar(sql.MAX),oficioAutorizacionDeOcupacion)
-            .input('evaluacionConocimientos',sql.VarChar(sql.MAX),evaluacionConocimientos)
+            .input('plaza', sql.VarChar(sql.MAX), plaza)
+            .input('oficioAutorizacionDeOcupacion', sql.VarChar(sql.MAX), oficioAutorizacionDeOcupacion)
+            .input('evaluacionConocimientos', sql.VarChar(sql.MAX), evaluacionConocimientos)
             .execute('sp_RegistrarCedula');
             const ResultadoCedula = Solicitud.recordset;
             if(ResultadoCedula.length>0){
@@ -135,7 +135,8 @@ export class ModeloCedula
                 descripcionReforzar,
                 plaza,
                 oficioAutorizacionDeOcupacion,
-                evaluacionConocimientos
+                evaluacionConocimientos,
+                estado,
             } = datos;
             const Solicitud = await conexion.request()
             .input('idCedula',sql.Int,idCedula)
@@ -160,12 +161,13 @@ export class ModeloCedula
             .input('motivoCedulaInterna', sql.VarChar(sql.MAX), motivoCedulaInterna)
             .input('motivoCedulaResultados', sql.VarChar(sql.MAX), motivoCedulaResultados)
             .input('competenciasSobresaliente',sql.VarChar(sql.MAX),competenciasSobresaliente)
-            .input('descripcionDesarrollar',sql.VarChar(sql.MAX),descripcionDesarrollar)
-            .input('descripcionReforzar',sql.VarChar(sql.MAX),descripcionReforzar)
+            .input('descripcionDesarrollar', sql.VarChar(sql.MAX), descripcionDesarrollar)
+            .input('descripcionReforzar', sql.VarChar(sql.MAX), descripcionReforzar)
             .input('puesto', sql.VarChar(sql.MAX), puesto)
-            .input('plaza',sql.VarChar(sql.MAX), plaza)
-            .input('oficioAutorizacionDeOcupacion',sql.VarChar(sql.MAX),oficioAutorizacionDeOcupacion)
-            .input('evaluacionConocimientos',sql.VarChar(sql.MAX),evaluacionConocimientos)
+            .input('plaza', sql.VarChar(sql.MAX), plaza)
+            .input('oficioAutorizacionDeOcupacion', sql.VarChar(sql.MAX), oficioAutorizacionDeOcupacion)
+            .input('evaluacionConocimientos', sql.VarChar(sql.MAX), evaluacionConocimientos)
+            .input('estado', sql.Bit, estado ? 1:0)
             .execute('sp_ActualizarCedula');
             const ResultadoSP = Solicitud.recordset[0]?.Resultado;
             if(ResultadoSP === 1){
