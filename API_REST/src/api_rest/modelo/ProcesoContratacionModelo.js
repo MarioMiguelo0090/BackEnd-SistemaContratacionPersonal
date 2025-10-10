@@ -35,6 +35,7 @@ export class ModeloProcesoContratacion
                 fechaLiberacionOficio,
                 periodoAutorizadoOficioInicio,
                 periodoAutorizadoOficioFin,
+                categoriaAutorizadaOficio,
                 observaciones,
                 numCarpeta,
                 nombreCandidato,
@@ -80,6 +81,7 @@ export class ModeloProcesoContratacion
             .input('fechaLiberacionOficio', sql.Date, fechaLiberacionOficio)
             .input('periodoAutorizadoOficioInicio', sql.Date, periodoAutorizadoOficioInicio)
             .input('periodoAutorizadoOficioFin', sql.Date, periodoAutorizadoOficioFin)
+            .input('categoriaAutorizadaOficio',sql.VarChar(sql.MAX), categoriaAutorizadaOficio)
             .input('observaciones', sql.VarChar(sql.MAX), observaciones)
             .input('numCarpeta', sql.VarChar(10), numCarpeta)
             .input('nombreCandidato', sql.VarChar(100), nombreCandidato)
@@ -163,6 +165,7 @@ export class ModeloProcesoContratacion
                 fechaLiberacionOficio,
                 periodoAutorizadoOficioInicio,
                 periodoAutorizadoOficioFin,
+                categoriaAutorizadaOficio,
                 observaciones,
                 numCarpeta,
                 nombreCandidato,
@@ -210,6 +213,7 @@ export class ModeloProcesoContratacion
             .input('fechaLiberacionOficio', sql.Date, fechaLiberacionOficio)
             .input('periodoAutorizadoOficioInicio', sql.Date, periodoAutorizadoOficioInicio)
             .input('periodoAutorizadoOficioFin', sql.Date, periodoAutorizadoOficioFin)
+            .input('categoriaAutorizadaOficio',sql.VarChar(sql.MAX),categoriaAutorizadaOficio)
             .input('observaciones', sql.VarChar(sql.MAX), observaciones)
             .input('numCarpeta', sql.VarChar(10), numCarpeta)
             .input('nombreCandidato', sql.VarChar(100), nombreCandidato)
