@@ -26,6 +26,7 @@ const ProcesoContratacionEsquema = zod.object({
     fechaLiberacionOficio: zod.string().optional(),
     periodoAutorizadoOficioInicio: zod.string().max(50).optional(),
     periodoAutorizadoOficioFin: zod.string().max(50).optional(),
+    categoriaAutorizadaOficio: zod.string().optional(),
     observaciones: zod.string().optional(),
     numCarpeta: zod.string().max(10).optional(),
     nombreCandidato: zod.string().max(100).optional(),
