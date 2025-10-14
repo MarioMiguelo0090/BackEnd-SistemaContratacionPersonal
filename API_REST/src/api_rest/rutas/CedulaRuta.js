@@ -12,6 +12,7 @@ export const CrearRutaCedula = ({ModeloCedula}) =>
     CedulaEnrutador.put('/:idCedula',ValidarJwt,ControladorCedulaEnrutador.EditarCedulaExistente);
     CedulaEnrutador.get('/busqueda/:FKIdProceso',ValidarJwt,ControladorCedulaEnrutador.ObtenerCedulaPorFKIdProceso);    
     CedulaEnrutador.get('/competencia/:FKIdClasificacionCedula',ValidarJwt,ControladorCedulaEnrutador.ObtenerCedulaPorFKIdClasificacionCedula);
+    CedulaEnrutador.get('/competencia-resultados/:IdProceso',ValidarJwt,ControladorCedulaEnrutador.ObtenerCedulaPorIdCedulaResultados);
     CedulaEnrutador.post('/resultado',ValidarJwt,ControladorCedulaEnrutador.RegistrarNuevoResultado);
     CedulaEnrutador.put('/resultado/:idResultado',ValidarJwt,ControladorCedulaEnrutador.EditarResultados);
     CedulaEnrutador.get('/resultado/busqueda/:FKIdCedula',ValidarJwt,ControladorCedulaEnrutador.ObtenerResultadosPorCedula);

@@ -137,6 +137,41 @@ export class CedulaControlador
         }
     }
 
+    ObtenerCedulaPorIdCedulaResultados = async (req,res) =>
+    {
+        try
+        {
+            const IdProceso = parseInt(req.params['IdProceso']);
+            const Datos = {IdProceso};
+            const ResultadoValidacion = ValidarEdicionParcialCedula(Datos);
+            if(ResultadoValidacion.success){
+                const ResultadoConsulta = await this.modeloCedula.ObtenerResultadosPorIdCedulaResultados(IdProceso);
+                let resultadoConsulta = parseInt(ResultadoConsulta.estado);
+                res.status(resultadoConsulta).json({
+                    error: resultadoConsulta !== 200,
+                    estado: resultadoConsulta,
+                    ...(resultadoConsulta === 200
+                        ? {resultados: ResultadoConsulta.resultados}
+                        : {mensaje: ResultadoConsulta.mensaje}
+                    )
+                });
+            }else{
+                res.status(400).json({
+                    error: true,
+                    estado: 400,
+                    mensaje: 'Datos con formato inválido, por favor verifique los datos enviados.'
+                });
+            }
+        }catch(error){    
+            logger({mensaje:error});                  
+            res.status(500).json({
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
+            });
+        }
+    }
+
     RegistrarNuevoResultado = async(req, res) =>
     {
         try
