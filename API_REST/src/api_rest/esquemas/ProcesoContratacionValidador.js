@@ -50,7 +50,8 @@ const ProcesoContratacionEsquema = zod.object({
     seguimientoEvaluacionDesempenio: zod.boolean().optional(),
     fechaEvaluacionDesempenio: zod.string().optional(),
     resultadoSeguimientoEvaluacionDesempenio: zod.string().max(10).optional(),
-    FKIdAcceso: zod.number().int().optional()
+    FKIdAcceso: zod.number().int().optional(),
+    autorizacion: zod.boolean().optional(),
 });
 
 export function ValidarEdicionParcialProcesoContratacion(entrada) {
