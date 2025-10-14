@@ -30,7 +30,8 @@ const CedulaEsquema = zod.object({
     plaza: zod.string().optional(),
     oficioAutorizacionDeOcupacion: zod.string().optional(),
     evaluacionConocimientos: zod.string().optional(),
-    estado: zod.boolean().optional()    
+    estado: zod.boolean().optional(),
+    idCedulaResultados: zod.number().int().optional()  
 });
 
 const ResultadoEsquema = zod.object({
@@ -52,6 +53,7 @@ const ResultadoEsquema = zod.object({
     psicometriaInnovacion: zod.number().nullable().optional(),
     psicometriaPensamientoEstrategico: zod.number().nullable().optional(),
     psicometriaNegociacion: zod.number().nullable().optional(),    
+    IdProceso: zod.number().int().optional()
 });
 
 export function ValidarEdicionParcialCedula(entrada) {

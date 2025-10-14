@@ -434,6 +434,37 @@ export class ModeloCedula
         return resultadoConsulta;
     }
 
+    static async ObtenerResultadosPorIdCedulaResultados(IdProceso)
+    {
+        let resultadoConsulta;
+        let conexion;
+        try
+        {
+            conexion = await obtenerConexion();            
+            const Solicitud = await conexion.request()
+            .input('IdProceso',sql.Int,IdProceso)
+            .execute('sp_ObtenerResultadoPorCedulaRelacionada');
+            const ResultadoQueryResultado = Solicitud.recordset;
+            if(ResultadoQueryResultado.length>0){
+                const resultadoConsultado=ResultadoQueryResultado[0];
+                if(resultadoConsultado.idResultado>0){
+                    resultadoConsulta = {estado: 200, resultados:ResultadoQueryResultado}
+                }else{
+                    resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
+                }
+            }else {
+                resultadoConsulta = { estado: 404, mensaje: MensajeResultado.RESULTADO_INEXISTENTE};
+            }
+        }catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close(); 
+            }            
+        }
+        return resultadoConsulta;
+    }
+
     static async ObtenerTodasCedulas()
     {
         let resultadoConsulta;
