@@ -53,7 +53,8 @@ const ResultadoEsquema = zod.object({
     psicometriaInnovacion: zod.number().nullable().optional(),
     psicometriaPensamientoEstrategico: zod.number().nullable().optional(),
     psicometriaNegociacion: zod.number().nullable().optional(),    
-    IdProceso: zod.number().int().optional()
+    IdProceso: zod.number().int().optional(),
+    resultadoPorcentaje: zod.number().int().optional(),
 });
 
 export function ValidarEdicionParcialCedula(entrada) {

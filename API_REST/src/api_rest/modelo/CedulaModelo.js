@@ -284,7 +284,8 @@ export class ModeloCedula
                 psicometriaDinamismo,
                 psicometriaInnovacion,
                 psicometriaPensamientoEstrategico,
-                psicometriaNegociacion
+                psicometriaNegociacion,
+                resultadoPorcentaje
             } = datos;
             const Solicitud = await conexion.request()
             .input('FKIdCedula', sql.Int, FKIdCedula)
@@ -304,6 +305,7 @@ export class ModeloCedula
             .input('psicometriaInnovacion', sql.Float, psicometriaInnovacion)
             .input('psicometriaPensamientoEstrategico', sql.Float, psicometriaPensamientoEstrategico)
             .input('psicometriaNegociacion', sql.Float, psicometriaNegociacion)
+            .input('resultadoPorcentaje', sql.Int,resultadoPorcentaje)
             .execute('sp_RegistrarResultado');
             const Resultado = Solicitud.recordset;
             if(Resultado.length>0){
