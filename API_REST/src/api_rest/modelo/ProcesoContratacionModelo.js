@@ -55,7 +55,8 @@ export class ModeloProcesoContratacion
                 observacionesAnalista,
                 consecutivoExpediente,
                 resultadoSeguimientoEvaluacionDesempenio,
-                FKIdAcceso
+                FKIdAcceso,
+                autorizacion,
             } = datos;            
             const Solicitud = await conexion.request()
             .input('folio', sql.VarChar(sql.MAX), folio)
@@ -102,6 +103,7 @@ export class ModeloProcesoContratacion
             .input('consecutivoExpediente', sql.VarChar(10), consecutivoExpediente)
             .input('resultadoSeguimientoEvaluacionDesempenio', sql.VarChar(10), resultadoSeguimientoEvaluacionDesempenio)
             .input('FKIdAcceso', sql.Int, FKIdAcceso)
+            .input('autorizacion', sql.Bit, autorizacion)
             .execute('sp_RegistrarProcesoContratacion');
             const ResultadoProcesoContratacion = Solicitud.recordset;
             if(ResultadoProcesoContratacion.length>0){
