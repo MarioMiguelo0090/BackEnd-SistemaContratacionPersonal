@@ -7,7 +7,7 @@ const ProcesoContratacionEsquema = zod.object({
     numPlaza: zod.string().max(10).optional(),
     fechaRecibido: zod.string().optional(), 
     fechaEntrevista: zod.string().optional(),
-    resultadoEvaluacionConocimiento: zod.string().max(6).optional(),
+    resultadoEvaluacionConocimiento: zod.string().optional(),
     fechaEnvioDEyDP: zod.string().optional(),
     fechaNotificacion: zod.string().optional(),
     categoriaPuestoOrigen: zod.string().max(50).optional(),
@@ -52,6 +52,8 @@ const ProcesoContratacionEsquema = zod.object({
     resultadoSeguimientoEvaluacionDesempenio: zod.string().max(10).optional(),
     FKIdAcceso: zod.number().int().optional(),
     autorizacion: zod.boolean().optional(),
+    educacionFormal: zod.string().optional(),
+    avaladoPor: zod.string().optional(),
 });
 
 export function ValidarEdicionParcialProcesoContratacion(entrada) {

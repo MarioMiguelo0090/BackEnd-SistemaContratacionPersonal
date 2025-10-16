@@ -63,7 +63,7 @@ export class ModeloProcesoContratacion
             .input('numPlaza', sql.VarChar(10), numPlaza)
             .input('fechaRecibido', sql.Date, fechaRecibido)
             .input('fechaEntrevista', sql.Date, fechaEntrevista)
-            .input('resultadoEvaluacionConocimiento', sql.VarChar(6), resultadoEvaluacionConocimiento)
+            .input('resultadoEvaluacionConocimiento', sql.VarChar(sql.MAX), resultadoEvaluacionConocimiento)
             .input('fechaEnvioDEyDP', sql.Date, fechaEnvioDEyDP)
             .input('fechaNotificacion', sql.Date, fechaNotificacion)
             .input('categoriaPuestoOrigen', sql.VarChar(50), categoriaPuestoOrigen)
@@ -188,7 +188,9 @@ export class ModeloProcesoContratacion
                 consecutivoExpediente,
                 resultadoSeguimientoEvaluacionDesempenio,
                 FKIdAcceso,
-                seguimientoEvaluacionDesempenio
+                seguimientoEvaluacionDesempenio,
+                educacionFormal,
+                avaladoPor,
             } = datos;
             const Solicitud = await conexion.request()
             .input('idProceso',sql.Int,idProceso)
@@ -196,7 +198,7 @@ export class ModeloProcesoContratacion
             .input('numPlaza', sql.VarChar(10), numPlaza)
             .input('fechaRecibido', sql.Date, fechaRecibido)
             .input('fechaEntrevista', sql.Date, fechaEntrevista)
-            .input('resultadoEvaluacionConocimiento', sql.VarChar(6), resultadoEvaluacionConocimiento)
+            .input('resultadoEvaluacionConocimiento', sql.VarChar(sql.MAX), resultadoEvaluacionConocimiento)
             .input('fechaEnvioDEyDP', sql.Date, fechaEnvioDEyDP)
             .input('fechaNotificacion', sql.Date, fechaNotificacion)
             .input('categoriaPuestoOrigen', sql.VarChar(50), categoriaPuestoOrigen)
@@ -237,6 +239,8 @@ export class ModeloProcesoContratacion
             .input('seguimientoEvaluacionDesempenio', sql.Bit, seguimientoEvaluacionDesempenio ? 1:0)
             .input('resultadoSeguimientoEvaluacionDesempenio', sql.VarChar(10), resultadoSeguimientoEvaluacionDesempenio)
             .input('FKIdAcceso', sql.Int, FKIdAcceso)
+            .input('educacionFormal',sql.VarChar(sql.MAX),educacionFormal)
+            .input('avaladoPor',sql.VarChar(sql.MAX), avaladoPor)            
             .execute('sp_ActualizarProcesoContratacion');
             const ResultadoSP = Solicitud.recordset[0]?.Resultado;
             if (ResultadoSP === 1) {
