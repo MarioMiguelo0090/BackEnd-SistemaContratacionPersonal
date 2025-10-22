@@ -57,6 +57,16 @@ const ProcesoContratacionEsquema = zod.object({
     fechaAsignacionAnalista: zod.string().optional(),
 });
 
+const ControlVersionEsquema = zod.object({
+    FKIdProceso: zod.number().int().optional(),
+    nombreCompleto: zod.string().optional(),
+    jsonDatos: zod.string().optional(),
+});
+
 export function ValidarEdicionParcialProcesoContratacion(entrada) {
     return ProcesoContratacionEsquema.partial().safeParse(entrada);
+}
+
+export function ValidarEdicionParcialControlVersiones(entrada){
+    return ControlVersionEsquema.partial().safeParse(entrada);
 }
