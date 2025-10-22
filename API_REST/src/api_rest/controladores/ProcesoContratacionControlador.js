@@ -88,7 +88,10 @@ export class ProcesoContratacionControlador
                 consecutivoExpediente,
                 seguimientoEvaluacionDesempenio,
                 resultadoSeguimientoEvaluacionDesempenio,
-                FKIdAcceso}=req.body;
+                FKIdAcceso,
+                educacionFormal,
+                avaladoPor,
+                fechaAsignacionAnalista,}=req.body;
             const Datos = {
                 idProceso,
                 folio,
@@ -135,7 +138,10 @@ export class ProcesoContratacionControlador
                 consecutivoExpediente,
                 seguimientoEvaluacionDesempenio,
                 resultadoSeguimientoEvaluacionDesempenio,
-                FKIdAcceso };
+                FKIdAcceso,
+                educacionFormal,
+                avaladoPor,
+                fechaAsignacionAnalista };
             const ResultadoValidacion = ValidarEdicionParcialProcesoContratacion(Datos);
             if(ResultadoValidacion.success){
                 const ResultadoEdicion = await this.modeloProcesoContratacion.EditarProcesoContratacion({datos: ResultadoValidacion.data});
