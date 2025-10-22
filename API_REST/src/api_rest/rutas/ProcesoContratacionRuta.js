@@ -13,5 +13,6 @@ export const CrearRutaProcesoContratacion = ({ModeloProcesoContratacion}) =>
     ProcesoContratacionEnrutador.post('/busqueda',ValidarJwt,ControladorProcesoContratacionEnrutador.ObtenerProcesoContratacionPorFolioHermes);
     ProcesoContratacionEnrutador.get('/busqueda/:FKIdAcceso',ValidarJwt,ControladorProcesoContratacionEnrutador.ObtenerProcesoPorFKIdAcceso);
     ProcesoContratacionEnrutador.get('/busqueda/estado/:FKIdEstadoProcesoContratacion',ValidarJwt,ControladorProcesoContratacionEnrutador.ObtenerProcesosPorFKIdEstado);
+    ProcesoContratacionEnrutador.get('/estadistica/:FKIdAcceso',ControladorProcesoContratacionEnrutador.ObtenerDatosAnalistaParaEstadistica);
     return ProcesoContratacionEnrutador;
 }

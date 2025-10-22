@@ -415,5 +415,32 @@ export class ModeloProcesoContratacion
         } 
         return resultadoConsulta;
     }
+
+    static async ObtenerDatosAnalistaParaEstadistica({datos})
+    {
+        let resultadoConsulta;
+        let conexion;
+        try
+        {
+            conexion = await obtenerConexion();
+            const {FKIdAcceso} = datos;
+            const Solicitud = await conexion.request()
+            .input('FKIdAcceso',sql.Int,FKIdAcceso)
+            .execute('sp_ObtenerProcesosPorIdAccesoParaEstadistica');
+            const evaluacionesAnalista = Solicitud.recordset;
+            if(evaluacionesAnalista.length > 0){
+                resultadoConsulta = {estado: 200, evaluacionesAnalista};
+            }else{
+                resultadoConsulta = {estado: 400, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE};
+            }
+        }catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close();
+            }
+        } 
+        return resultadoConsulta;
+    }
     
 }
