@@ -483,4 +483,35 @@ export class ModeloProcesoContratacion
         }
         return resultadoInsercion;
     }
+    
+    static async ObtenerControlVersionesPorFKIdProceso(FKIdProceso)
+    {
+        let resultadoConsulta;
+        let conexion;
+        try
+        {
+            conexion = await obtenerConexion();            
+            const Solicitud = await conexion.request()
+            .input('FKIdProceso',sql.Int,FKIdProceso)
+            .execute('sp_ObtenerControlVersionPorProceso');
+            const ControlVersionQueryResultado = Solicitud.recordset;
+            if(ControlVersionQueryResultado.length>0){
+                const controlVersion=ControlVersionQueryResultado[0];
+                if(controlVersion.idControlVersion>0){
+                    resultadoConsulta = {estado: 200, controlesVersiones:ControlVersionQueryResultado}
+                }else{
+                    resultadoConsulta = { estado: 500, mensaje: controlVersion.mensajeError || MensajeGeneralesBD.ERROR_DB };
+                }
+            }else {
+                resultadoConsulta = { estado: 404, mensaje: MensajeResultado.RESULTADO_INEXISTENTE};
+            }
+        }catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close(); 
+            }            
+        }
+        return resultadoConsulta;
+    }
 }
