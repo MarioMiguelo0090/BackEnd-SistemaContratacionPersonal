@@ -424,4 +424,32 @@ export class ProcesoContratacionControlador
             });
         }
     }
+
+    EliminarSolicitudPorIdProceso = async (req, res) => {
+        try {
+            const idProceso = parseInt(req.params['idProceso']);
+            if (isNaN(idProceso)) {
+                return res.status(400).json({
+                    error: true,
+                    estado: 400,
+                    mensaje: 'El idProceso enviado no es válido.'
+                });
+            }
+            const ResultadoEliminacion = await this.modeloProcesoContratacion.EliminarProcesoContratacionPorIdProceso(idProceso);
+            const estadoRespuesta = parseInt(ResultadoEliminacion.estado);
+            res.status(estadoRespuesta).json({
+                error: estadoRespuesta !== 200,
+                estado: estadoRespuesta,
+                mensaje: ResultadoEliminacion.mensaje
+            });
+        } catch (error) {
+            logger({ mensaje: error });
+            res.status(500).json({
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
+            });
+        }
+    }
+
 }
