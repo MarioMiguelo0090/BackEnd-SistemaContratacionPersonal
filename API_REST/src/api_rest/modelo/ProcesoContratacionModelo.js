@@ -269,18 +269,17 @@ export class ModeloProcesoContratacion
         return resultadoEdicion;   
     }
 
-    static async ObtenerProcesoContratacionPorFolioHermesNotificacion({datos})
+    static async ObtenerProcesoContratacionPorIdProceso({datos})
     {
         let resultadoConsulta;
         let conexion;
         try
         {
             conexion = await obtenerConexion();
-            const {folio,hermesNotificacion} = datos;
+            const {idProceso} = datos;
             const Solicitud = await conexion.request()
-            .input('folio',sql.VarChar,folio)
-            .input('hermesNotificacion',sql.VarChar,hermesNotificacion)
-            .execute('sp_ObtenerProcesoPorFolioHermes');
+            .input('idProceso',sql.Int,idProceso)            
+            .execute('sp_ObtenerProcesoPorIdProceso');
             const ResultadoQueryProceso = Solicitud.recordset;
             if(ResultadoQueryProceso.length > 0){
                 const procesoContratacionConsultado = ResultadoQueryProceso[0];
@@ -443,4 +442,76 @@ export class ModeloProcesoContratacion
         return resultadoConsulta;
     }
     
+    static async RegistrarControlVersion({datos})
+    {
+        let resultadoInsercion;
+        let conexion;
+        try
+        {
+            conexion = await obtenerConexion();
+            const{
+                FKIdProceso,
+                nombreCompleto,
+                jsonDatos,                
+            } = datos;            
+            const Solicitud = await conexion.request()
+            .input('FKIdProceso', sql.Int, FKIdProceso)
+            .input('nombreCompleto', sql.VarChar(sql.MAX), nombreCompleto)
+            .input('jsonDatos', sql.VarChar(sql.MAX), jsonDatos)            
+            .execute('sp_RegistrarControlVersion');
+            const ResultadoRegistroControlVersion = Solicitud.recordset;
+            if(ResultadoRegistroControlVersion.length>0){
+                const ControlVersion = ResultadoRegistroControlVersion[0];
+                if(ControlVersion.idControlVersion>0){
+                    resultadoInsercion = {
+                        ...MensajeProcesoContratacion.REGISTRO_EXITOSO,
+                        estado:MensajeProcesoContratacion.REGISTRO_EXITOSO.resultado
+                    };                
+                }else{    
+                    resultadoInsercion = {
+                        ...MensajeGeneralesBD.ERROR_DB,
+                        estado: MensajeGeneralesBD.ERROR_DB.resultado
+                    };
+                }
+            }
+        }catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close(); 
+            }
+        }
+        return resultadoInsercion;
+    }
+    
+    static async ObtenerControlVersionesPorFKIdProceso(FKIdProceso)
+    {
+        let resultadoConsulta;
+        let conexion;
+        try
+        {
+            conexion = await obtenerConexion();            
+            const Solicitud = await conexion.request()
+            .input('FKIdProceso',sql.Int,FKIdProceso)
+            .execute('sp_ObtenerControlVersionPorProceso');
+            const ControlVersionQueryResultado = Solicitud.recordset;
+            if(ControlVersionQueryResultado.length>0){
+                const controlVersion=ControlVersionQueryResultado[0];
+                if(controlVersion.idControlVersion>0){
+                    resultadoConsulta = {estado: 200, controlesVersiones:ControlVersionQueryResultado}
+                }else{
+                    resultadoConsulta = { estado: 500, mensaje: controlVersion.mensajeError || MensajeGeneralesBD.ERROR_DB };
+                }
+            }else {
+                resultadoConsulta = { estado: 404, mensaje: MensajeResultado.RESULTADO_INEXISTENTE};
+            }
+        }catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close(); 
+            }            
+        }
+        return resultadoConsulta;
+    }
 }
