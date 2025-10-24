@@ -143,18 +143,26 @@ export class ProcesoContratacionControlador
                 avaladoPor,
                 fechaAsignacionAnalista };
             const ResultadoValidacion = ValidarEdicionParcialProcesoContratacion(Datos);
-            if(ResultadoValidacion.success){
-                const ResultadoEdicion = await this.modeloProcesoContratacion.EditarProcesoContratacion({datos: ResultadoValidacion.data});
+            if (ResultadoValidacion.success) {
+                const ResultadoEdicion = await this.modeloProcesoContratacion.EditarProcesoContratacion({ datos: ResultadoValidacion.data });
                 res.status(ResultadoEdicion.estado).json({
                     error: ResultadoEdicion.estado !== 200,
                     estado: ResultadoEdicion.estado,
                     mensaje: ResultadoEdicion.mensaje
                 });
-            }else{
+            } else {
+                let errores = [];
+                if (ResultadoValidacion.error?.errors) {
+                    errores = ResultadoValidacion.error.errors.map(e => ({
+                        campo: e.path.join('.'),
+                        mensaje: e.message
+                    }));
+                }
                 res.status(400).json({
                     error: true,
                     estado: 400,
-                    mensaje: 'Datos con formato inválido, por favor verifique los datos enviados.'
+                    mensaje: 'Algunos campos contienen errores.',
+                    detalles: errores
                 });
             }
         }
