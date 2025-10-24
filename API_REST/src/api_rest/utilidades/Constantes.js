@@ -19,7 +19,8 @@ export const MensajeProcesoContratacion = {
     REGISTRO_EXITOSO: { resultado: 200, mensaje: "Registro exitoso" }, 
     REGISTRO_DUPLICADO: {resultado: 400, mensaje: "El registro que intenta realizar ya existe en el sistema"},   
     ACTUALIZACION_EXITOSA: {resultado:200, mensaje: "Los datos han sido actualizados correctamente"},
-    PROCESO_INEXISTENTE: {resultado: 404, mensaje: "El proceso no fue encontrado"}
+    PROCESO_INEXISTENTE: {resultado: 404, mensaje: "El proceso no fue encontrado"},
+    ELIMINACION_EXITOSA: {resultado: 200, mensaje: "Eliminación exitosa"},
 };
 
 export const MensajeCedula = {

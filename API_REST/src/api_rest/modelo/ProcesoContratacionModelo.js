@@ -514,4 +514,39 @@ export class ModeloProcesoContratacion
         }
         return resultadoConsulta;
     }
+
+    static async EliminarProcesoContratacionPorIdProceso(idProceso) {
+        let resultadoEliminacion;
+        let conexion;
+        try {
+            conexion = await obtenerConexion();
+            const Solicitud = await conexion.request()
+            .input('idProceso', sql.Int, idProceso)
+            .execute('sp_EliminarProcesoContratacion');
+            const registro = Solicitud.recordset[0];
+            if(registro.idProceso>0){
+                resultadoEliminacion = {
+                    estado: 200,
+                    mensaje: MensajeProcesoContratacion.ELIMINACION_EXITOSA
+                };
+            }else if (registro.idProceso === -1) {                
+                resultadoEliminacion = {
+                    estado: 500,
+                    mensaje: MensajeGeneralesBD.ERROR_DB
+                };                                              
+            } else {  
+                resultadoEliminacion = {
+                    estado: 404,
+                    mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE
+                };                
+            }
+        } catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close();
+            }
+        }
+        return resultadoEliminacion;
+    }
 }
