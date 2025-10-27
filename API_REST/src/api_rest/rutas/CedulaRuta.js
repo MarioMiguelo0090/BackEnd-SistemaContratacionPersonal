@@ -7,8 +7,7 @@ export const CrearRutaCedula = ({ModeloCedula}) =>
     const CedulaEnrutador = Router();
     const ControladorCedulaEnrutador = new CedulaControlador({ModeloCedula});
     CedulaEnrutador.post('/',ValidarJwt,ControladorCedulaEnrutador.InsertarNuevaCedula);
-    CedulaEnrutador.get('/obtencionCedulas',ValidarJwt,ControladorCedulaEnrutador.ObtenerTodasLasCedulas);
-    CedulaEnrutador.post('/obtencionCedulaInterna',ValidarJwt,ControladorCedulaEnrutador.ObtenerCedulaPorHermes);
+    CedulaEnrutador.get('/obtencionCedulas',ValidarJwt,ControladorCedulaEnrutador.ObtenerTodasLasCedulas);    
     CedulaEnrutador.put('/:idCedula',ValidarJwt,ControladorCedulaEnrutador.EditarCedulaExistente);
     CedulaEnrutador.get('/busqueda/:FKIdProceso',ValidarJwt,ControladorCedulaEnrutador.ObtenerCedulaPorFKIdProceso);    
     CedulaEnrutador.get('/competencia/:FKIdClasificacionCedula',ValidarJwt,ControladorCedulaEnrutador.ObtenerCedulaPorFKIdClasificacionCedula);

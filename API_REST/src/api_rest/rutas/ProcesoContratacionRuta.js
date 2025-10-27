@@ -10,8 +10,12 @@ export const CrearRutaProcesoContratacion = ({ModeloProcesoContratacion}) =>
     ProcesoContratacionEnrutador.get('/noBeneficiados',ValidarJwt,ControladorProcesoContratacionEnrutador.ObtenerTodosNoBeneficiados);
     ProcesoContratacionEnrutador.get('/busqueda/procesos/',ValidarJwt,ControladorProcesoContratacionEnrutador.ObtenerProcesosContratacion);
     ProcesoContratacionEnrutador.put('/:idProceso',ValidarJwt,ControladorProcesoContratacionEnrutador.EditarProcesoContratacionExistente);
-    ProcesoContratacionEnrutador.post('/busqueda',ValidarJwt,ControladorProcesoContratacionEnrutador.ObtenerProcesoContratacionPorFolioHermes);
+    ProcesoContratacionEnrutador.post('/busqueda',ValidarJwt,ControladorProcesoContratacionEnrutador.ObtenerProcesoContratacionPorIdProceso);
     ProcesoContratacionEnrutador.get('/busqueda/:FKIdAcceso',ValidarJwt,ControladorProcesoContratacionEnrutador.ObtenerProcesoPorFKIdAcceso);
     ProcesoContratacionEnrutador.get('/busqueda/estado/:FKIdEstadoProcesoContratacion',ValidarJwt,ControladorProcesoContratacionEnrutador.ObtenerProcesosPorFKIdEstado);
+    ProcesoContratacionEnrutador.get('/estadistica/:FKIdAcceso',ValidarJwt,ControladorProcesoContratacionEnrutador.ObtenerDatosAnalistaParaEstadistica);
+    ProcesoContratacionEnrutador.post('/control-version',ValidarJwt,ControladorProcesoContratacionEnrutador.RegistrarControlVersionNuevo);
+    ProcesoContratacionEnrutador.get('/busqueda/control-version/:FKIdProceso',ValidarJwt,ControladorProcesoContratacionEnrutador.ObtenerRegistrosControlVersionesPorFKIdProceso);
+    ProcesoContratacionEnrutador.delete('/eliminacion/:idProceso',ValidarJwt,ControladorProcesoContratacionEnrutador.EliminarSolicitudPorIdProceso);
     return ProcesoContratacionEnrutador;
 }

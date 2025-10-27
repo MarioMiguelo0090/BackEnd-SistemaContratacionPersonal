@@ -1,4 +1,4 @@
-import { ValidarEdicionParcialProcesoContratacion } from "../esquemas/ProcesoContratacionValidador.js";
+import { ValidarEdicionParcialControlVersiones, ValidarEdicionParcialProcesoContratacion } from "../esquemas/ProcesoContratacionValidador.js";
 import { logger } from "../utilidades/logger.js";
 
 export class ProcesoContratacionControlador 
@@ -143,18 +143,26 @@ export class ProcesoContratacionControlador
                 avaladoPor,
                 fechaAsignacionAnalista };
             const ResultadoValidacion = ValidarEdicionParcialProcesoContratacion(Datos);
-            if(ResultadoValidacion.success){
-                const ResultadoEdicion = await this.modeloProcesoContratacion.EditarProcesoContratacion({datos: ResultadoValidacion.data});
+            if (ResultadoValidacion.success) {
+                const ResultadoEdicion = await this.modeloProcesoContratacion.EditarProcesoContratacion({ datos: ResultadoValidacion.data });
                 res.status(ResultadoEdicion.estado).json({
                     error: ResultadoEdicion.estado !== 200,
                     estado: ResultadoEdicion.estado,
                     mensaje: ResultadoEdicion.mensaje
                 });
-            }else{
+            } else {
+                let errores = [];
+                if (ResultadoValidacion.error?.errors) {
+                    errores = ResultadoValidacion.error.errors.map(e => ({
+                        campo: e.path.join('.'),
+                        mensaje: e.message
+                    }));
+                }
                 res.status(400).json({
                     error: true,
                     estado: 400,
-                    mensaje: 'Datos con formato inválido, por favor verifique los datos enviados.'
+                    mensaje: 'Algunos campos contienen errores.',
+                    detalles: errores
                 });
             }
         }
@@ -169,15 +177,15 @@ export class ProcesoContratacionControlador
         }       
     }
 
-    ObtenerProcesoContratacionPorFolioHermes = async (req,res) =>
+    ObtenerProcesoContratacionPorIdProceso = async (req,res) =>
     {
         try
         {
-            const {folio, hermesNotificacion} = req.body;
-            const Datos = {folio,hermesNotificacion};
+            const {idProceso} = req.body;
+            const Datos = {idProceso};
             const ResultadoValidacion = ValidarEdicionParcialProcesoContratacion(Datos);
             if(ResultadoValidacion.success){
-                const ResultadoConsulta = await this.modeloProcesoContratacion.ObtenerProcesoContratacionPorFolioHermesNotificacion({datos: ResultadoValidacion.data});
+                const ResultadoConsulta = await this.modeloProcesoContratacion.ObtenerProcesoContratacionPorIdProceso({datos: ResultadoValidacion.data});
                 let resultadoConsulta = parseInt(ResultadoConsulta.estado);
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !== 200,
@@ -322,6 +330,134 @@ export class ProcesoContratacionControlador
                 mensaje: "Ha ocurrido un error en el servidor"
             });
         }
-
     }
+
+    ObtenerDatosAnalistaParaEstadistica = async(req,res) =>
+    {
+        try
+        {
+            const FKIdAcceso = parseInt(req.params['FKIdAcceso']);
+            const Datos = {FKIdAcceso};
+            const ResultadoValidacion = ValidarEdicionParcialProcesoContratacion(Datos);
+            if(ResultadoValidacion.success){
+                const ResultadoConsulta = await this.modeloProcesoContratacion.ObtenerDatosAnalistaParaEstadistica({datos: ResultadoValidacion.data});
+                let resultadoConsulta = parseInt(ResultadoConsulta.estado);
+                res.status(resultadoConsulta).json({
+                    error: resultadoConsulta !== 200,
+                    estado: resultadoConsulta,
+                    ...(resultadoConsulta === 200
+                        ? {evaluacionesAnalista: ResultadoConsulta.evaluacionesAnalista}
+                        : {mensaje: ResultadoConsulta.mensaje}
+                    )
+                });
+            }else{
+                res.status(400).json({
+                    error: true,
+                    estado: 400,
+                    mensaje: 'Datos con formato inválido, por favor verifique los datos enviados.'
+                });
+            }
+        }catch(error){  
+            logger({mensaje:error});              
+            res.status(500).json({
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
+            });
+        }
+    }
+
+    RegistrarControlVersionNuevo = async (req,res) =>
+    {
+        try
+        {
+            const ResultadoValidacion = ValidarEdicionParcialControlVersiones(req.body);
+            if(ResultadoValidacion.success){
+                const ResultadoInsercion = await this.modeloProcesoContratacion.RegistrarControlVersion({datos: ResultadoValidacion.data});                
+                res.status(ResultadoInsercion.estado).json({
+                    error: ResultadoInsercion.estado !== 200,
+                    estado: ResultadoInsercion.estado,
+                    mensaje: ResultadoInsercion.mensaje
+                });
+            }else {
+                res.status(400).json({
+                    error: true,
+                    estado: 400,
+                    mensaje: 'Datos con formato inválido, por favor verifique los datos enviados.'
+                });
+            }
+        }
+        catch(error)
+        {
+            logger({mensaje:error});
+            res.status(500).json({
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
+            });
+        }
+    }
+
+    ObtenerRegistrosControlVersionesPorFKIdProceso = async(req,res) =>
+    {
+        try
+        {
+            const FKIdProceso = parseInt(req.params['FKIdProceso']);
+            const Datos = {FKIdProceso};
+            const ResultadoValidacion = ValidarEdicionParcialControlVersiones(Datos);
+            if(ResultadoValidacion.success){
+                const ResultadoConsulta = await this.modeloProcesoContratacion.ObtenerControlVersionesPorFKIdProceso(FKIdProceso);
+                let resultadoConsulta = parseInt(ResultadoConsulta.estado);
+                res.status(resultadoConsulta).json({
+                    error: resultadoConsulta !== 200,
+                    estado: resultadoConsulta,
+                    ...(resultadoConsulta === 200
+                        ? {controlesVersiones: ResultadoConsulta.controlesVersiones}
+                        : {mensaje: ResultadoConsulta.mensaje}
+                    )
+                });
+            }else{
+                res.status(400).json({
+                    error: true,
+                    estado: 400,
+                    mensaje: 'Datos con formato inválido, por favor verifique los datos enviados.'
+                });
+            }
+        }catch(error){    
+            logger({mensaje:error});                  
+            res.status(500).json({
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
+            });
+        }
+    }
+
+    EliminarSolicitudPorIdProceso = async (req, res) => {
+        try {
+            const idProceso = parseInt(req.params['idProceso']);
+            if (isNaN(idProceso)) {
+                return res.status(400).json({
+                    error: true,
+                    estado: 400,
+                    mensaje: 'El idProceso enviado no es válido.'
+                });
+            }
+            const ResultadoEliminacion = await this.modeloProcesoContratacion.EliminarProcesoContratacionPorIdProceso(idProceso);
+            const estadoRespuesta = parseInt(ResultadoEliminacion.estado);
+            res.status(estadoRespuesta).json({
+                error: estadoRespuesta !== 200,
+                estado: estadoRespuesta,
+                mensaje: ResultadoEliminacion.mensaje
+            });
+        } catch (error) {
+            logger({ mensaje: error });
+            res.status(500).json({
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
+            });
+        }
+    }
+
 }
