@@ -310,4 +310,33 @@ export class CedulaControlador
             });
         }
     }
+
+    InsertarNuevaCedulaExterna = async (req,res) =>
+    {
+        try
+        {
+            const ResultadoValidacion = ValidarEdicionParcialCedula(req.body);
+            if(ResultadoValidacion.success){
+                const ResultadoInsercion = await this.modeloCedula.InsertarCedulaExterna({datos: ResultadoValidacion.data});
+                res.status(ResultadoInsercion.estado).json({
+                    error: ResultadoInsercion.estado !== 200,
+                    estado: ResultadoInsercion.estado,
+                    mensaje: ResultadoInsercion.mensaje
+                });
+            }else {
+                res.status(400).json({
+                    error: true,
+                    estado: 400,
+                    mensaje: 'Datos con formato inválido, por favor verifique los datos enviados.'
+                });
+            }
+        }catch(error){     
+            logger({mensaje:error});                 
+            res.status(500).json({
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
+            });
+        }  
+    }
 }
