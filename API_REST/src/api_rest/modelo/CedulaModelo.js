@@ -38,7 +38,9 @@ export class ModeloCedula
                 descripcionReforzar,
                 plaza,
                 oficioAutorizacionDeOcupacion,
-                evaluacionConocimientos
+                evaluacionConocimientos,
+                aprobadoJefeOficina,
+                aprobadoDireccion,
             } = datos;
             const Solicitud = await conexion.request()
             .input('FKIdTipoCedula', sql.Int, FKIdTipoCedula)
@@ -68,6 +70,8 @@ export class ModeloCedula
             .input('plaza', sql.VarChar(sql.MAX), plaza)
             .input('oficioAutorizacionDeOcupacion', sql.VarChar(sql.MAX), oficioAutorizacionDeOcupacion)
             .input('evaluacionConocimientos', sql.VarChar(sql.MAX), evaluacionConocimientos)
+            .input('aprobadoJefeOficina', sql.Bit, aprobadoJefeOficina ? 1:0)
+            .input('aprobadoDireccion',sql.Bit, aprobadoDireccion ? 1:0)
             .execute('sp_RegistrarCedula');
             const ResultadoCedula = Solicitud.recordset;
             if(ResultadoCedula.length>0){
