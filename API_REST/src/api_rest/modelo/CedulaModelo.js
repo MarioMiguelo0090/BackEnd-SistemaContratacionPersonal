@@ -495,4 +495,29 @@ export class ModeloCedula
         } 
         return resultadoConsulta;
     }    
+
+    static async ObtenerCedulasActivas()
+    {
+        let resultadoConsulta;
+        let conexion;
+        try
+        {
+            conexion = await obtenerConexion();
+            const Solicitud = await conexion.request()
+            .execute('sp_ObtenerCedulasActivas');
+            const cedulas = Solicitud.recordset;
+            if(cedulas.length > 0){
+                resultadoConsulta = {estado: 200, cedulas};
+            }else{
+                resultadoConsulta = {estado: 400, mensaje:MensajeCedula.CEDULA_INEXISTENTE};
+            }
+        }catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close();
+            }
+        } 
+        return resultadoConsulta;
+    } 
 }
