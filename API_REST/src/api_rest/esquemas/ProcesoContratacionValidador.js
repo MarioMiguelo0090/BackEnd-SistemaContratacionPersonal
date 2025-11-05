@@ -55,6 +55,7 @@ const ProcesoContratacionEsquema = z.object({
     educacionFormal: z.string({message:"El campo eduación formal debe ser un texto válido"}).optional(),
     avaladoPor: z.string({message:"El campo avalado debe ser un texto válido"}).optional(),
     fechaAsignacionAnalista: z.string("La fecha de asignación de analista no tiene un formato válido").optional(),
+    capacitado: z.boolean().optional(),
 });
 
 const ControlVersionEsquema = z.object({

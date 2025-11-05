@@ -191,7 +191,8 @@ export class ModeloProcesoContratacion
                 seguimientoEvaluacionDesempenio,
                 educacionFormal,
                 avaladoPor,
-                fechaAsignacionAnalista,                
+                fechaAsignacionAnalista,
+                capacitado,                
             } = datos;
             const Solicitud = await conexion.request()
             .input('idProceso',sql.Int,idProceso)
@@ -242,7 +243,8 @@ export class ModeloProcesoContratacion
             .input('FKIdAcceso', sql.Int, FKIdAcceso)
             .input('educacionFormal',sql.VarChar(sql.MAX),educacionFormal)
             .input('avaladoPor',sql.VarChar(sql.MAX), avaladoPor)    
-            .input('fechaAsignacionAnalista',sql.Date,fechaAsignacionAnalista)        
+            .input('fechaAsignacionAnalista',sql.Date,fechaAsignacionAnalista)  
+            .input('capacitado', sql.Bit, capacitado ? 1 : 0)      
             .execute('sp_ActualizarProcesoContratacion');
             const ResultadoSP = Solicitud.recordset[0]?.Resultado;
             if (ResultadoSP === 1) {

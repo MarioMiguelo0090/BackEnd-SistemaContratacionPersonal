@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import express, { json } from 'express';
+import express, { json, urlencoded  } from 'express';
 import fs from 'fs';
 import https from 'https';
 import { CorsMiddleware } from './middlewares/cors.js';
@@ -12,7 +12,10 @@ export const CrearServidor = ({ModeloAcceso,ModeloCatalogo,ModeloProcesoContrata
 {
   dotenv.config();
   const app = express();
-  app.use(json());
+  
+  app.use(json({ limit: '50mb' }));
+  app.use(urlencoded({ limit: '50mb', extended: true }));
+
   app.use(CorsMiddleware());
   app.disable('x-powered-by');
   app.get('/rysuv', (req, res) => {

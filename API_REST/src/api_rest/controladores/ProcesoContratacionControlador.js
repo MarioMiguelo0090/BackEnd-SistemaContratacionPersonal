@@ -91,7 +91,8 @@ export class ProcesoContratacionControlador
                 FKIdAcceso,
                 educacionFormal,
                 avaladoPor,
-                fechaAsignacionAnalista,}=req.body;
+                fechaAsignacionAnalista,
+                capacitado,}=req.body;
             const Datos = {
                 idProceso,
                 folio,
@@ -141,7 +142,8 @@ export class ProcesoContratacionControlador
                 FKIdAcceso,
                 educacionFormal,
                 avaladoPor,
-                fechaAsignacionAnalista };
+                fechaAsignacionAnalista,
+                capacitado };
             const ResultadoValidacion = ValidarEdicionParcialProcesoContratacion(Datos);
             if (ResultadoValidacion.success) {
                 const ResultadoEdicion = await this.modeloProcesoContratacion.EditarProcesoContratacion({ datos: ResultadoValidacion.data });

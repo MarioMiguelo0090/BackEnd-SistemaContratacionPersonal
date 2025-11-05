@@ -520,4 +520,49 @@ export class ModeloCedula
         } 
         return resultadoConsulta;
     } 
+
+    static async InsertarCedulaExterna({datos})
+    {
+        let resultadoInsercion;
+        let conexion;        
+        try
+        {
+            conexion = await obtenerConexion();
+            const {
+                FKIdCedula,
+                nombre,
+                archivo
+            } = datos;
+            const fechaSubida = new Date(); 
+            const bufferArchivo = Buffer.from(archivo, 'base64');
+            const Solicitud = await conexion.request()
+            .input('FKIdCedula', sql.Int, FKIdCedula)
+            .input('nombre',sql.VarChar(sql.MAX), nombre)
+            .input('archivo',sql.VarBinary(sql.MAX),bufferArchivo)
+            .input('fechaSubida',sql.DateTime,fechaSubida)
+            .execute('sp_InsertarDocumentoCedulaExterna');
+            const Resultado = Solicitud.recordset;
+            if(Resultado.length>0){
+                const Registro = Resultado[0];
+                if(Registro.Codigo > 0){
+                    resultadoInsercion ={
+                        ...MensajeCedula.REGISTRO_EXITOSO,
+                        estado: MensajeCedula.REGISTRO_EXITOSO.resultado
+                    };
+                }else{
+                    resultadoInsercion = {
+                        ...MensajeGeneralesBD.ERROR_DB,
+                        estado: MensajeGeneralesBD.ERROR_DB.resultado
+                    };
+                }
+            }
+        }catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close(); 
+            }            
+        }
+        return resultadoInsercion;
+    }
 }
