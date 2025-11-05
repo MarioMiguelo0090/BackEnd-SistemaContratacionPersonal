@@ -16,5 +16,7 @@ export const CrearRutaCedula = ({ModeloCedula}) =>
     CedulaEnrutador.put('/resultado/:idResultado',ValidarJwt,ControladorCedulaEnrutador.EditarResultados);
     CedulaEnrutador.get('/resultado/busqueda/:FKIdCedula',ValidarJwt,ControladorCedulaEnrutador.ObtenerResultadosPorCedula);
     CedulaEnrutador.get('/activas',ValidarJwt,ControladorCedulaEnrutador.ObtenerCedulasActivasServicio);
+    CedulaEnrutador.post('/externa',ValidarJwt,ControladorCedulaEnrutador.InsertarNuevaCedulaExterna);
+    CedulaEnrutador.get('/externa/:FKIdCedula',ControladorCedulaEnrutador.ObtenerCedulaExternaPorIdCedula);
     return CedulaEnrutador;
 }

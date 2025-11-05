@@ -310,4 +310,68 @@ export class CedulaControlador
             });
         }
     }
+
+    InsertarNuevaCedulaExterna = async (req,res) =>
+    {
+        try
+        {
+            const ResultadoValidacion = ValidarEdicionParcialCedula(req.body);
+            if(ResultadoValidacion.success){
+                const ResultadoInsercion = await this.modeloCedula.InsertarCedulaExterna({datos: ResultadoValidacion.data});
+                res.status(ResultadoInsercion.estado).json({
+                    error: ResultadoInsercion.estado !== 200,
+                    estado: ResultadoInsercion.estado,
+                    mensaje: ResultadoInsercion.mensaje
+                });
+            }else {
+                res.status(400).json({
+                    error: true,
+                    estado: 400,
+                    mensaje: 'Datos con formato inválido, por favor verifique los datos enviados.'
+                });
+            }
+        }catch(error){     
+            logger({mensaje:error});                 
+            res.status(500).json({
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
+            });
+        }  
+    }
+
+    ObtenerCedulaExternaPorIdCedula = async(req,res) =>
+    {
+        try
+        {
+            const FKIdCedula = parseInt(req.params['FKIdCedula']);
+            const Datos = {FKIdCedula};
+            const ResultadoValidacion = ValidarEdicionParcialCedula(Datos);
+            if(ResultadoValidacion.success){
+                const ResultadoConsulta = await this.modeloCedula.ObtenerCedulaExternaPorFKIdCedula(FKIdCedula);
+                let resultadoConsulta = parseInt(ResultadoConsulta.estado);
+                res.status(resultadoConsulta).json({
+                    error: resultadoConsulta !== 200,
+                    estado: resultadoConsulta,
+                    ...(resultadoConsulta === 200
+                        ? {documento: ResultadoConsulta.documento}
+                        : {mensaje: ResultadoConsulta.mensaje}
+                    )
+                });
+            }else{
+                res.status(400).json({
+                    error: true,
+                    estado: 400,
+                    mensaje: 'Datos con formato inválido, por favor verifique los datos enviados.'
+                });
+            }
+        }catch(error){    
+            logger({mensaje:error});                  
+            res.status(500).json({
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
+            });
+        }
+    }
 }

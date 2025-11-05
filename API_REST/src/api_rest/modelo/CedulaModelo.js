@@ -41,6 +41,7 @@ export class ModeloCedula
                 evaluacionConocimientos,
                 aprobadoJefeOficina,
                 aprobadoDireccion,
+                archivoAdjunto,
             } = datos;
             const Solicitud = await conexion.request()
             .input('FKIdTipoCedula', sql.Int, FKIdTipoCedula)
@@ -72,6 +73,7 @@ export class ModeloCedula
             .input('evaluacionConocimientos', sql.VarChar(sql.MAX), evaluacionConocimientos)
             .input('aprobadoJefeOficina', sql.Bit, aprobadoJefeOficina ? 1:0)
             .input('aprobadoDireccion',sql.Bit, aprobadoDireccion ? 1:0)
+            .input('archivoAdjunto',sql.Bit,archivoAdjunto ? 1:0)
             .execute('sp_RegistrarCedula');
             const ResultadoCedula = Solicitud.recordset;
             if(ResultadoCedula.length>0){
@@ -520,4 +522,90 @@ export class ModeloCedula
         } 
         return resultadoConsulta;
     } 
+
+    static async InsertarCedulaExterna({datos})
+    {
+        let resultadoInsercion;
+        let conexion;        
+        try
+        {
+            conexion = await obtenerConexion();
+            const {
+                FKIdCedula,
+                nombre,
+                archivo
+            } = datos;
+            const fechaSubida = new Date(); 
+            const bufferArchivo = Buffer.from(archivo, 'base64');
+            const Solicitud = await conexion.request()
+            .input('FKIdCedula', sql.Int, FKIdCedula)
+            .input('nombre',sql.VarChar(sql.MAX), nombre)
+            .input('archivo',sql.VarBinary(sql.MAX),bufferArchivo)
+            .input('fechaSubida',sql.DateTime,fechaSubida)
+            .execute('sp_InsertarDocumentoCedulaExterna');
+            const Resultado = Solicitud.recordset;
+            if(Resultado.length>0){
+                const Registro = Resultado[0];
+                if(Registro.Codigo > 0){
+                    resultadoInsercion ={
+                        ...MensajeCedula.REGISTRO_EXITOSO,
+                        estado: MensajeCedula.REGISTRO_EXITOSO.resultado
+                    };
+                }else{
+                    resultadoInsercion = {
+                        ...MensajeGeneralesBD.ERROR_DB,
+                        estado: MensajeGeneralesBD.ERROR_DB.resultado
+                    };
+                }
+            }
+        }catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close(); 
+            }            
+        }
+        return resultadoInsercion;
+    }
+
+    static async ObtenerCedulaExternaPorFKIdCedula(FKIdCedula)
+    {
+        let resultadoConsulta;
+        let conexion;
+        try
+        {
+            conexion = await obtenerConexion();            
+            const Solicitud = await conexion.request()
+            .input('FKIdCedula',sql.Int,FKIdCedula)
+            .execute('sp_ObtenerDocumentoExternoPorCedula');
+            const documentos = Solicitud.recordset;
+            if(documentos.length>0){
+                const documentoConsultado=documentos[0];
+                if(documentoConsultado.idDocumento>0){
+                    const base64Archivo = documentoConsultado.archivo.toString('base64');
+                    resultadoConsulta = {
+                        estado: 200,
+                        documento: {
+                            idDocumento: documentoConsultado.idDocumento,
+                            FKIdCedula: documentoConsultado.FKIdCedula,
+                            nombre: documentoConsultado.nombre,
+                            fechaSubida: documentoConsultado.fechaSubida,
+                            archivo: base64Archivo 
+                        }
+                    };
+                }else{
+                    resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
+                }
+            }else {
+                resultadoConsulta = { estado: 404, mensaje: MensajeCedula.CEDULA_INEXISTENTE};
+            }
+        }catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close(); 
+            }            
+        }
+        return resultadoConsulta;
+    }
 }

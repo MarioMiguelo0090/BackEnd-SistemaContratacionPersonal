@@ -1,4 +1,4 @@
-import zod from 'zod';
+import zod, { optional } from 'zod';
 
 const CedulaEsquema = zod.object({
     idCedula: zod.number().int().optional(),
@@ -34,6 +34,15 @@ const CedulaEsquema = zod.object({
     idCedulaResultados: zod.number().int().optional(),
     aprobadoJefeOficina: zod.boolean().optional(),  
     aprobadoDireccion: zod.boolean().optional(),  
+    archivoAdjunto: zod.boolean().optional(),
+    FKIdCedula: zod.number().int().optional(),
+    nombre: zod.string().optional(),
+    archivo: zod
+    .string()
+    .refine(
+        (val) => /^[A-Za-z0-9+/=]+$/.test(val),
+        { message: "El archivo debe ser una cadena Base64 válida" }
+    )
 });
 
 const ResultadoEsquema = zod.object({
