@@ -34,6 +34,7 @@ const CedulaEsquema = zod.object({
     idCedulaResultados: zod.number().int().optional(),
     aprobadoJefeOficina: zod.boolean().optional(),  
     aprobadoDireccion: zod.boolean().optional(),  
+    archivoAdjunto: zod.boolean().optional(),
     FKIdCedula: zod.number().int().optional(),
     nombre: zod.string().optional(),
     archivo: zod
