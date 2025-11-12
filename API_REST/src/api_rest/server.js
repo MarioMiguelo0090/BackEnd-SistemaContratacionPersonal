@@ -7,6 +7,7 @@ import { CrearRutaAcceso } from './rutas/AccesoRuta.js';
 import { CrearRutaCatalogo } from './rutas/CatalogoRuta.js';
 import { CrearRutaCedula } from './rutas/CedulaRuta.js';
 import { CrearRutaProcesoContratacion } from './rutas/ProcesoContratacionRuta.js';
+import { setupSwagger } from './utilidades/swagger.js';
 
 export const CrearServidor = ({ModeloAcceso,ModeloCatalogo,ModeloProcesoContratacion,ModeloCedula}) => 
 {
@@ -18,6 +19,7 @@ export const CrearServidor = ({ModeloAcceso,ModeloCatalogo,ModeloProcesoContrata
 
   app.use(CorsMiddleware());
   app.disable('x-powered-by');
+  setupSwagger(app);
   app.get('/rysuv', (req, res) => {
     res.json({ message: 'Bienvenido al servidor de RySUV' });
   });
