@@ -741,7 +741,7 @@
  * @swagger
  * /rysuv/procesoContratacion/busqueda:
  *   post:
- *     summary: Obtener un proceso de contratación por su ID de proceso
+ *     summary: Obtener un proceso de contratación por sus criterios de búsqueda
  *     tags: [ProcesoContratacion]
  *     security:
  *       - bearerAuth: []
@@ -760,210 +760,104 @@
  *                 type: string
  *                 format: date
  *               fechaEntrevista:
- *                  type: string
- *                  format: date
- *               resultadoEvaluacionConocimiento:
- *                   type: string
- *               fechaEnvioDEyDP:
- *                   type: string
- *                   format: date
- *               fechaNotificacion:
- *                   type: string
- *                   format: date
- *               categoriaPuestoOrigen:
- *                   type: string
- *               diasProceso:
- *                   type: string
- *               beneficiado:
- *                   type: boolean
- *               FKIdTipoProceso:
- *                   type: integer
- *               FKIdTipoPersonal:
- *                   type: integer
- *               FKIdEstadoProcesoContratacion:
- *                   type: integer
- *               FKIdTemporalDefinitiva:
- *                   type: integer
- *               FKIdDependencia:
- *                   type: integer
- *               hermesNotificacion:
- *                   type: string
- *               titularPlaza:
- *                   type: string
- *               lineamientoOficioContinuidad:
- *                   type: string
- *               motivo:
- *                   type: string
- *               fechaElaboracionPropuesta:
- *                   type: string
- *                   format: date
- *               fechaLiberacionOficio:
- *                   type: string
- *                   format: date
- *               periodoAutorizadoOficioInicio:
- *                   type: string
- *                   format: date
- *               periodoAutorizadoOficioFin:
- *                   type: string
- *                   format: date
- *               observaciones:
- *                   type: string
- *               numCarpeta:
- *                   type: string
- *               nombreCandidato:
- *                   type: string
- *               funcionDesempeniar:
- *                   type: string
- *               familiaFuncional:
- *                   type: string
- *               fechaEvaluacionCompetencias:
- *                   type: string
- *                   format: date
- *               fechaInicioProcesamiento:
- *                   type: string
- *                   format: date
- *               resultadoEvaluacionCompetencias:
- *                   type: string
- *               experienciaLaboralSolicitada:
- *                   type: string
- *               resultadoReferenciasLaborales:
- *                   type: string
- *               fechaEnvioEvaluacionDesempenio:
- *                   type: string
- *                   format: date
- *               fechaEntregaEvaluacionDesempenio:
- *                   type: string
- *                   format: date
- *               resultadoEvaluacionDesempenio:
- *                   type: string
- *               resultadoHabilidadesWord:
- *                   type: string
- *               resultadoHabilidadesExcel:
- *                   type: string
- *               resultadoOrtografia:
- *                   type: string
- *               resultadoProcesoEvaluacion:
- *                   type: string
- *               fechaRevisionOfiEval:
- *                   type: string
- *                   format: date
- *               observacionesAnalista:
- *                   type: string
- *               consecutivoExpediente:
- *                   type: string
- *               seguimientoEvaluacionDesempenio:
- *                   type: boolean
- *               fechaEvaluacionDesempenio:
- *                   type: string
- *                   format: date
- *               resultadoSeguimientoEvaluacionDesempenio:
- *                   type: string
- *               folio:
- *                 type: string
- *               numPlaza:
- *                 type: string
- *               fechaRecibido:
  *                 type: string
  *                 format: date
- *               fechaEntrevista:
- *                  type: string
- *                  format: date
  *               resultadoEvaluacionConocimiento:
- *                   type: string
+ *                 type: string
  *               fechaEnvioDEyDP:
- *                   type: string
- *                   format: date
+ *                 type: string
+ *                 format: date
  *               fechaNotificacion:
- *                   type: string
- *                   format: date
+ *                 type: string
+ *                 format: date
  *               categoriaPuestoOrigen:
- *                   type: string
+ *                 type: string
  *               diasProceso:
- *                   type: string
+ *                 type: string
  *               beneficiado:
- *                   type: boolean
+ *                 type: boolean
  *               FKIdTipoProceso:
- *                   type: integer
+ *                 type: integer
  *               FKIdTipoPersonal:
- *                   type: integer
+ *                 type: integer
  *               FKIdEstadoProcesoContratacion:
- *                   type: integer
+ *                 type: integer
  *               FKIdTemporalDefinitiva:
- *                   type: integer
+ *                 type: integer
  *               FKIdDependencia:
- *                   type: integer
+ *                 type: integer
  *               hermesNotificacion:
- *                   type: string
+ *                 type: string
  *               titularPlaza:
- *                   type: string
+ *                 type: string
  *               lineamientoOficioContinuidad:
- *                   type: string
+ *                 type: string
  *               motivo:
- *                   type: string
+ *                 type: string
  *               fechaElaboracionPropuesta:
- *                   type: string
- *                   format: date
+ *                 type: string
+ *                 format: date
  *               fechaLiberacionOficio:
- *                   type: string
- *                   format: date
+ *                 type: string
+ *                 format: date
  *               periodoAutorizadoOficioInicio:
- *                   type: string
- *                   format: date
+ *                 type: string
+ *                 format: date
  *               periodoAutorizadoOficioFin:
- *                   type: string
- *                   format: date
+ *                 type: string
+ *                 format: date
  *               observaciones:
- *                   type: string
+ *                 type: string
  *               numCarpeta:
- *                   type: string
+ *                 type: string
  *               nombreCandidato:
- *                   type: string
+ *                 type: string
  *               funcionDesempeniar:
- *                   type: string
+ *                 type: string
  *               familiaFuncional:
- *                   type: string
+ *                 type: string
  *               fechaEvaluacionCompetencias:
- *                   type: string
- *                   format: date
+ *                 type: string
+ *                 format: date
  *               fechaInicioProcesamiento:
- *                   type: string
- *                   format: date
+ *                 type: string
+ *                 format: date
  *               resultadoEvaluacionCompetencias:
- *                   type: string
+ *                 type: string
  *               experienciaLaboralSolicitada:
- *                   type: string
+ *                 type: string
  *               resultadoReferenciasLaborales:
- *                   type: string
+ *                 type: string
  *               fechaEnvioEvaluacionDesempenio:
- *                   type: string
- *                   format: date
+ *                 type: string
+ *                 format: date
  *               fechaEntregaEvaluacionDesempenio:
- *                   type: string
- *                   format: date
+ *                 type: string
+ *                 format: date
  *               resultadoEvaluacionDesempenio:
- *                   type: string
+ *                 type: string
  *               resultadoHabilidadesWord:
- *                   type: string
+ *                 type: string
  *               resultadoHabilidadesExcel:
- *                   type: string
+ *                 type: string
  *               resultadoOrtografia:
- *                   type: string
+ *                 type: string
  *               resultadoProcesoEvaluacion:
- *                   type: string
+ *                 type: string
  *               fechaRevisionOfiEval:
- *                   type: string
- *                   format: date
+ *                 type: string
+ *                 format: date
  *               observacionesAnalista:
- *                   type: string
+ *                 type: string
  *               consecutivoExpediente:
- *                   type: string
+ *                 type: string
  *               seguimientoEvaluacionDesempenio:
- *                   type: boolean
+ *                 type: boolean
  *               fechaEvaluacionDesempenio:
- *                   type: string
- *                   format: date
+ *                 type: string
+ *                 format: date
  *               resultadoSeguimientoEvaluacionDesempenio:
- *                   type: string
+ *                 type: string
  *             example:
  *               folio: "1183"
  *               numPlaza: "50002"
@@ -1016,11 +910,14 @@
  *         description: Proceso de contratación obtenido correctamente.
  *       404:
  *         description: No se encontró el proceso.
+ *       400:
+ *         description: Datos con formato inválido.
  *       401:
- *         description: Token JWT no válido o ausente.
+ *         description: Token inválido o ausente.
  *       500:
  *         description: Error de base de datos.
  */
+
 
 /**
  * @swagger
@@ -1037,112 +934,6 @@
  *           schema:
  *             type: object
  *             properties:
- *               folio:
- *                 type: string
- *               numPlaza:
- *                 type: string
- *               fechaRecibido:
- *                 type: string
- *                 format: date
- *               fechaEntrevista:
- *                  type: string
- *                  format: date
- *               resultadoEvaluacionConocimiento:
- *                   type: string
- *               fechaEnvioDEyDP:
- *                   type: string
- *                   format: date
- *               fechaNotificacion:
- *                   type: string
- *                   format: date
- *               categoriaPuestoOrigen:
- *                   type: string
- *               diasProceso:
- *                   type: string
- *               beneficiado:
- *                   type: boolean
- *               FKIdTipoProceso:
- *                   type: integer
- *               FKIdTipoPersonal:
- *                   type: integer
- *               FKIdEstadoProcesoContratacion:
- *                   type: integer
- *               FKIdTemporalDefinitiva:
- *                   type: integer
- *               FKIdDependencia:
- *                   type: integer
- *               hermesNotificacion:
- *                   type: string
- *               titularPlaza:
- *                   type: string
- *               lineamientoOficioContinuidad:
- *                   type: string
- *               motivo:
- *                   type: string
- *               fechaElaboracionPropuesta:
- *                   type: string
- *                   format: date
- *               fechaLiberacionOficio:
- *                   type: string
- *                   format: date
- *               periodoAutorizadoOficioInicio:
- *                   type: string
- *                   format: date
- *               periodoAutorizadoOficioFin:
- *                   type: string
- *                   format: date
- *               observaciones:
- *                   type: string
- *               numCarpeta:
- *                   type: string
- *               nombreCandidato:
- *                   type: string
- *               funcionDesempeniar:
- *                   type: string
- *               familiaFuncional:
- *                   type: string
- *               fechaEvaluacionCompetencias:
- *                   type: string
- *                   format: date
- *               fechaInicioProcesamiento:
- *                   type: string
- *                   format: date
- *               resultadoEvaluacionCompetencias:
- *                   type: string
- *               experienciaLaboralSolicitada:
- *                   type: string
- *               resultadoReferenciasLaborales:
- *                   type: string
- *               fechaEnvioEvaluacionDesempenio:
- *                   type: string
- *                   format: date
- *               fechaEntregaEvaluacionDesempenio:
- *                   type: string
- *                   format: date
- *               resultadoEvaluacionDesempenio:
- *                   type: string
- *               resultadoHabilidadesWord:
- *                   type: string
- *               resultadoHabilidadesExcel:
- *                   type: string
- *               resultadoOrtografia:
- *                   type: string
- *               resultadoProcesoEvaluacion:
- *                   type: string
- *               fechaRevisionOfiEval:
- *                   type: string
- *                   format: date
- *               observacionesAnalista:
- *                   type: string
- *               consecutivoExpediente:
- *                   type: string
- *               seguimientoEvaluacionDesempenio:
- *                   type: boolean
- *               fechaEvaluacionDesempenio:
- *                   type: string
- *                   format: date
- *               resultadoSeguimientoEvaluacionDesempenio:
- *                   type: string
  *               folio:
  *                 type: string
  *               numPlaza:

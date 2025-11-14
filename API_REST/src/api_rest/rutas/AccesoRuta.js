@@ -7,7 +7,7 @@
 
 /**
  * @swagger
-* /rysuv/acceso/login:
+ * /rysuv/acceso/login:
  *   post:
  *     summary: Iniciar sesión en el sistema
  *     tags: [Acceso]
@@ -27,13 +27,34 @@
  *     responses:
  *       200:
  *         description: Sesión iniciada correctamente (retorna un JWT)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               example:
+ *                 error: false
+ *                 estado: 200
+ *                 mensaje:
+ *                   resultado: 200
+ *                   mensaje: "Login exitoso"
+ *                 usuario:
+ *                   Resultado: 0
+ *                   idAcceso: 1
+ *                   usuario: "Administrador"
+ *                   FKidTipoAcceso: 1
+ *                   nombre: "Administrador"
+ *                   primerApellido: "Administrador"
+ *                   segundoApellido: null
+ *                   estado: true
+ *                 token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiQWRtaW5pc3RyYWRvciIsImlhdCI6MTc2MzEzMzYxOCwiZXhwIjoxNzYzMTc2ODE4fQ.WRB0goQT7iO_0I2UVEjeX33nVfb2xM2vGFh0FVItfP0"
  *       404:
  *         description: Credenciales inválidas
  *       401:
- *          description: Usuario inactivo
+ *         description: Usuario inactivo
  *       400:
- *          description: Datos con formato inválido
+ *         description: Datos con formato inválido
  */
+
 
 /**
  * @swagger
@@ -69,7 +90,7 @@
  *                  type: string
  *                  example: Huescas
  *     responses:
- *       201:
+ *       200:
  *         description: Usuario registrado exitosamente
  *       400:
  *         description: Usuario duplicado en el sistema
@@ -90,11 +111,38 @@
  *     responses:
  *       200:
  *         description: Lista de usuarios obtenida correctamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               example:
+ *                 error: false
+ *                 estado: 200
+ *                 usuarios:
+ *                   - idAcceso: 1
+ *                     usuario: "Administrador"
+ *                     contrasenia: "ebc2fd5163d9bd7e9a3dc8d13262cabb7ab5776bd5e6189b1fd8a6eaacdffd6d"
+ *                     FKIdTipoAcceso: 1
+ *                     nombre: "Administrador"
+ *                     primerApellido: "Administrador"
+ *                     segundoApellido: null
+ *                     estado: true
+ *                   - idAcceso: 2
+ *                     usuario: "Guadalupe"
+ *                     contrasenia: "70e1c95500b2ea352f4756f7114e8254b57ebe80a0b036e9d9d964a673b45654"
+ *                     FKIdTipoAcceso: 4
+ *                     nombre: "María Guadalupe"
+ *                     primerApellido: "Vázquez"
+ *                     segundoApellido: "Castillo"
+ *                     estado: true
  *       400:
  *         description: Usuarios no encontrados
  *       401:
  *         description: Token inválido o no proporcionado.
+ *       500:
+ *         description: Error de base de datos.
  */
+
 
 
 /**
@@ -212,6 +260,22 @@
  *     responses:
  *       200:
  *         description: Usuario encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               example:
+ *                 error: false
+ *                 estado: 200
+ *                 usuario:
+ *                   - idAcceso: 5
+ *                     usuario: "Fernanda"
+ *                     contrasenia: "1607bbe6f3b6a147523e4f3f0dc2d464e7d58a02d1f18c7ed1f726cd11084b75"
+ *                     FKidTipoAcceso: 2
+ *                     nombre: "María Fernanda"
+ *                     primerApellido: "Gómez"
+ *                     segundoApellido: "Cuevas"
+ *                     estado: true
  *       400:
  *         description: Datos con formato inválido
  *       401:
@@ -221,6 +285,7 @@
  *       500:
  *         description: Error de base de datos
  */
+
 
 /**
  * @swagger
