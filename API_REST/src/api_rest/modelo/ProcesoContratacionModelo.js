@@ -192,7 +192,9 @@ export class ModeloProcesoContratacion
                 educacionFormal,
                 avaladoPor,
                 fechaAsignacionAnalista,
-                capacitado,                
+                capacitado,  
+                citaVirtual,
+                atendioCita,              
             } = datos;
             const Solicitud = await conexion.request()
             .input('idProceso',sql.Int,idProceso)
@@ -245,6 +247,8 @@ export class ModeloProcesoContratacion
             .input('avaladoPor',sql.VarChar(sql.MAX), avaladoPor)    
             .input('fechaAsignacionAnalista',sql.Date,fechaAsignacionAnalista)  
             .input('capacitado', sql.Bit, capacitado ? 1 : 0)      
+            .input('citaVirtual', sql.Bit, citaVirtual ? 1 : 0)
+            .input('atendioCita', sql.Bit, atendioCita ? 1 : 0)
             .execute('sp_ActualizarProcesoContratacion');
             const ResultadoSP = Solicitud.recordset[0]?.Resultado;
             if (ResultadoSP === 1) {

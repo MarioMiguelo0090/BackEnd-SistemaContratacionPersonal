@@ -92,7 +92,9 @@ export class ProcesoContratacionControlador
                 educacionFormal,
                 avaladoPor,
                 fechaAsignacionAnalista,
-                capacitado,}=req.body;
+                capacitado,
+                citaVirtual,
+                atendioCita,}=req.body;
             const Datos = {
                 idProceso,
                 folio,
@@ -143,7 +145,9 @@ export class ProcesoContratacionControlador
                 educacionFormal,
                 avaladoPor,
                 fechaAsignacionAnalista,
-                capacitado };
+                capacitado,
+                citaVirtual,
+                atendioCita };
             const ResultadoValidacion = ValidarEdicionParcialProcesoContratacion(Datos);
             if (ResultadoValidacion.success) {
                 const ResultadoEdicion = await this.modeloProcesoContratacion.EditarProcesoContratacion({ datos: ResultadoValidacion.data });
