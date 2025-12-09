@@ -555,4 +555,86 @@ export class ModeloProcesoContratacion
         }
         return resultadoEliminacion;
     }
+
+    static async RegistrarActualizarOficio({datos}){
+        let resultadoInsercion;
+        let conexion;
+        try{
+            conexion = await obtenerConexion();
+            const {
+                idOficio,
+                FKIdProcesoContratacion,
+                folio,
+                fecha,
+                dirigido,
+                puestoDirigido,
+                machote,
+                piePagina,
+                tipo,
+            } = datos;
+            const Solicitud = await conexion.request()
+            .input('idOficio', sql.Int, idOficio)
+            .input('FKIdProcesoContratacion', sql.Int,FKIdProcesoContratacion)
+            .input('folio',sql.VarChar(sql.MAX),folio)
+            .input('fecha',sql.VarChar(sql.MAX),fecha)
+            .input('dirigido',sql.VarChar(sql.MAX),dirigido)
+            .input('puestoDirigido', sql.VarChar(sql.MAX),puestoDirigido)
+            .input('machote',sql.VarChar(sql.MAX),machote)
+            .input('piePagina',sql.VarChar(sql.MAX),piePagina)
+            .input('tipo',sql.VarChar(sql.MAX),tipo)
+            .execute('sp_GuardarOficioConProceso');
+            const Resultado = Solicitud.recordset;
+            if(Resultado.length>0){
+                const Registro = Resultado[0];
+                if(Registro.Resultado > 0){
+                    resultadoInsercion ={
+                        ...MensajeProcesoContratacion.REGISTRO_EXITOSO,
+                        estado:MensajeProcesoContratacion.REGISTRO_EXITOSO.resultado
+                    };
+                }else{
+                    resultadoInsercion = {
+                        ...MensajeGeneralesBD.ERROR_DB,
+                        estado: MensajeGeneralesBD.ERROR_DB.resultado
+                    };
+                }
+            }
+        }catch (error){
+            throw error;
+        }finally {
+            if(conexion){
+                conexion.close();
+            }
+        }
+        return resultadoInsercion;
+    }
+
+    static async ObtenerOficiosPorIdProceso(FKIdProcesoContratacion)
+    {
+        let resultadoConsulta;
+        let conexion;
+        try{
+            conexion = await obtenerConexion();
+            const Solicitud = await conexion.request()
+            .input('FKIdProcesoContratacion',sql.Int,FKIdProcesoContratacion)
+            .execute('sp_ObtenerOficiosPorProceso');
+            const ResultadoQueryResultado = Solicitud.recordset;
+            if(ResultadoQueryResultado.length>0){
+                const resultadoConsultado=ResultadoQueryResultado[0];
+                if(resultadoConsultado.Resultado>0){
+                    resultadoConsulta = {estado: 200, oficios:ResultadoQueryResultado}
+                }else{
+                    resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
+                }
+            }else {
+                resultadoConsulta = { estado: 404, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE};
+            }
+        }catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close(); 
+            }            
+        }
+        return resultadoConsulta;
+    }
 }
