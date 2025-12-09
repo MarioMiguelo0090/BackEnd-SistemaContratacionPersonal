@@ -1550,5 +1550,7 @@ export const CrearRutaProcesoContratacion = ({ModeloProcesoContratacion}) =>
     ProcesoContratacionEnrutador.post('/control-version',ValidarJwt,ControladorProcesoContratacionEnrutador.RegistrarControlVersionNuevo);
     ProcesoContratacionEnrutador.get('/busqueda/control-version/:FKIdProceso',ValidarJwt,ControladorProcesoContratacionEnrutador.ObtenerRegistrosControlVersionesPorFKIdProceso);
     ProcesoContratacionEnrutador.delete('/eliminacion/:idProceso',ValidarJwt,ControladorProcesoContratacionEnrutador.EliminarSolicitudPorIdProceso);
+    ProcesoContratacionEnrutador.post('/oficio',ValidarJwt,ControladorProcesoContratacionEnrutador.RegistrarOficio);
+    ProcesoContratacionEnrutador.get('/oficios/:FKIdProcesoContratacion',ValidarJwt,ControladorProcesoContratacionEnrutador.ObtenerOficiosPorFKIdProceso);
     return ProcesoContratacionEnrutador;
 }

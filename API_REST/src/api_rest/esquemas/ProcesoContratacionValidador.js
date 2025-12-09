@@ -66,6 +66,18 @@ const ControlVersionEsquema = z.object({
     jsonDatos: z.string().optional(),
 });
 
+const OficioProcesoEsquema = z.object({
+    idOficio: z.number().int().optional(),
+    FKIdProcesoContratacion: z.number().int().optional(),
+    folio: z.string().optional(),
+    fecha: z.string().optional(),
+    dirigido: z.string().optional(),
+    puestoDirigido: z.string().optional(),
+    machote: z.string().optional(),
+    piePagina: z.string().optional(),
+    tipo: z.string().optional(),
+});
+
 export function ValidarEdicionParcialProcesoContratacion(entrada) {
     return ProcesoContratacionEsquema.partial().safeParse(entrada);
 }
@@ -73,3 +85,8 @@ export function ValidarEdicionParcialProcesoContratacion(entrada) {
 export function ValidarEdicionParcialControlVersiones(entrada){
     return ControlVersionEsquema.partial().safeParse(entrada);
 }
+
+export function ValidarEdicionParcialOficio(entrada){
+    return OficioProcesoEsquema.partial().safeParse(entrada);
+}
+

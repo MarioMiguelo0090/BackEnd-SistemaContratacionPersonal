@@ -1,4 +1,4 @@
-import { ValidarEdicionParcialControlVersiones, ValidarEdicionParcialProcesoContratacion } from "../esquemas/ProcesoContratacionValidador.js";
+import { ValidarEdicionParcialControlVersiones, ValidarEdicionParcialProcesoContratacion,ValidarEdicionParcialOficio } from "../esquemas/ProcesoContratacionValidador.js";
 import { logger } from "../utilidades/logger.js";
 
 export class ProcesoContratacionControlador 
@@ -464,6 +464,73 @@ export class ProcesoContratacionControlador
                 mensaje: "Ha ocurrido un error en el servidor"
             });
         }
+    }
+
+    RegistrarOficio = async (req,res) => 
+    {
+        try
+        {
+            const ResultadoValidacion = ValidarEdicionParcialOficio(req.body);
+            if(ResultadoValidacion.success){
+                const ResultadoInsercion = await this.modeloProcesoContratacion.RegistrarActualizarOficio({datos: ResultadoValidacion.data});                
+                res.status(ResultadoInsercion.estado).json({
+                    error: ResultadoInsercion.estado !== 200,
+                    estado: ResultadoInsercion.estado,
+                    mensaje: ResultadoInsercion.mensaje
+                });
+            }else {
+                res.status(400).json({
+                    error: true,
+                    estado: 400,
+                    mensaje: 'Datos con formato inválido, por favor verifique los datos enviados.'
+                });
+            }
+        }
+        catch(error)
+        {
+            logger({mensaje:error});
+            res.status(500).json({
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
+            });
+        }
+    }
+
+    ObtenerOficiosPorFKIdProceso = async(req,res) =>
+    {
+        try
+        {
+            const FKIdProcesoContratacion = parseInt(req.params['FKIdProcesoContratacion']);
+            const Datos = {FKIdProcesoContratacion};
+            const ResultadoValidacion = ValidarEdicionParcialOficio(Datos);
+            if(ResultadoValidacion.success){
+                const ResultadoConsulta = await this.modeloProcesoContratacion.ObtenerOficiosPorIdProceso(FKIdProcesoContratacion);
+                let resultadoConsulta = parseInt(ResultadoConsulta.estado);
+                res.status(resultadoConsulta).json({
+                    error: resultadoConsulta !== 200,
+                    estado: resultadoConsulta,
+                    ...(resultadoConsulta === 200
+                        ? {oficios: ResultadoConsulta.oficios}
+                        : {mensaje: ResultadoConsulta.mensaje}
+                    )
+                });
+            }else{
+                res.status(400).json({
+                    error: true,
+                    estado: 400,
+                    mensaje: 'Datos con formato inválido, por favor verifique los datos enviados.'
+                });
+            }
+        }catch(error){    
+            logger({mensaje:error});                  
+            res.status(500).json({
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
+            });
+        }
+
     }
 
 }
