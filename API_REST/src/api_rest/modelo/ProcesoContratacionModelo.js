@@ -66,7 +66,7 @@ export class ModeloProcesoContratacion
             .input('resultadoEvaluacionConocimiento', sql.VarChar(sql.MAX), resultadoEvaluacionConocimiento)
             .input('fechaEnvioDEyDP', sql.Date, fechaEnvioDEyDP)
             .input('fechaNotificacion', sql.Date, fechaNotificacion)
-            .input('categoriaPuestoOrigen', sql.VarChar(50), categoriaPuestoOrigen)
+            .input('categoriaPuestoOrigen', sql.VarChar(8000), categoriaPuestoOrigen)
             .input('diasProceso', sql.VarChar(3), diasProceso)
             .input('beneficiado', sql.Bit, beneficiado)
             .input('FKIdTipoProceso', sql.Int, FKIdTipoProceso)
@@ -205,7 +205,7 @@ export class ModeloProcesoContratacion
             .input('resultadoEvaluacionConocimiento', sql.VarChar(sql.MAX), resultadoEvaluacionConocimiento)
             .input('fechaEnvioDEyDP', sql.Date, fechaEnvioDEyDP)
             .input('fechaNotificacion', sql.Date, fechaNotificacion)
-            .input('categoriaPuestoOrigen', sql.VarChar(50), categoriaPuestoOrigen)
+            .input('categoriaPuestoOrigen', sql.VarChar(8000), categoriaPuestoOrigen)
             .input('diasProceso', sql.VarChar(3), diasProceso)
             .input('beneficiado', sql.Bit, beneficiado ? 1 : 0)
             .input('FKIdTipoProceso', sql.Int, FKIdTipoProceso)
@@ -637,4 +637,84 @@ export class ModeloProcesoContratacion
         }
         return resultadoConsulta;
     }
+
+    static async RegistrarActualizarSeguimientoHermes({ datos }) {
+        let conexion;
+        let resultado;
+        try {
+            conexion = await obtenerConexion();
+            // 🔹 Crear TVP
+            const tvp = new sql.Table();
+            tvp.columns.add('folio', sql.NVarChar(sql.MAX));
+            tvp.columns.add('fechaRecepcion', sql.NVarChar(sql.MAX));
+            tvp.columns.add('importancia', sql.NVarChar(sql.MAX));
+            tvp.columns.add('tipoEnvio', sql.NVarChar(sql.MAX));
+            tvp.columns.add('requiereRespuesta', sql.Bit);
+            tvp.columns.add('solicita', sql.NVarChar(sql.MAX));
+            tvp.columns.add('entidadDependencia', sql.NVarChar(sql.MAX));
+            tvp.columns.add('asunto', sql.NVarChar(sql.MAX));
+            tvp.columns.add('estatus', sql.NVarChar(sql.MAX));
+            tvp.columns.add('acciones', sql.NVarChar(sql.MAX));
+
+            // 🔹 Llenar TVP desde el array que viene del frontend
+            datos.forEach(r => {
+            tvp.rows.add(
+                r.folio,
+                r.fechaRecepcion,
+                r.importancia,
+                r.tipoEnvio,
+                r.requiereRespuesta,
+                r.solicita,
+                r.entidadDependencia,
+                r.asunto,
+                r.estatus,
+                r.acciones
+            );
+            });
+
+
+            // 🔹 Ejecutar SP
+            const response = await conexion.request()
+                .input('Registros', tvp)
+                .execute('sp_UpsertSeguimientoHermes');
+
+            resultado = {
+                ...MensajeProcesoContratacion.REGISTRO_EXITOSO,
+                estado: MensajeProcesoContratacion.REGISTRO_EXITOSO.resultado
+            };
+
+        } catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close();
+            }
+        }
+        return resultado;
+    }
+
+    static async ObtenerTodosSeguimientoHermes(){
+        let resultadoConsulta;
+        let conexion;
+        try
+        {
+            conexion = await obtenerConexion();
+            const Solicitud = await conexion.request()
+            .execute('sp_ObtenerSeguimientoHermes');
+            const seguimientos = Solicitud.recordset;
+            if(seguimientos.length > 0){
+                resultadoConsulta = {estado: 200, seguimientos};
+            }else{
+                resultadoConsulta = {estado: 400, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE};
+            }
+        }catch (error) {
+            throw error;
+        }finally{
+            if (conexion) {
+                conexion.close();
+            }
+        }
+        return resultadoConsulta;
+    }
+
 }

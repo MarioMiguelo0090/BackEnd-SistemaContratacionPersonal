@@ -10,7 +10,7 @@ const ProcesoContratacionEsquema = z.object({
     resultadoEvaluacionConocimiento: z.string({message:"El reultado de evaluación de conocimiento debe ser una texto válido"}).optional(),
     fechaEnvioDEyDP: z.string({message:"La fecha de envio de DEyDP no tiene un formato válido"}).optional(),
     fechaNotificacion: z.string({message:"La fecha de notificación no tiene un formato válido"}).optional(),
-    categoriaPuestoOrigen: z.string({message:"La categoría (puesto/origen) debe ser un texto válido"}).max(50,{message:"La categoría (puesto/origen) no debe superar los 50 caracteres"}).optional(),
+    categoriaPuestoOrigen: z.string({message:"La categoría (puesto/origen) debe ser un texto válido"}).max(8000,{message:"La categoría (puesto/origen) no debe superar los 8000 caracteres"}).optional(),
     diasProceso: z.string({message:"Los dias de proceso deben ser un texto válido"}).max(3,{message:"Los días de proceso no deben superar los 3 caracteres"}).optional(),
     beneficiado: z.boolean({message:"El campo beneficiado deber ser verdadero o falso"}).optional(),
     FKIdTipoProceso: z.number({message:"El tipo de proceso debe ser un identificador válido"}).int().nullable().optional(),

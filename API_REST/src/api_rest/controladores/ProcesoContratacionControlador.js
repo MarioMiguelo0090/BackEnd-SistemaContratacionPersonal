@@ -533,4 +533,76 @@ export class ProcesoContratacionControlador
 
     }
 
+    RegistrarActualizarSeguimientoHermes = async (req, res) => {
+    try {
+        const { registros } = req.body;
+
+        // 🔹 Validaciones mínimas
+        if (!Array.isArray(registros) || registros.length === 0) {
+            return res.status(400).json({
+                error: true,
+                estado: 400,
+                mensaje: "Debe enviar un arreglo de registros válido."
+            });
+        }
+
+        // 🔹 (Opcional) Validar estructura mínima por registro
+        const registrosValidos = registros.filter(r =>
+            r.folio && String(r.folio).trim() !== ""
+        );
+
+
+        if (registrosValidos.length === 0) {
+            return res.status(400).json({
+                error: true,
+                estado: 400,
+                mensaje: "Ningún registro contiene los datos mínimos requeridos."
+            });
+        }
+
+        // 🔹 Llamada al modelo
+        const resultado = await this.modeloProcesoContratacion
+            .RegistrarActualizarSeguimientoHermes({
+                datos: registrosValidos
+            });
+
+        res.status(resultado.estado).json({
+            error: resultado.estado !== 200,
+            estado: resultado.estado,
+            mensaje: resultado.mensaje
+        });
+
+    } catch (error) {
+        logger({ mensaje: error });
+        res.status(500).json({
+            error: true,
+            estado: 500,
+            mensaje: "Ha ocurrido un error en el servidor"
+        });
+    }
+}
+
+    ObtenerSeguimientoHermesServicio = async (req, res) => {
+        try
+        {
+            const ResultadoConsulta = await this.modeloProcesoContratacion.ObtenerTodosSeguimientoHermes();
+            let resultadoConsulta = parseInt(ResultadoConsulta.estado);
+            res.status(resultadoConsulta).json({
+                error: resultadoConsulta !== 200,
+                estado: resultadoConsulta,
+                ...(resultadoConsulta === 200
+                    ? {seguimientos: ResultadoConsulta.seguimientos}
+                    : {mensaje: ResultadoConsulta.mensaje}
+                )
+            });
+        }catch(error){
+            logger({mensaje:error});
+            res.status(500).json({
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
+            });
+        }
+    }
+
 }

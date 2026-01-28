@@ -1552,5 +1552,7 @@ export const CrearRutaProcesoContratacion = ({ModeloProcesoContratacion}) =>
     ProcesoContratacionEnrutador.delete('/eliminacion/:idProceso',ValidarJwt,ControladorProcesoContratacionEnrutador.EliminarSolicitudPorIdProceso);
     ProcesoContratacionEnrutador.post('/oficio',ValidarJwt,ControladorProcesoContratacionEnrutador.RegistrarOficio);
     ProcesoContratacionEnrutador.get('/oficios/:FKIdProcesoContratacion',ValidarJwt,ControladorProcesoContratacionEnrutador.ObtenerOficiosPorFKIdProceso);
+    ProcesoContratacionEnrutador.post('/seguimiento-hermes',ValidarJwt,ControladorProcesoContratacionEnrutador.RegistrarActualizarSeguimientoHermes);
+    ProcesoContratacionEnrutador.get('/obtencion-seguimiento-hermes',ValidarJwt,ControladorProcesoContratacionEnrutador.ObtenerSeguimientoHermesServicio)
     return ProcesoContratacionEnrutador;
 }
