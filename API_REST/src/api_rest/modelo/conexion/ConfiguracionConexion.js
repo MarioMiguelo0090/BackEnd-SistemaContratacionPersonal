@@ -19,7 +19,7 @@ const conexionUsuario = {
 export async function obtenerConexion() {
     try {
     const pool = await sql.connect(conexionUsuario);
-    console.log('Conexión a SQL Server exitosa ✅');
+    console.log('Conexión a SQL Server exitosa');
     return pool;
   } catch (err) {
     console.error('Error al conectar a la BD:', err);

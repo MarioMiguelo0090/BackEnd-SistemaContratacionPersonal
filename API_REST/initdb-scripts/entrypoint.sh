@@ -6,7 +6,7 @@
 
 # Bucle para esperar que el servidor SQL esté listo
 echo "Esperando que SQL Server inicie..."
-# Intentamos conectar con sqlcmd. $SA_PASSWORD viene de docker-compose.yml/.env
+# Intentar conectar con sqlcmd. $SA_PASSWORD viene de docker-compose.yml/.env
 /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -Q "SELECT 1" -C -h -1 > /dev/null 2>&1
 STATUS=$?
 while [ $STATUS -ne 0 ]; do

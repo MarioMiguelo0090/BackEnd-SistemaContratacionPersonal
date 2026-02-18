@@ -1,17 +1,21 @@
 import { z } from 'zod';
-import { SoloLetras, SoloLetrasNumerosCaracteres, SoloLetrasYNumeros, SoloRutas } from '../utilidades/RegexValidador.js';
 
 const ProcesoContratacionEsquema = z.object({
     idProceso: z.number({message: "El ID del candidato debe ser un número"}).int().optional(),
     folio: z.string({message:"El folio debe ser un texto válido"}).optional(),
-    numPlaza: z.string({message:"El número de plaza debe ser un texto"}).max(10,{message:"El número de plaza no debe superar los 10 caracteres"}).optional(),
+    numPlaza: z.string({ message: "El número de plaza debe ser un texto" })
+        .max(10, { message: "El número de plaza no debe superar los 10 caracteres" }).optional(),
     fechaRecibido: z.string({message:"La fecha de recibido no tiene un formato válido"}).optional(), 
     fechaEntrevista: z.string({message:"La fecha de entrevista no tiene un formato válido"}).optional(),
-    resultadoEvaluacionConocimiento: z.string({message:"El reultado de evaluación de conocimiento debe ser una texto válido"}).optional(),
+    resultadoEvaluacionConocimiento: z.string({
+        message: "El reultado de evaluación de conocimiento debe ser una texto válido"
+    }).optional(),
     fechaEnvioDEyDP: z.string({message:"La fecha de envio de DEyDP no tiene un formato válido"}).optional(),
     fechaNotificacion: z.string({message:"La fecha de notificación no tiene un formato válido"}).optional(),
-    categoriaPuestoOrigen: z.string({message:"La categoría (puesto/origen) debe ser un texto válido"}).max(8000,{message:"La categoría (puesto/origen) no debe superar los 8000 caracteres"}).optional(),
-    diasProceso: z.string({message:"Los dias de proceso deben ser un texto válido"}).max(3,{message:"Los días de proceso no deben superar los 3 caracteres"}).optional(),
+    categoriaPuestoOrigen: z.string({message: "La categoría (puesto/origen) debe ser un texto válido"})
+        .max(8000, { message: "La categoría (puesto/origen) no debe superar los 8000 caracteres" }).optional(),
+    diasProceso: z.string({ message: "Los dias de proceso deben ser un texto válido" })
+        .max(3, { message: "Los días de proceso no deben superar los 3 caracteres" }).optional(),
     beneficiado: z.boolean({message:"El campo beneficiado deber ser verdadero o falso"}).optional(),
     FKIdTipoProceso: z.number({message:"El tipo de proceso debe ser un identificador válido"}).int().nullable().optional(),
     FKIdTipoPersonal: z.number({message:"El tipo de personal debe ser un identificador válido"}).int().nullable().optional(),

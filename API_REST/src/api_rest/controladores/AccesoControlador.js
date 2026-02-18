@@ -163,7 +163,7 @@ export class AccesoControlador
                 const ResultadoConsulta = await this.modeloAcceso.BuscarUsuarioPorNombreUsuario({datos: ResultadoValidacion.data});
                 let resultadoConsulta = parseInt(ResultadoConsulta.estado);
                 res.status(resultadoConsulta).json({
-                    error: resultadoConsulta !==200,
+                    error: resultadoConsulta !== 200,
                     estado: resultadoConsulta,
                     ...(resultadoConsulta === 200
                         ? {usuario: ResultadoConsulta.usuarioEncontrado}
@@ -240,7 +240,7 @@ export class AccesoControlador
                     usuario: req.body.usuario
                 };
                 const token = await GenerarJWT(DatosUsuario);
-                console.log("JWT generado:", token);
+                console.log("JWT generado:", token); // TODO-Producción: Eliminar console.log
                 res.header('access_token',token);
                 res.status(ResultadoLogin.estado).json({
                     error: ResultadoLogin.estado !== 200,
