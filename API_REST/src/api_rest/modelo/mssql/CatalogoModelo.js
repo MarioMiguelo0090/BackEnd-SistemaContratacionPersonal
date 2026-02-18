@@ -1,6 +1,6 @@
 import sql from 'mssql';
 import { obtenerConexion } from './conexion/ConfiguracionConexion.js';
-import { MensajeGeneralesBD } from '../utilidades/Constantes.js';
+import { MensajeGeneralesBD } from '../../utilidades/Constantes.js';
 
 export class ModeloCatalogo{
     static async ObtenerTiposDeProceso()

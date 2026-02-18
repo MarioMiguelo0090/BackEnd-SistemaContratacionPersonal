@@ -1,5 +1,5 @@
 import sql from 'mssql';
-import { MensajeGeneralesBD, MensajeProcesoContratacion } from '../utilidades/Constantes.js';
+import { MensajeGeneralesBD, MensajeProcesoContratacion } from '../../utilidades/Constantes.js';
 import { obtenerConexion } from './conexion/ConfiguracionConexion.js';
 
 export class ModeloProcesoContratacion

@@ -1,6 +1,6 @@
 import sql from 'mssql';
 import { obtenerConexion } from './conexion/ConfiguracionConexion.js';
-import { MensajesAcceso,MensajeGeneralesBD } from '../utilidades/Constantes.js';
+import { MensajesAcceso,MensajeGeneralesBD } from '../../utilidades/Constantes.js';
 
 export class ModeloAcceso{
     static async InsertarNuevaCuenta({datos})

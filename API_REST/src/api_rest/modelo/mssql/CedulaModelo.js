@@ -1,5 +1,5 @@
 import sql from 'mssql';
-import { MensajeCedula, MensajeGeneralesBD, MensajeResultado } from '../utilidades/Constantes.js';
+import { MensajeCedula, MensajeGeneralesBD, MensajeResultado } from '../../utilidades/Constantes.js';
 import { obtenerConexion } from './conexion/ConfiguracionConexion.js';
 
 export class ModeloCedula
