@@ -1,3 +1,27 @@
+import { Sequelize } from "sequelize";
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+export const sequelize = new Sequelize(
+    process.env.BD_BASEDEDATOS,
+    process.env.BD_USUARIO,
+    process.env.BD_CONTRASENIA,
+    {
+        host: process.env.BD_SERVIDOR,
+        port: process.env.BD_PUERTO,
+        dialect: 'mssql',
+        dialectOptions: {
+            options: {
+                encrypt: true, 
+                trustServerCertificate: true
+            }
+        }
+    }
+    
+)
+
+/* 
 module.exports = {
     development: {
         username: process.env.BD_USUARIO,
@@ -70,3 +94,4 @@ module.exports = {
         }
     }
 }
+*/
