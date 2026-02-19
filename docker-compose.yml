@@ -2,18 +2,12 @@ version: "3.8"
 
 services:
   db:
-    build:
-      context: ./API_REST/initdb-scripts
-      dockerfile: Dockerfile
-
+    image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sqlserver_db
 
     environment:
-      # Contraseña del usuario 'sa' (Super Admin)
       SA_PASSWORD: "RysuvDylan@jr25"
-      # Configura SQL Server Express Edition
       MSSQL_PID: "Express"
-      # Acepta los términos de licencia
       ACCEPT_EULA: "Y"
 
     ports:
