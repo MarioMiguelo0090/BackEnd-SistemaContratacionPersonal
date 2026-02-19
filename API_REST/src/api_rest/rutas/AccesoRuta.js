@@ -55,7 +55,6 @@
  *         description: Datos con formato inválido
  */
 
-
 /**
  * @swagger
  * /rysuv/acceso/:
@@ -83,7 +82,7 @@
  *               nombre:
  *                 type: string
  *                 example: Dylan
- *               primerApellido: 
+ *               primerApellido:
  *                  type: string
  *                  example: Platas
  *               segundoApellido:
@@ -142,8 +141,6 @@
  *       500:
  *         description: Error de base de datos.
  */
-
-
 
 /**
  * @swagger
@@ -243,7 +240,6 @@
  *         description: Datos con formato inválido
  */
 
-
 /**
  * @swagger
  * /rysuv/acceso/usuario/{usuario}:
@@ -285,7 +281,6 @@
  *       500:
  *         description: Error de base de datos
  */
-
 
 /**
  * @swagger
@@ -348,7 +343,7 @@
  *               FKIdTipoAcceso:
  *                 type: integer
  *                 example: 2
- *               nombre: 
+ *               nombre:
  *                 type: string
  *                 example: "Mike"
  *               primerApellido:
@@ -360,7 +355,7 @@
  *               estado:
  *                 type: integer
  *                 example: 1
- *               
+ *
  *     responses:
  *       200:
  *         description: Usuario editado correctamente.
@@ -406,12 +401,12 @@
  *                   example: "Guadalupe"
  *                 nombre:
  *                   type: string
- *                   example: "María Guadalupe"                 
+ *                   example: "María Guadalupe"
  *                 primerApellido:
  *                   type: string
  *                   example: "Vázquez"
  *                 segundoApellido:
- *                   type: string 
+ *                   type: string
  *                   example: "Castillo"
  *                 estado:
  *                   type: boolean
@@ -419,7 +414,7 @@
  *                 FKIdTipoAcceso:
  *                   type: integer
  *                   example: 4
- *                 
+ *
  *       401:
  *         description: Token inválido o no autorizado.
  *       404:
@@ -432,18 +427,48 @@ import { Router } from "express";
 import { AccesoControlador } from "../controladores/AccesoControlador.js";
 import { ValidarJwt } from "../middlewares/jwt.js";
 
-export const CrearRutaAcceso = ({ModeloAcceso}) =>
-{
-    const AccesoEnrutador = Router();
-    const ControladorAccesoEnrutador = new AccesoControlador({ModeloAcceso});    
-    AccesoEnrutador.post('/login',ControladorAccesoEnrutador.RealizarLogin);
-    AccesoEnrutador.post('/',ValidarJwt,ControladorAccesoEnrutador.RegistrarAcceso);
-    AccesoEnrutador.get('/usuarios',ValidarJwt,ControladorAccesoEnrutador.ObtenerUsuarios);
-    AccesoEnrutador.get('/tiposAcceso',ControladorAccesoEnrutador.ObtenerTiposDeAccesos);
-    AccesoEnrutador.get('/analistas',ValidarJwt,ControladorAccesoEnrutador.ObtenerTodosAnalistas);
-    AccesoEnrutador.get('/usuario/:usuario',ValidarJwt,ControladorAccesoEnrutador.BuscarUsuarioPorNombreDeUsuario);
-    AccesoEnrutador.put('/usuario/:idAcceso',ValidarJwt,ControladorAccesoEnrutador.DesactivarUsuarioPorId);
-    AccesoEnrutador.put('/:idAcceso',ValidarJwt,ControladorAccesoEnrutador.EditarAcceso);
-    AccesoEnrutador.get('/:idAcceso',ValidarJwt,ControladorAccesoEnrutador.BuscarUsuarioPorId);
-    return AccesoEnrutador;
-}
+export const CrearRutaAcceso = ({ ModeloAcceso }) => {
+  const AccesoEnrutador = Router();
+  const ControladorAccesoEnrutador = new AccesoControlador({ ModeloAcceso });
+  AccesoEnrutador.post("/login", ControladorAccesoEnrutador.RealizarLogin);
+  AccesoEnrutador.post(
+    "/",
+    ValidarJwt,
+    ControladorAccesoEnrutador.RegistrarAcceso,
+  );
+  AccesoEnrutador.get(
+    "/usuarios",
+    ValidarJwt,
+    ControladorAccesoEnrutador.ObtenerUsuarios,
+  );
+  AccesoEnrutador.get(
+    "/tiposAcceso",
+    ControladorAccesoEnrutador.ObtenerTiposDeAccesos,
+  );
+  AccesoEnrutador.get(
+    "/analistas",
+    ValidarJwt,
+    ControladorAccesoEnrutador.ObtenerTodosAnalistas,
+  );
+  AccesoEnrutador.get(
+    "/usuario/:usuario",
+    ValidarJwt,
+    ControladorAccesoEnrutador.BuscarUsuarioPorNombreDeUsuario,
+  );
+  AccesoEnrutador.put(
+    "/usuario/:idAcceso",
+    ValidarJwt,
+    ControladorAccesoEnrutador.DesactivarUsuarioPorId,
+  );
+  AccesoEnrutador.put(
+    "/:idAcceso",
+    ValidarJwt,
+    ControladorAccesoEnrutador.EditarAcceso,
+  );
+  AccesoEnrutador.get(
+    "/:idAcceso",
+    ValidarJwt,
+    ControladorAccesoEnrutador.BuscarUsuarioPorId,
+  );
+  return AccesoEnrutador;
+};
