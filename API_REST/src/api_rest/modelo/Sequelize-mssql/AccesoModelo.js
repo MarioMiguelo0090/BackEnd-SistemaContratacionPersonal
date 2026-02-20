@@ -62,7 +62,6 @@ export class ModeloAcceso {
 
     static async EditarAcceso({datos}){
         const {idAcceso,usuario,contrasenia,FKIdTipoAcceso,nombre,primerApellido,segundoApellido,estado} = datos;
-        const usuarioCifrado = Cifrar(usuario);
         const contraseniaCifrada = await bcrypt.hash(contrasenia, parseInt(process.env.CONFIGURATION_JUMPS));
         const nombreCifrado =  Cifrar(nombre);
         const primerApellidoCifrado = Cifrar(primerApellido);
@@ -74,10 +73,10 @@ export class ModeloAcceso {
             const resultadoProcedimiento = await sequelize.query(
                 `DECLARE @resultado INT; 
                 EXEC sp_ActualizarAcceso
-                @idAcceso = :idAcceso
-                @usuario = :usuarioCifrado,
+                @idAcceso = :idAcceso,
+                @usuario = :usuario,
                 @contrasenia = :contraseniaCifrada,
-                @FKIdTipoAcceso = : FKIdTipoAcceso,
+                @FKIdTipoAcceso = :FKIdTipoAcceso,
                 @nombre = :nombreCifrado,
                 @primerApellido = :primerApellidoCifrado,
                 @segundoApellido = :segundoApellidoCifrado,
@@ -87,7 +86,7 @@ export class ModeloAcceso {
                 {
                     replacements: {
                         idAcceso,
-                        usuarioCifrado,
+                        usuario,
                         contraseniaCifrada,
                         FKIdTipoAcceso,
                         nombreCifrado,
@@ -138,7 +137,14 @@ export class ModeloAcceso {
             if (ResultadoQueryAcceso.length > 0) {
                 const usuario = ResultadoQueryAcceso[0];
                 if (usuario.idAcceso > 0) {
-                    resultadoConsulta = { estado: 200, usuarioEncontrado: ResultadoQueryAcceso };
+                    const {contrasenia: _,...usuarioSinContrasenia} = usuario;
+                    const usuarioDescifrado = {
+                        ...usuarioSinContrasenia,
+                        nombre: Descifrar(usuario.nombre),
+                        primerApellido: Descifrar(usuario.primerApellido),
+                        segundoApellido: Descifrar(usuario.segundoApellido)
+                    }
+                    resultadoConsulta = { estado: 200, usuarioEncontrado: usuarioDescifrado };
                 } else if (usuario.idAcceso === -1) {
                     resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
                 } else {
@@ -169,7 +175,14 @@ export class ModeloAcceso {
             if (ResultadoQueryAcceso.length > 0) {
                 const usuarioConsultado = ResultadoQueryAcceso[0];
                 if (usuarioConsultado.idAcceso > 0) {
-                    resultadoConsulta = { estado: 200, usuarioEncontrado: ResultadoQueryAcceso };
+                    const {contrasenia: _,...usuarioSinContrasenia} = usuarioConsultado;
+                    const usuarioDescifrado = {
+                        ...usuarioSinContrasenia,
+                        nombre: Descifrar(usuarioConsultado.nombre),
+                        primerApellido: Descifrar(usuarioConsultado.primerApellido),
+                        segundoApellido: Descifrar(usuarioConsultado.segundoApellido)
+                    }
+                    resultadoConsulta = { estado: 200, usuarioEncontrado: usuarioDescifrado };
                 } else if (usuarioConsultado.idAcceso === -1) {
                     resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
                 } else {
@@ -285,8 +298,17 @@ export class ModeloAcceso {
                     type: QueryTypes.RAW
                 }
             );
-            const usuarios = resultadoProcedimiento[0];
+            let usuarios = resultadoProcedimiento[0];
             if (usuarios.length > 0) {
+                usuarios = usuarios.map(usuario => {
+                    const { contrasenia: _, ...usuarioSinContrasenia } = usuario;
+                    return {
+                        ...usuarioSinContrasenia,
+                        nombre:          Descifrar(usuario.nombre),
+                        primerApellido:  Descifrar(usuario.primerApellido),
+                        segundoApellido: Descifrar(usuario.segundoApellido)
+                    };
+                });
                 resultadoConsulta = { estado: 200, usuarios };
             } else {
                 resultadoConsulta = { estado: 400, mensaje: MensajesAcceso.USUARIO_PERDIDO };
@@ -306,8 +328,17 @@ export class ModeloAcceso {
                     type: QueryTypes.RAW
                 }
             );
-            const usuarios = resultadoProcedimiento[0];
+            let usuarios = resultadoProcedimiento[0];
             if (usuarios.length > 0) {
+                usuarios = usuarios.map(usuario => {
+                    const { contrasenia: _, ...usuarioSinContrasenia } = usuario;
+                    return {
+                        ...usuarioSinContrasenia,
+                        nombre:          Descifrar(usuario.nombre),
+                        primerApellido:  Descifrar(usuario.primerApellido),
+                        segundoApellido: Descifrar(usuario.segundoApellido)
+                    };
+                });
                 resultadoConsulta = { estado: 200, usuarios };
             } else {
                 resultadoConsulta = { estado: 400, mensaje: MensajesAcceso.USUARIO_PERDIDO };
