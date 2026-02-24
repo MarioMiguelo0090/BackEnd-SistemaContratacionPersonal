@@ -16,7 +16,7 @@ export class AccesoControlador
             const ResultadoValidacion = ValidarInsercionAcceso(req.body);
             if(ResultadoValidacion.success)
             {
-                const ResultadoInsercion = await this.modeloAcceso.InsertarNuevaCuenta({datos: ResultadoValidacion.data})
+                const ResultadoInsercion = await this.modeloAcceso.InsertarNuevaCuenta({datos: ResultadoValidacion.data, bitacoraFn: req.Bitacora})
                 let resultadoInsercion=parseInt(ResultadoInsercion.resultado);
                 if(resultadoInsercion === 500)
                 {
@@ -70,7 +70,7 @@ export class AccesoControlador
             const ResultadoValidacion = ValidarEdicionParcialAcceso(Datos);
             if(ResultadoValidacion.success)
             {
-                const ResultadoEdicion = await this.modeloAcceso.EditarAcceso({datos: ResultadoValidacion.data});
+                const ResultadoEdicion = await this.modeloAcceso.EditarAcceso({datos: ResultadoValidacion.data, bitacoraFn: req.Bitacora});
                 let resultadoEdicion = parseInt(ResultadoEdicion.estado);
                 if(resultadoEdicion === 500){
                     res.status(resultadoEdicion).json(
@@ -200,7 +200,7 @@ export class AccesoControlador
             const ResultadoValidacion = ValidarEdicionParcialAcceso(Datos);
             if(ResultadoValidacion.success)
             {
-                const ResultadoDesactivacion = await this.modeloAcceso.DesactivarUsuarioPorIdAcceso({datos: ResultadoValidacion.data});
+                const ResultadoDesactivacion = await this.modeloAcceso.DesactivarUsuarioPorIdAcceso({datos: ResultadoValidacion.data, bitacoraFn: req.Bitacora});
                 let resultado = parseInt(ResultadoDesactivacion.estado);
                 res.status(resultado).json({
                     error: resultado !== 200,
@@ -234,13 +234,13 @@ export class AccesoControlador
         {            
             const ResultadoValidacion = ValidarInicioSesion(req.body);            
             if(ResultadoValidacion.success){
-                const ResultadoLogin = await this.modeloAcceso.LoginAcceso({datos: ResultadoValidacion.data});                
+                const ResultadoLogin = await this.modeloAcceso.LoginAcceso({datos: ResultadoValidacion.data, bitacoraFn: req.Bitacora});                
                 const DatosUsuario = {
                     correo: req.body.correo,
-                    usuario: req.body.usuario
+                    usuario: req.body.usuario,
+                    tipoDeAcceso: ResultadoLogin.usuario.tipoDeAcceso
                 };
                 const token = await GenerarJWT(DatosUsuario);
-                console.log("JWT generado:", token);
                 res.header('access_token',token);
                 res.status(ResultadoLogin.estado).json({
                     error: ResultadoLogin.estado !== 200,

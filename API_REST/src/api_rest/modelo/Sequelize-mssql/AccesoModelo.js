@@ -5,7 +5,7 @@ import { QueryTypes } from 'sequelize';
 import {Cifrar, Descifrar} from '../../utilidades/Cifrado.js';
 
 export class ModeloAcceso {
-    static async InsertarNuevaCuenta({datos}) {
+    static async InsertarNuevaCuenta({datos, bitacoraFn}) {
         const { usuario, contrasenia, FKIdTipoAcceso, nombre, primerApellido, segundoApellido
         } = datos;
         const contraseniaCifrada = await bcrypt.hash(contrasenia, parseInt(process.env.CONFIGURATION_JUMPS));
@@ -48,6 +48,9 @@ export class ModeloAcceso {
                 await transaction.rollback();
                 resultadoInsercion = MensajesAcceso.USUARIO_DUPLICADO;
             } else {
+                if(bitacoraFn){
+                    await bitacoraFn(`Se ha insertado una nueva cuenta con el usuario: ${usuario}`)
+                }
                 await transaction.commit();
                 resultadoInsercion = MensajesAcceso.REGISTRO_EXITOSO;
             }
@@ -60,7 +63,7 @@ export class ModeloAcceso {
         return resultadoInsercion;
     }
 
-    static async EditarAcceso({datos}){
+    static async EditarAcceso({datos, bitacoraFn}){
         const {idAcceso,usuario,contrasenia,FKIdTipoAcceso,nombre,primerApellido,segundoApellido,estado} = datos;
         const contraseniaCifrada = await bcrypt.hash(contrasenia, parseInt(process.env.CONFIGURATION_JUMPS));
         const nombreCifrado =  Cifrar(nombre);
@@ -106,6 +109,9 @@ export class ModeloAcceso {
                 await transaction.rollback();
                 resultadoModificacion = { estado: 409, mensaje: MensajesAcceso.USUARIO_DUPLICADO };
             } else if(resultado === 1) {
+                if(bitacoraFn){
+                    await bitacoraFn(`Se ha editado el usuario con id: ${idAcceso}`)
+                }
                 await transaction.commit();
                 resultadoModificacion = { estado: 200, mensaje: MensajesAcceso.ACTUALIZACION_EXITOSA };
             } else {
@@ -197,7 +203,7 @@ export class ModeloAcceso {
         return resultadoConsulta;
     }
 
-    static async DesactivarUsuarioPorIdAcceso({ datos }) {
+    static async DesactivarUsuarioPorIdAcceso({ datos, bitacoraFn }) {
         const { idAcceso } = datos;
         let resultadoDesactivacion;
         let transaction;
@@ -214,6 +220,9 @@ export class ModeloAcceso {
             );
             const ResultadoQuery = resultadoProcedimiento[0]?.[0];
             if (ResultadoQuery.Resultado === 1) {
+                if(bitacoraFn){
+                    await bitacoraFn(`Se ha desactivado el usuario con id: ${idAcceso}`)
+                }
                 await transaction.commit();
                 resultadoDesactivacion = { estado: 200, mensaje: MensajesAcceso.DESACTIVACION_EXITOSA };
             } else if (ResultadoQuery.Resultado === 0) {
@@ -232,7 +241,7 @@ export class ModeloAcceso {
         return resultadoDesactivacion;
     }
 
-    static async LoginAcceso({ datos }) {
+    static async LoginAcceso({ datos, bitacoraFn}) {
         const { usuario, contrasenia } = datos;
         let resultadoDeLogin;
         try {
@@ -249,7 +258,16 @@ export class ModeloAcceso {
                 const contraseniasCoinciden = await bcrypt.compare(contrasenia,ResultadoQuery.contrasenia);
                 if(!contraseniasCoinciden){
                     const {contrasenia: _, ...usuarioSinContrasenia} = ResultadoQuery;
-                    resultadoDeLogin = {estado: 200, Mensaje: MensajesAcceso.LOGIN_EXITOSO, usuario: usuarioSinContrasenia}
+                    const usuarioDescifrado = {
+                            ...usuarioSinContrasenia,
+                            nombre: Descifrar(usuarioSinContrasenia.nombre),
+                            primerApellido: Descifrar(usuarioSinContrasenia.primerApellido),
+                            segundoApellido: Descifrar(usuarioSinContrasenia.segundoApellido)
+                        }
+                    if(bitacoraFn){
+                        await bitacoraFn(`Se ha iniciado sesion con el usuario: ${usuario}`,'InicioDeSesion')
+                    }      
+                    resultadoDeLogin = {estado: 200, Mensaje: MensajesAcceso.LOGIN_EXITOSO, usuario: usuarioDescifrado}
                 }else{
                     resultadoDeLogin = {estado: 401, Mensaje: MensajesAcceso.CREDENCIALES_INVALIDAS}
                 }

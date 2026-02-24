@@ -1,26 +1,28 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  class Bitacora extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
-  }
-  Bitacora.init({
-    fecha: DataTypes.DATE,
-    ip: DataTypes.STRING,
+import { Model, DataTypes } from 'sequelize';
+import { sequelize } from '../config/config.js'; 
+
+class Bitacora extends Model {
+    static associate(models) {}
+}
+
+Bitacora.init({
+    idBitacora: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    fecha:   {
+      type: DataTypes.STRING
+    },
+    ip:      DataTypes.STRING,
+    usuario: DataTypes.STRING,
     tipoDeUsuario: DataTypes.STRING,
-    accion: DataTypes.STRING
-  }, {
+    accion:  DataTypes.STRING
+}, {
     sequelize,
     modelName: 'Bitacora',
-  });
-  return Bitacora;
-};
+    tableName: 'Bitacora',
+    timestamps: false
+});
+
+export { Bitacora };

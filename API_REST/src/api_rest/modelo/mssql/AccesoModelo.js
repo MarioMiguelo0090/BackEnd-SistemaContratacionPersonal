@@ -3,7 +3,7 @@ import { obtenerConexion } from './conexion/ConfiguracionConexion.js';
 import { MensajesAcceso,MensajeGeneralesBD } from '../../utilidades/Constantes.js';
 
 export class ModeloAcceso{
-    static async InsertarNuevaCuenta({datos})
+    static async InsertarNuevaCuenta({datos, bitacoraFn})
     {
         let resultadoInsercion;        
         let conexion;
@@ -32,19 +32,22 @@ export class ModeloAcceso{
             } else if (idAcceso === -2){
                 resultadoInsercion = MensajesAcceso.USUARIO_DUPLICADO;
             } else {
+                if(bitacoraFn){
+                    await bitacoraFn(`Se ha registrado un nuevo acceso con el nombre de usuario: ${usuario}`);
+                }
                 resultadoInsercion = MensajesAcceso.REGISTRO_EXITOSO;
             }
-            } catch (error) {
-                throw error;
-            } finally {
-                if (conexion) {
-                    conexion.close(); 
-                }
+        } catch (error) {
+            throw error;
+        } finally {
+            if (conexion) {
+                conexion.close(); 
             }
+        }
         return resultadoInsercion;
     }
 
-    static async EditarAcceso ({datos})
+    static async EditarAcceso ({datos, bitacoraFn})
     {
         let resultadoEdicion;
         let conexion;
@@ -78,6 +81,9 @@ export class ModeloAcceso{
             } else if (resultadoProcedimiento === -2){
                 resultadoEdicion = { estado: 409, mensaje: MensajesAcceso.USUARIO_DUPLICADO };
             } else if(resultadoProcedimiento === 1) {
+                if(bitacoraFn){
+                    await bitacoraFn(`Se ha editado el usuario con id: ${idAcceso}`)
+                }
                 resultadoEdicion = { estado: 200, mensaje: MensajesAcceso.ACTUALIZACION_EXITOSA };
             } else {
                 resultadoEdicion = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };                
@@ -162,7 +168,7 @@ export class ModeloAcceso{
         }   
     }
 
-    static async DesactivarUsuarioPorIdAcceso({datos})
+    static async DesactivarUsuarioPorIdAcceso({datos, bitacoraFn})
     {
         let resultadoDesactivacion;
         let conexion;
@@ -175,6 +181,9 @@ export class ModeloAcceso{
             .execute('sp_DesactivarUsuario'); 
             const ResultadoQuery = Solicitud.recordset[0];
             if (ResultadoQuery.Resultado === 1){
+                if(bitacoraFn){
+                    await bitacoraFn(`Se ha desactivado el usuario con id: ${idAcceso}`);
+                }
                 resultadoDesactivacion = { estado: 200, mensaje: MensajesAcceso.DESACTIVACION_EXITOSA };
             }else if (ResultadoQuery.Resultado === 0){
                 resultadoDesactivacion = { estado: 404, mensaje: MensajesAcceso.USUARIO_PERDIDO };
@@ -191,7 +200,7 @@ export class ModeloAcceso{
         return resultadoDesactivacion;
     }
 
-    static async LoginAcceso({datos})
+    static async LoginAcceso({datos, bitacoraFn})
     {
         let resultadoDeLogin;
         let conexion;
@@ -206,6 +215,11 @@ export class ModeloAcceso{
             const ResultadoQuery = Solicitud.recordset[0];
             if(ResultadoQuery.Resultado === 0)
             {
+                console.log('Insertaré en la bitácora')
+                if(bitacoraFn){
+                    console.log('insertando en la bitacora')
+                    await bitacoraFn(`Se ha iniciado sesión con el usuario: ${usuario}`)
+                }
                 resultadoDeLogin = { 
                     estado: 200, 
                     mensaje: MensajesAcceso.LOGIN_EXITOSO,
