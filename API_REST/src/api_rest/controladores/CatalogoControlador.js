@@ -11,7 +11,7 @@ export class CatalogoControlador
     {
         try
         {
-            const ResultadoConsulta = await this.modeloCatalogo.ObtenerTiposDeProceso();
+            const ResultadoConsulta = await this.modeloCatalogo.ObtenerTiposDeProceso({tipoDeAcceso: req.tipoDeAcceso});
             let resultadoConsulta = parseInt(ResultadoConsulta.estado);
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
@@ -26,11 +26,13 @@ export class CatalogoControlador
         catch(error)
         {
             logger({mensaje:error});
-            res.status({
-                error: true,
-                estado: 500,
-                mensaje: "Ha ocurrido un error en el servidor"
-            });
+            res.status(500).json(
+                {
+                    error: true,
+                    estado: 500,
+                    mensaje: "Ha ocurrido un error en el servidor"
+                }
+            )
         }
     }
 
@@ -38,7 +40,7 @@ export class CatalogoControlador
     {
         try
         {
-            const ResultadoConsulta = await this.modeloCatalogo.ObtenerTiposDePersonal();
+            const ResultadoConsulta = await this.modeloCatalogo.ObtenerTiposDePersonal({tipoDeAcceso: req.tipoDeAcceso});
             let resultadoConsulta = parseInt(ResultadoConsulta.estado);
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
@@ -52,11 +54,13 @@ export class CatalogoControlador
         catch(error)
         {
             logger({mensaje:error});
-            res.status({
-                error: true,
-                estado: 500,
-                mensaje: "Ha ocurrido un error en el servidor"
-            });
+            res.status(500).json(
+                {
+                    error: true,
+                    estado: 500,
+                    mensaje: "Ha ocurrido un error en el servidor"
+                }
+            )
         }
     }
 
@@ -64,7 +68,7 @@ export class CatalogoControlador
     {
         try
         {
-            const ResultadoConsulta = await this.modeloCatalogo.ObtenerEstadosDeProcesosDeContratacion();
+            const ResultadoConsulta = await this.modeloCatalogo.ObtenerEstadosDeProcesosDeContratacion({tipoDeAcceso: req.tipoDeAcceso});
             let resultadoConsulta = parseInt(ResultadoConsulta.estado);
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
@@ -78,11 +82,13 @@ export class CatalogoControlador
         catch(error)
         {
             logger({mensaje:error});
-            res.status({
-                error: true,
-                estado: 500,
-                mensaje: "Ha ocurrido un error en el servidor"
-            });
+            res.status(500).json(
+                {
+                    error: true,
+                    estado: 500,
+                    mensaje: "Ha ocurrido un error en el servidor"
+                }
+            )
         }
     }
 
@@ -90,7 +96,7 @@ export class CatalogoControlador
     {
         try
         {
-            const ResultadoConsulta = await this.modeloCatalogo.ObtenerTemporalDefinitivaCompleto();
+            const ResultadoConsulta = await this.modeloCatalogo.ObtenerTemporalDefinitivaCompleto({tipoDeAcceso: req.tipoDeAcceso});
             let resultadoConsulta = parseInt(ResultadoConsulta.estado);
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
@@ -104,11 +110,13 @@ export class CatalogoControlador
         catch(error)
         {
             logger({mensaje:error});
-            res.status({
-                error: true,
-                estado: 500,
-                mensaje: "Ha ocurrido un error en el servidor"
-            });
+            res.status(500).json(
+                {
+                    error: true,
+                    estado: 500,
+                    mensaje: "Ha ocurrido un error en el servidor"
+                }
+            )
         }
     }
 
@@ -116,7 +124,7 @@ export class CatalogoControlador
     {
         try
         {
-            const ResultadoConsulta = await this.modeloCatalogo.ObtenerTiposDeCedula();
+            const ResultadoConsulta = await this.modeloCatalogo.ObtenerTiposDeCedula({tipoDeAcceso: req.tipoDeAcceso});
             let resultadoConsulta = parseInt(ResultadoConsulta.estado);
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
@@ -130,11 +138,13 @@ export class CatalogoControlador
         catch(error)
         {
             logger({mensaje:error});
-            res.status({
-                error: true,
-                estado: 500,
-                mensaje: "Ha ocurrido un error en el servidor"
-            });
+            res.status(500).json(
+                {
+                    error: true,
+                    estado: 500,
+                    mensaje: "Ha ocurrido un error en el servidor"
+                }
+            )
         }
     }
     
@@ -142,7 +152,7 @@ export class CatalogoControlador
     {
         try
         {
-            const ResultadoConsulta = await this.modeloCatalogo.ObtenerDependenciasCompletas();
+            const ResultadoConsulta = await this.modeloCatalogo.ObtenerDependenciasCompletas({tipoDeAcceso: req.tipoDeAcceso});
             let resultadoConsulta = parseInt(ResultadoConsulta.estado);
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
@@ -156,10 +166,13 @@ export class CatalogoControlador
         catch(error)
         {
             logger({mensaje:error});
-            res.status(500).json({
-                error: true,
-                mensaje: "Ha ocurrido un error en el servidor"
-            });
+            res.status(500).json(
+                {
+                    error: true,
+                    estado: 500,
+                    mensaje: "Ha ocurrido un error en el servidor"
+                }
+            )
         }
     }
 
@@ -167,7 +180,7 @@ export class CatalogoControlador
     {
         try
         {
-            const ResultadoConsulta = await this.modeloCatalogo.ObtenerClasificacionesDeCedula();
+            const ResultadoConsulta = await this.modeloCatalogo.ObtenerClasificacionesDeCedula({tipoDeAcceso: req.tipoDeAcceso});
             let resultadoConsulta = parseInt(ResultadoConsulta.estado);
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
@@ -181,11 +194,13 @@ export class CatalogoControlador
         catch(error)
         {
             logger({mensaje:error});
-            res.status({
-                error: true,
-                estado: 500,
-                mensaje: "Ha ocurrido un error en el servidor"
-            });
+            res.status(500).json(
+                {
+                    error: true,
+                    estado: 500,
+                    mensaje: "Ha ocurrido un error en el servidor"
+                }
+            )
         }
     }
 }

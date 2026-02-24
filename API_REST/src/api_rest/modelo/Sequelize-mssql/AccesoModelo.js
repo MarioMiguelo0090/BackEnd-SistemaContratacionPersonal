@@ -1,11 +1,12 @@
-import {sequelize} from './config/config.js'
+import {obtenerConexion} from './config/config.js'
 import bcrypt from 'bcrypt'
 import { MensajesAcceso, MensajeGeneralesBD } from '../../utilidades/Constantes.js';
 import { QueryTypes } from 'sequelize';
 import {Cifrar, Descifrar} from '../../utilidades/Cifrado.js';
 
 export class ModeloAcceso {
-    static async InsertarNuevaCuenta({datos, bitacoraFn}) {
+    static async InsertarNuevaCuenta({datos, bitacoraFn, tipoDeAcceso}) {
+        const sequelize = obtenerConexion(tipoDeAcceso)
         const { usuario, contrasenia, FKIdTipoAcceso, nombre, primerApellido, segundoApellido
         } = datos;
         const contraseniaCifrada = await bcrypt.hash(contrasenia, parseInt(process.env.CONFIGURATION_JUMPS));
@@ -63,7 +64,8 @@ export class ModeloAcceso {
         return resultadoInsercion;
     }
 
-    static async EditarAcceso({datos, bitacoraFn}){
+    static async EditarAcceso({datos, bitacoraFn, tipoDeAcceso}){
+        const sequelize = obtenerConexion(tipoDeAcceso)
         const {idAcceso,usuario,contrasenia,FKIdTipoAcceso,nombre,primerApellido,segundoApellido,estado} = datos;
         const contraseniaCifrada = await bcrypt.hash(contrasenia, parseInt(process.env.CONFIGURATION_JUMPS));
         const nombreCifrado =  Cifrar(nombre);
@@ -127,7 +129,8 @@ export class ModeloAcceso {
         return resultadoModificacion;
     }
 
-    static async BuscarUsuarioPorId({ datos }) {
+    static async BuscarUsuarioPorId({ datos, tipoDeAcceso}) {
+        const sequelize = obtenerConexion(tipoDeAcceso)
         const { idAcceso } = datos;
         let resultadoConsulta;
         try {
@@ -165,7 +168,8 @@ export class ModeloAcceso {
         return resultadoConsulta;
     }
 
-    static async BuscarUsuarioPorNombreUsuario({ datos }) {
+    static async BuscarUsuarioPorNombreUsuario({ datos, tipoDeAcceso}) {
+        const sequelize = obtenerConexion(tipoDeAcceso)
         const { usuario } = datos;
         let resultadoConsulta;
         try {
@@ -203,7 +207,8 @@ export class ModeloAcceso {
         return resultadoConsulta;
     }
 
-    static async DesactivarUsuarioPorIdAcceso({ datos, bitacoraFn }) {
+    static async DesactivarUsuarioPorIdAcceso({ datos, bitacoraFn, tipoDeAcceso}) {
+        const sequelize = obtenerConexion(tipoDeAcceso)
         const { idAcceso } = datos;
         let resultadoDesactivacion;
         let transaction;
@@ -241,7 +246,8 @@ export class ModeloAcceso {
         return resultadoDesactivacion;
     }
 
-    static async LoginAcceso({ datos, bitacoraFn}) {
+    static async LoginAcceso({ datos, bitacoraFn, tipoDeAcceso}) {
+        const sequelize = obtenerConexion(tipoDeAcceso)
         const { usuario, contrasenia } = datos;
         let resultadoDeLogin;
         try {
@@ -285,7 +291,8 @@ export class ModeloAcceso {
         return resultadoDeLogin;
     }
 
-    static async ObtenerTodosTiposDeAcceso() {
+    static async ObtenerTodosTiposDeAcceso({tipoDeAcceso}) {
+        const sequelize = obtenerConexion(tipoDeAcceso)
         let resultadoConsulta;
         try {
             const resultadoProcedimiento = await sequelize.query(
@@ -307,7 +314,8 @@ export class ModeloAcceso {
         return resultadoConsulta;
     }
 
-    static async ObtenerTodosLosUsuarios() {
+    static async ObtenerTodosLosUsuarios({tipoDeAcceso}) {
+        const sequelize = obtenerConexion(tipoDeAcceso)
         let resultadoConsulta;
         try {
             const resultadoProcedimiento = await sequelize.query(
@@ -337,7 +345,8 @@ export class ModeloAcceso {
         return resultadoConsulta;
     }
 
-    static async ObtenerTodosLosAnalistas() {
+    static async ObtenerTodosLosAnalistas({tipoDeAcceso}) {
+        const sequelize = obtenerConexion(tipoDeAcceso)
         let resultadoConsulta;
         try {
             const resultadoProcedimiento = await sequelize.query(

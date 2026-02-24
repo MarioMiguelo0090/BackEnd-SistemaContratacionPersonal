@@ -16,7 +16,7 @@ export class AccesoControlador
             const ResultadoValidacion = ValidarInsercionAcceso(req.body);
             if(ResultadoValidacion.success)
             {
-                const ResultadoInsercion = await this.modeloAcceso.InsertarNuevaCuenta({datos: ResultadoValidacion.data, bitacoraFn: req.Bitacora})
+                const ResultadoInsercion = await this.modeloAcceso.InsertarNuevaCuenta({datos: ResultadoValidacion.data, bitacoraFn: req.Bitacora, tipoDeAcceso: req.tipoDeAcceso})
                 let resultadoInsercion=parseInt(ResultadoInsercion.resultado);
                 if(resultadoInsercion === 500)
                 {
@@ -70,7 +70,7 @@ export class AccesoControlador
             const ResultadoValidacion = ValidarEdicionParcialAcceso(Datos);
             if(ResultadoValidacion.success)
             {
-                const ResultadoEdicion = await this.modeloAcceso.EditarAcceso({datos: ResultadoValidacion.data, bitacoraFn: req.Bitacora});
+                const ResultadoEdicion = await this.modeloAcceso.EditarAcceso({datos: ResultadoValidacion.data, bitacoraFn: req.Bitacora, tipoDeAcceso: req.tipoDeAcceso});
                 let resultadoEdicion = parseInt(ResultadoEdicion.estado);
                 if(resultadoEdicion === 500){
                     res.status(resultadoEdicion).json(
@@ -120,7 +120,7 @@ export class AccesoControlador
             const ResultadoValidacion = ValidarEdicionParcialAcceso(Datos);
             if(ResultadoValidacion.success)
             {
-                const ResultadoConsulta = await this.modeloAcceso.BuscarUsuarioPorId({datos: ResultadoValidacion.data});
+                const ResultadoConsulta = await this.modeloAcceso.BuscarUsuarioPorId({datos: ResultadoValidacion.data, tipoDeAcceso: req.tipoDeAcceso});
                 let resultadoConsulta = parseInt(ResultadoConsulta.estado);
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !==200,
@@ -160,7 +160,7 @@ export class AccesoControlador
             const ResultadoValidacion = ValidarEdicionParcialAcceso(Datos);
             if(ResultadoValidacion.success)
             {
-                const ResultadoConsulta = await this.modeloAcceso.BuscarUsuarioPorNombreUsuario({datos: ResultadoValidacion.data});
+                const ResultadoConsulta = await this.modeloAcceso.BuscarUsuarioPorNombreUsuario({datos: ResultadoValidacion.data, tipoDeAcceso: req.tipoDeAcceso});
                 let resultadoConsulta = parseInt(ResultadoConsulta.estado);
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !==200,
@@ -200,7 +200,7 @@ export class AccesoControlador
             const ResultadoValidacion = ValidarEdicionParcialAcceso(Datos);
             if(ResultadoValidacion.success)
             {
-                const ResultadoDesactivacion = await this.modeloAcceso.DesactivarUsuarioPorIdAcceso({datos: ResultadoValidacion.data, bitacoraFn: req.Bitacora});
+                const ResultadoDesactivacion = await this.modeloAcceso.DesactivarUsuarioPorIdAcceso({datos: ResultadoValidacion.data, bitacoraFn: req.Bitacora, tipoDeAcceso: req.tipoDeAcceso});
                 let resultado = parseInt(ResultadoDesactivacion.estado);
                 res.status(resultado).json({
                     error: resultado !== 200,
@@ -234,7 +234,7 @@ export class AccesoControlador
         {            
             const ResultadoValidacion = ValidarInicioSesion(req.body);            
             if(ResultadoValidacion.success){
-                const ResultadoLogin = await this.modeloAcceso.LoginAcceso({datos: ResultadoValidacion.data, bitacoraFn: req.Bitacora});                
+                const ResultadoLogin = await this.modeloAcceso.LoginAcceso({datos: ResultadoValidacion.data, bitacoraFn: req.Bitacora, tipoDeAcceso: 'Inicio de sesion'});                
                 const DatosUsuario = {
                     correo: req.body.correo,
                     usuario: req.body.usuario,
@@ -271,7 +271,7 @@ export class AccesoControlador
     {
         try
         {
-            const ResultadoConsulta = await this.modeloAcceso.ObtenerTodosTiposDeAcceso();
+            const ResultadoConsulta = await this.modeloAcceso.ObtenerTodosTiposDeAcceso({tipoDeAcceso: req.tipoDeAcceso});
             let resultadoConsulta = parseInt(ResultadoConsulta.estado);
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
@@ -297,7 +297,7 @@ export class AccesoControlador
     {
         try
         {
-            const ResultadoConsulta = await this.modeloAcceso.ObtenerTodosLosUsuarios();
+            const ResultadoConsulta = await this.modeloAcceso.ObtenerTodosLosUsuarios({tipoDeAcceso: req.tipoDeAcceso});
             let resultadoConsulta = parseInt(ResultadoConsulta.estado);
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
@@ -322,7 +322,7 @@ export class AccesoControlador
     {
         try
         {
-            const ResultadoConsulta = await this.modeloAcceso.ObtenerTodosLosAnalistas();
+            const ResultadoConsulta = await this.modeloAcceso.ObtenerTodosLosAnalistas({tipoDeAcceso: req.tipoDeAcceso});
             let resultadoConsulta = parseInt(ResultadoConsulta.estado);
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,

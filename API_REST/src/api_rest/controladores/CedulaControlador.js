@@ -14,7 +14,7 @@ export class CedulaControlador
         {
             const ResultadoValidacion = ValidarEdicionParcialCedula(req.body);
             if(ResultadoValidacion.success){
-                const ResultadoInsercion = await this.modeloCedula.InsertarNuevaCedula({datos: ResultadoValidacion.data});
+                const ResultadoInsercion = await this.modeloCedula.InsertarNuevaCedula({datos: ResultadoValidacion.data,bitacoraFn: req.Bitacora ,tipoDeAcceso: req.tipoDeAcceso});
                 res.status(ResultadoInsercion.estado).json({
                     error: ResultadoInsercion.estado !== 200,
                     estado: ResultadoInsercion.estado,
@@ -48,7 +48,7 @@ export class CedulaControlador
             const Datos = {idCedula,...req.body};
             const ResultadoValidacion = ValidarEdicionParcialCedula(Datos);
             if(ResultadoValidacion.success){
-                const ResultadoEdicion = await this.modeloCedula.EditarCedula({datos: ResultadoValidacion.data});
+                const ResultadoEdicion = await this.modeloCedula.EditarCedula({datos: ResultadoValidacion.data, bitacoraFn: req.Bitacora ,tipoDeAcceso: req.tipoDeAcceso});
                 res.status(ResultadoEdicion.estado).json({
                     error: ResultadoEdicion.estado !== 200,
                     estado: ResultadoEdicion.estado,
