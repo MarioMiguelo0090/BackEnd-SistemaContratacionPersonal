@@ -30,7 +30,7 @@
  *                      type: string
  *             example:
  *               - idTipoProceso: 1
- *                 proceso: "Asignación"      
+ *                 proceso: "Asignación"
  *               - idTipoProceso: 2
  *                 proceso: "Requisición"
  *               - idTipoProceso: 3
@@ -39,9 +39,9 @@
  *         description: Error de servidor o base de datos.
  *       401:
  *         description: Token inválido o no proporcionado.
- *       400: 
+ *       400:
  *         description: Procesos no encontrados.
- *       
+ *
  */
 
 /**
@@ -76,7 +76,7 @@
  *         description: Error de servidor o base de datos.
  *       401:
  *         description: Token inválido o no proporcionado.
- *       400: 
+ *       400:
  *         description: Tipos de personal no encontrados.
  */
 
@@ -117,7 +117,7 @@
  *                - idEstadoProcesoContratacion: 6
  *                  estado: "Notificado"
  *                - idEstadoProcesoContratacion: 7
- *                  estado: "Cancelado"              
+ *                  estado: "Cancelado"
  *                - idEstadoProcesoContratacion: 8
  *                  estado: "Terminado"
  *                - idEstadoProcesoContratacion: 9
@@ -132,7 +132,7 @@
  *         description: Error al obtener los estados del proceso.
  *       401:
  *         description: Token inválido o no proporcionado.
- *       400: 
+ *       400:
  *         description: Error de base de datos.
  */
 
@@ -180,7 +180,7 @@
  *         description: Error de servidor o de base de datos.
  *       401:
  *         description: Token inválido o no proporcionado.
- *       400: 
+ *       400:
  *         description: Error de base de datos.
  */
 
@@ -204,13 +204,13 @@
  *                 type: object
  *                 properties:
  *                   idTipoCedula:
- *                     type: integer 
+ *                     type: integer
  *                   cedula:
  *                     type: string
  *             example:
  *               estado : 200
  *               tiposCedula:
- *                - idTipoCedula: 1 
+ *                - idTipoCedula: 1
  *                  cedula: "Interna"
  *                - idTipoCedula: 2
  *                  cedula: "Resultados"
@@ -220,7 +220,7 @@
  *         description: Error al obtener los tipos de cédula.
  *       401:
  *         description: Token inválido o no proporcionado.
- *       400: 
+ *       400:
  *         description: Error de base de datos.
  */
 
@@ -244,7 +244,7 @@
  *                 type: object
  *                 properties:
  *                   idDependencia:
- *                     type: integer  
+ *                     type: integer
  *                   numDependencia:
  *                     type: string
  *                   nombre:
@@ -257,7 +257,7 @@
  *                     type: string
  *                   areaOrganizacional:
  *                     type: string
- * 
+ *
  *             example:
  *               dependencias:
  *                 - idDependencia: 1
@@ -274,12 +274,12 @@
  *                   zona: "Xalapa"
  *                   subzona: "Xalapa"
  *                   areaOrganizacional: "Secretaría Académica"
- *                        
+ *
  *       500:
  *         description: Error al obtener las dependencias.
  *       401:
  *         description: Token inválido o no proporcionado.
- *       400: 
+ *       400:
  *         description: Error de base de datos.
  */
 
@@ -303,42 +303,70 @@
  *                 type: object
  *                 properties:
  *                   idClasificacionCedulas:
- *                     type: integer 
+ *                     type: integer
  *                   numCedula:
  *                     type: integer
  *                   nombre:
  *                     type: string
  *             example:
- *               - idClasificacionCedulas: 1 
+ *               - idClasificacionCedulas: 1
  *                 numCedula: 1
- *                 nombre: "Asistente Académico Administrativo"      
- *               - idClasificacionCedulas: 2 
+ *                 nombre: "Asistente Académico Administrativo"
+ *               - idClasificacionCedulas: 2
  *                 numCedula: 2
  *                 nombre: "Asistente Administrativo Académico"
- * 
+ *
  *       500:
  *         description: Error al obtener las clasificaciones de cédula.
  *       401:
  *         description: Token inválido o no proporcionado.
- *       400: 
+ *       400:
  *         description: Error de base de datos.
  */
-
 
 import { Router } from "express";
 import { CatalogoControlador } from "../controladores/CatalogoControlador.js";
 import { ValidarJwt } from "../middlewares/jwt.js";
 
-export const CrearRutaCatalogo = ({ModeloCatalogo}) =>
-{
-    const CatalogoEnrutador = Router();
-    const ControladorCatalogoEnrutador = new CatalogoControlador({ModeloCatalogo});
-    CatalogoEnrutador.get('/tiposProceso',ValidarJwt,ControladorCatalogoEnrutador.ObtenerTiposProceso);
-    CatalogoEnrutador.get('/tiposPersonal',ValidarJwt,ControladorCatalogoEnrutador.ObtenerTiposPersonal);
-    CatalogoEnrutador.get('/estadosProcesoContratacion',ValidarJwt,ControladorCatalogoEnrutador.ObtenerEstadosProcesoContratacion);
-    CatalogoEnrutador.get('/temporalDefinitiva',ValidarJwt,ControladorCatalogoEnrutador.ObtenerTemporalDefinitiva);
-    CatalogoEnrutador.get('/tiposCedula',ValidarJwt,ControladorCatalogoEnrutador.ObtenerTiposCedula);
-    CatalogoEnrutador.get('/dependencias',ValidarJwt,ControladorCatalogoEnrutador.ObtenerDependencias);
-    CatalogoEnrutador.get('/clasificacionesCedula',ValidarJwt,ControladorCatalogoEnrutador.ObtenerClasificacionesCedula)
-    return CatalogoEnrutador;
-}
+export const CrearRutaCatalogo = ({ ModeloCatalogo }) => {
+  const CatalogoEnrutador = Router();
+  const ControladorCatalogoEnrutador = new CatalogoControlador({
+    ModeloCatalogo,
+  });
+  CatalogoEnrutador.get(
+    "/tiposProceso",
+    ValidarJwt,
+    ControladorCatalogoEnrutador.ObtenerTiposProceso,
+  );
+  CatalogoEnrutador.get(
+    "/tiposPersonal",
+    ValidarJwt,
+    ControladorCatalogoEnrutador.ObtenerTiposPersonal,
+  );
+  CatalogoEnrutador.get(
+    "/estadosProcesoContratacion",
+    ValidarJwt,
+    ControladorCatalogoEnrutador.ObtenerEstadosProcesoContratacion,
+  );
+  CatalogoEnrutador.get(
+    "/temporalDefinitiva",
+    ValidarJwt,
+    ControladorCatalogoEnrutador.ObtenerTemporalDefinitiva,
+  );
+  CatalogoEnrutador.get(
+    "/tiposCedula",
+    ValidarJwt,
+    ControladorCatalogoEnrutador.ObtenerTiposCedula,
+  );
+  CatalogoEnrutador.get(
+    "/dependencias",
+    ValidarJwt,
+    ControladorCatalogoEnrutador.ObtenerDependencias,
+  );
+  CatalogoEnrutador.get(
+    "/clasificacionesCedula",
+    ValidarJwt,
+    ControladorCatalogoEnrutador.ObtenerClasificacionesCedula,
+  );
+  return CatalogoEnrutador;
+};

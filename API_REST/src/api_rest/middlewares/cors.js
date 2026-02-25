@@ -2,6 +2,12 @@ import cors from "cors";
 
 export const CorsMiddleware = () =>
   cors({
+    origin: false, // Deshabilita CORS
+    credentials: false,
+  });
+/*
+export const CorsMiddleware = () =>
+  cors({
     origin: (origin, callback) => {
       return callback(null, true);
     },
@@ -9,3 +15,4 @@ export const CorsMiddleware = () =>
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: false,
   });
+  */
