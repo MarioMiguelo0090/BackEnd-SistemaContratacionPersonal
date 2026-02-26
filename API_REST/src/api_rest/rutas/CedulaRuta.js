@@ -753,23 +753,24 @@
 
 import { Router } from "express";
 import { CedulaControlador } from "../controladores/CedulaControlador.js";
+import { BitacoraLogger } from "../middlewares/bitacora.js";
 import { ValidarJwt } from "../middlewares/jwt.js";
 
 export const CrearRutaCedula = ({ModeloCedula}) =>
 {
     const CedulaEnrutador = Router();
     const ControladorCedulaEnrutador = new CedulaControlador({ModeloCedula});
-    CedulaEnrutador.post('/',ValidarJwt,ControladorCedulaEnrutador.InsertarNuevaCedula);
+    CedulaEnrutador.post('/',ValidarJwt,BitacoraLogger,ControladorCedulaEnrutador.InsertarNuevaCedula);
     CedulaEnrutador.get('/obtencionCedulas',ValidarJwt,ControladorCedulaEnrutador.ObtenerTodasLasCedulas);    
-    CedulaEnrutador.put('/:idCedula',ValidarJwt,ControladorCedulaEnrutador.EditarCedulaExistente);
+    CedulaEnrutador.put('/:idCedula',ValidarJwt,BitacoraLogger,ControladorCedulaEnrutador.EditarCedulaExistente);
     CedulaEnrutador.get('/busqueda/:FKIdProceso',ValidarJwt,ControladorCedulaEnrutador.ObtenerCedulaPorFKIdProceso);    
     CedulaEnrutador.get('/competencia/:FKIdClasificacionCedula',ValidarJwt,ControladorCedulaEnrutador.ObtenerCedulaPorFKIdClasificacionCedula);
     CedulaEnrutador.get('/competencia-resultados/:IdProceso',ValidarJwt,ControladorCedulaEnrutador.ObtenerCedulaPorIdCedulaResultados);
-    CedulaEnrutador.post('/resultado',ValidarJwt,ControladorCedulaEnrutador.RegistrarNuevoResultado);
-    CedulaEnrutador.put('/resultado/:idResultado',ValidarJwt,ControladorCedulaEnrutador.EditarResultados);
+    CedulaEnrutador.post('/resultado',ValidarJwt,BitacoraLogger,ControladorCedulaEnrutador.RegistrarNuevoResultado);
+    CedulaEnrutador.put('/resultado/:idResultado',ValidarJwt,BitacoraLogger,ControladorCedulaEnrutador.EditarResultados);
     CedulaEnrutador.get('/resultado/busqueda/:FKIdCedula',ValidarJwt,ControladorCedulaEnrutador.ObtenerResultadosPorCedula);
     CedulaEnrutador.get('/activas',ValidarJwt,ControladorCedulaEnrutador.ObtenerCedulasActivasServicio);
-    CedulaEnrutador.post('/externa',ValidarJwt,ControladorCedulaEnrutador.InsertarNuevaCedulaExterna);
-    CedulaEnrutador.get('/externa/:FKIdCedula',ControladorCedulaEnrutador.ObtenerCedulaExternaPorIdCedula);
+    CedulaEnrutador.post('/externa',ValidarJwt,BitacoraLogger,ControladorCedulaEnrutador.InsertarNuevaCedulaExterna);
+    CedulaEnrutador.get('/externa/:FKIdCedula',ValidarJwt,ControladorCedulaEnrutador.ObtenerCedulaExternaPorIdCedula);
     return CedulaEnrutador;
 }

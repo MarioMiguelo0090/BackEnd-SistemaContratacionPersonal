@@ -1,14 +1,16 @@
-import { Cifrar } from '../../utilidades/Cifrado.js';
+import { Cifrar, Descifrar } from '../../utilidades/Cifrado.js';
 import { MensajeCedula, MensajeGeneralesBD, MensajeResultado } from '../../utilidades/Constantes.js';
 import { obtenerConexion } from './config/config.js';
 import { QueryTypes } from "sequelize";
+import {toZonedTime, format} from 'date-fns-tz'
 
-//TODO: Probar la inserción de la cedula, modificando los tamaños en la base de datos y procedimientos almacenados.
+//TODO: Faltan los métodos de obtener todas las cedulas, ya que va de la mano con proceso de contratación
 
 export class ModeloCedula {
     static async InsertarNuevaCedula({ datos, bitacoraFn,tipoDeAcceso }) {
         let resultadoInsercion;
         const sequelize = obtenerConexion(tipoDeAcceso);
+        let transaction;
         try {
             const {
                 FKIdTipoCedula, FKIdProceso, fechaCedulaInterna, fechaCedulaResultados,
@@ -20,7 +22,7 @@ export class ModeloCedula {
                 plaza, oficioAutorizacionDeOcupacion, evaluacionConocimientos,
                 aprobadoJefeOficina, aprobadoDireccion, archivoAdjunto,
             } = datos;
-
+            transaction = await sequelize.transaction();
             const resultadoProcedimiento = await sequelize.query(
                 `EXEC sp_RegistrarCedula 
                 @FKIdTipoCedula = :FKIdTipoCedula, @FKIdProceso = :FKIdProceso, @fechaCedulaInterna = :fechaCedulaInterna, 
@@ -58,6 +60,7 @@ export class ModeloCedula {
                     if(bitacoraFn){
                         await bitacoraFn(`Se ha registrado una nueva cédula`)
                     }
+                    await transaction.commit();
                     resultadoInsercion = {
                         ...MensajeCedula.REGISTRO_EXITOSO,
                         estado: MensajeCedula.REGISTRO_EXITOSO.resultado,
@@ -76,6 +79,9 @@ export class ModeloCedula {
                 }
             }
         } catch (error) {
+            if(transaction){
+                await transaction.rollback();
+            }
             throw error;
         }
         return resultadoInsercion;
@@ -84,6 +90,7 @@ export class ModeloCedula {
     static async EditarCedula({ datos, bitacoraFn,tipoDeAcceso }) {
         let resultadoEdicion;
         const sequelize = obtenerConexion(tipoDeAcceso);
+        let transaction;
         try {
             const {
                 idCedula, FKIdTipoCedula, FKIdProceso, fechaCedulaInterna, fechaCedulaResultados,
@@ -94,7 +101,7 @@ export class ModeloCedula {
                 descripcionDesarrollar, descripcionReforzar, plaza, oficioAutorizacionDeOcupacion,
                 evaluacionConocimientos, estado,
             } = datos;
-
+            transaction = await sequelize.transaction();
             const resultadoProcedimiento = await sequelize.query(
                 `EXEC sp_ActualizarCedula 
                 @idCedula = :idCedula, @FKIdTipoCedula = :FKIdTipoCedula, @FKIdProceso = :FKIdProceso, 
@@ -111,7 +118,7 @@ export class ModeloCedula {
                 @estado = :estado`,
                 {
                     replacements: {
-                        idCedula, FKIdTipoCedula, FKIdProceso, fechaCedulaInterna: Cifrar(fechaCedulaInterna), fechaCedulaResultados: Cifrar(fechaCedulaResultados),
+                        idCedula, FKIdTipoCedula, FKIdProceso, fechaCedulaInterna: fechaCedulaInterna, fechaCedulaResultados: fechaCedulaResultados,
                         edad: Cifrar(edad), educacionFormal: Cifrar(educacionFormal), referidoPor: Cifrar(referidoPor), antecedentesFamiliaresUV: Cifrar(antecedentesFamiliaresUV), expectativaLaboral: Cifrar(expectativaLaboral),
                         experienciaRelacionada: Cifrar(experienciaRelacionada), experiencia: Cifrar(experiencia), conclusiones: Cifrar(conclusiones), resultado: Cifrar(resultado), efectoContratacion: Cifrar(efectoContratacion),
                         competenciaReforzar: Cifrar(competenciaReforzar), competenciaDesarrollar: Cifrar(competenciaDesarrollar), FKIdClasificacionCedula, FKIdResultado,
@@ -128,6 +135,7 @@ export class ModeloCedula {
                 if(bitacoraFn){
                     await bitacoraFn(`Se ha modificado una cedula con el id: ${idCedula}`)
                 }
+                await transaction.commit();
                 resultadoEdicion = {
                     ...MensajeCedula.ACTUALIZACION_EXITOSA,
                     estado: MensajeCedula.ACTUALIZACION_EXITOSA.resultado
@@ -144,6 +152,9 @@ export class ModeloCedula {
                 };
             }
         } catch (error) {
+            if(transaction){
+                await transaction.rollback();
+            }
             throw error;
         }
         return resultadoEdicion;
@@ -162,13 +173,26 @@ export class ModeloCedula {
                 }
             );
 
-            const ResultadoQueryCedula = resultadoProcedimiento[0];
+            let ResultadoQueryCedula = resultadoProcedimiento[0];
+            
             if (ResultadoQueryCedula.length > 0) {
-                const cedulaConsultada = ResultadoQueryCedula[0];
-                if (cedulaConsultada.idCedula > 0) {
+                ResultadoQueryCedula = ResultadoQueryCedula.map(cedula => {
+                    return {
+                        ...cedula,
+                        edad: Descifrar(cedula.edad), educacionFormal: Descifrar(cedula.educacionFormal), referidoPor: Descifrar(cedula.referidoPor),
+                        antecedentesFamiliaresUV: Descifrar(cedula.antecedentesFamiliaresUV), expectativaLaboral: Descifrar(cedula.expectativaLaboral), experienciaRelacionada: Descifrar(cedula.experienciaRelacionada),
+                        experiencia: Descifrar(cedula.experiencia), conclusiones: Descifrar(cedula.conclusiones), resultado: Descifrar(cedula.resultado), efectoContratacion: Descifrar(cedula.efectoContratacion),
+                        competenciaReforzar: Descifrar(cedula.competenciaReforzar), competenciaDesarrollar: Descifrar(cedula.competenciaDesarrollar), motivoCedulaInterna: Descifrar(cedula.motivoCedulaInterna),
+                        motivoCedulaResultados: Descifrar(cedula.motivoCedulaResultados), puesto: Descifrar(cedula.puesto), plaza: Descifrar(cedula.plaza),
+                        oficioAutorizacionDeOcupacion: Descifrar(cedula.oficioAutorizacionDeOcupacion), evaluacionConocimientos:  Descifrar(cedula.evaluacionConocimientos), competenciasSobresaliente: Descifrar(cedula.competenciasSobresaliente),
+                        descripcionDesarrollar: Descifrar(cedula.descripcionDesarrollar), descripcionReforzar: Descifrar(cedula.descripcionReforzar)
+                    };
+                });
+                if (ResultadoQueryCedula[0].idCedula > 0) {
                     resultadoConsulta = { estado: 200, cedula: ResultadoQueryCedula }
-                } else {
-                    resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
+                }
+                else {
+                    resultadoConsulta = { estado: 404, mensaje: MensajeCedula.CEDULA_INEXISTENTE };
                 }
             } else {
                 resultadoConsulta = { estado: 404, mensaje: MensajeCedula.CEDULA_INEXISTENTE };
@@ -209,10 +233,12 @@ export class ModeloCedula {
         return resultadoConsulta;
     }
 
-    static async InsertarNuevoResultado({ datos, tipoDeAcceso }) {
+    static async InsertarNuevoResultado({ datos, bitacoraFn,tipoDeAcceso }) {
         let resultadoInsercion;
         const sequelize = obtenerConexion(tipoDeAcceso);
+        let transaction;
         try {
+            transaction = await sequelize.transaction();
             const {
                 FKIdCedula, psicometriaComunicacion, psicometriaTrabajoEnEquipo, psicometriaOrientacionAlServicio,
                 psicometriaSensibilidadALineamientos, psicometriaPlaneacionOrganizacion, psicometriaAnalisisProblemas,
@@ -235,12 +261,12 @@ export class ModeloCedula {
                 @psicometriaNegociacion = :psicometriaNegociacion, @resultadoPorcentaje = :resultadoPorcentaje`,
                 {
                     replacements: {
-                        FKIdCedula, psicometriaComunicacion, psicometriaTrabajoEnEquipo, psicometriaOrientacionAlServicio,
-                        psicometriaSensibilidadALineamientos, psicometriaPlaneacionOrganizacion, psicometriaAnalisisProblemas,
-                        psicometriaEnfoqueResultados, psicometriaControlActividades, psicometriaEnfoqueCalidad,
-                        psicometriaRelacionesInterpersonales, psicometriaLiderazgo, psicometriaTomaDecisiones,
-                        psicometriaDinamismo, psicometriaInnovacion, psicometriaPensamientoEstrategico,
-                        psicometriaNegociacion, resultadoPorcentaje
+                        FKIdCedula, psicometriaComunicacion: Cifrar(psicometriaComunicacion), psicometriaTrabajoEnEquipo: Cifrar(psicometriaTrabajoEnEquipo), psicometriaOrientacionAlServicio: Cifrar(psicometriaOrientacionAlServicio),
+                        psicometriaSensibilidadALineamientos: Cifrar(psicometriaSensibilidadALineamientos), psicometriaPlaneacionOrganizacion: Cifrar(psicometriaPlaneacionOrganizacion), psicometriaAnalisisProblemas: Cifrar(psicometriaAnalisisProblemas),
+                        psicometriaEnfoqueResultados: Cifrar(psicometriaEnfoqueResultados), psicometriaControlActividades: Cifrar(psicometriaControlActividades), psicometriaEnfoqueCalidad: Cifrar(psicometriaEnfoqueCalidad),
+                        psicometriaRelacionesInterpersonales: Cifrar(psicometriaRelacionesInterpersonales), psicometriaLiderazgo: Cifrar(psicometriaLiderazgo), psicometriaTomaDecisiones: Cifrar(psicometriaTomaDecisiones),
+                        psicometriaDinamismo: Cifrar(psicometriaDinamismo), psicometriaInnovacion: Cifrar(psicometriaInnovacion), psicometriaPensamientoEstrategico: Cifrar(psicometriaPensamientoEstrategico),
+                        psicometriaNegociacion: Cifrar(psicometriaNegociacion), resultadoPorcentaje: Cifrar(resultadoPorcentaje)
                     },
                     type: QueryTypes.RAW
                 }
@@ -250,6 +276,10 @@ export class ModeloCedula {
             if (Resultado.length > 0) {
                 const Registro = Resultado[0];
                 if (Registro.idResultado > 0) {
+                    if(bitacoraFn){
+                        await bitacoraFn(`Se ha registrado el resultado de la cédula con id: ${FKIdCedula}`)
+                    }
+                    await transaction.commit();
                     resultadoInsercion = {
                         ...MensajeResultado.REGISTRO_EXITOSO,
                         estado: MensajeResultado.REGISTRO_EXITOSO.resultado
@@ -262,14 +292,18 @@ export class ModeloCedula {
                 }
             }
         } catch (error) {
+            if(transaction){
+                await transaction.rollback();
+            }
             throw error;
         }
         return resultadoInsercion;
     }
 
-    static async EditarResultadoExistente({ datos, tipoDeAcceso }) {
+    static async EditarResultadoExistente({ datos, bitacoraFn, tipoDeAcceso }) {
         let resultadoEdicion;
         const sequelize = obtenerConexion(tipoDeAcceso);
+        let transaction;
         try {
             const {
                 idResultado, psicometriaComunicacion, psicometriaTrabajoEnEquipo, psicometriaOrientacionAlServicio,
@@ -279,7 +313,7 @@ export class ModeloCedula {
                 psicometriaDinamismo, psicometriaInnovacion, psicometriaPensamientoEstrategico,
                 psicometriaNegociacion
             } = datos;
-
+            transaction = await sequelize.transaction();
             const resultadoProcedimiento = await sequelize.query(
                 `EXEC sp_ActualizarResultado 
                 @idResultado = :idResultado, @psicometriaComunicacion = :psicometriaComunicacion, 
@@ -293,12 +327,12 @@ export class ModeloCedula {
                 @psicometriaNegociacion = :psicometriaNegociacion`,
                 {
                     replacements: {
-                        idResultado, psicometriaComunicacion, psicometriaTrabajoEnEquipo, psicometriaOrientacionAlServicio,
-                        psicometriaSensibilidadALineamientos, psicometriaPlaneacionOrganizacion, psicometriaAnalisisProblemas,
-                        psicometriaEnfoqueResultados, psicometriaControlActividades, psicometriaEnfoqueCalidad,
-                        psicometriaRelacionesInterpersonales, psicometriaLiderazgo, psicometriaTomaDecisiones,
-                        psicometriaDinamismo, psicometriaInnovacion, psicometriaPensamientoEstrategico,
-                        psicometriaNegociacion
+                        idResultado, psicometriaComunicacion: Cifrar(psicometriaComunicacion), psicometriaTrabajoEnEquipo: Cifrar(psicometriaTrabajoEnEquipo), psicometriaOrientacionAlServicio: Cifrar(psicometriaOrientacionAlServicio),
+                        psicometriaSensibilidadALineamientos: Cifrar(psicometriaSensibilidadALineamientos), psicometriaPlaneacionOrganizacion: Cifrar(psicometriaPlaneacionOrganizacion), psicometriaAnalisisProblemas: Cifrar(psicometriaAnalisisProblemas),
+                        psicometriaEnfoqueResultados: Cifrar(psicometriaEnfoqueResultados), psicometriaControlActividades: Cifrar(psicometriaControlActividades), psicometriaEnfoqueCalidad: Cifrar(psicometriaEnfoqueCalidad),
+                        psicometriaRelacionesInterpersonales: Cifrar(psicometriaRelacionesInterpersonales), psicometriaLiderazgo: Cifrar(psicometriaLiderazgo), psicometriaTomaDecisiones: Cifrar(psicometriaTomaDecisiones),
+                        psicometriaDinamismo: Cifrar(psicometriaDinamismo), psicometriaInnovacion: Cifrar(psicometriaInnovacion), psicometriaPensamientoEstrategico: Cifrar(psicometriaPensamientoEstrategico),
+                        psicometriaNegociacion: Cifrar(psicometriaNegociacion)
                     },
                     type: QueryTypes.RAW
                 }
@@ -306,6 +340,10 @@ export class ModeloCedula {
 
             const ResultadoSP = resultadoProcedimiento[0][0]?.actualizado;
             if (ResultadoSP === 1) {
+                if(bitacoraFn){
+                    await bitacoraFn(`Se ha editado un resultado de una cédula con id: ${idResultado}`)
+                }
+                await transaction.commit();
                 resultadoEdicion = {
                     ...MensajeCedula.ACTUALIZACION_EXITOSA,
                     estado: MensajeCedula.ACTUALIZACION_EXITOSA.resultado
@@ -322,6 +360,9 @@ export class ModeloCedula {
                 };
             }
         } catch (error) {
+            if(transaction){
+                await transaction.rollback();
+            }
             throw error;
         }
         return resultadoEdicion;
@@ -342,9 +383,19 @@ export class ModeloCedula {
 
             const ResultadoQueryResultado = resultadoProcedimiento[0];
             if (ResultadoQueryResultado.length > 0) {
-                const resultadoConsultado = ResultadoQueryResultado[0];
-                if (resultadoConsultado.idResultado > 0) {
-                    resultadoConsulta = { estado: 200, resultados: ResultadoQueryResultado }
+                let resultadoConsultado = ResultadoQueryResultado[0];
+                resultadoConsultado = ResultadoQueryResultado.map(resultado => {
+                    return {
+                        ...resultado,
+                        psicometriaComunicacion: Descifrar(resultado.psicometriaComunicacion), psicometriaTrabajoEnEquipo: Descifrar(resultado.psicometriaTrabajoEnEquipo), psicometriaOrientacionAlServicio: Descifrar(resultado.psicometriaOrientacionAlServicio),
+                        psicometriaSensibilidadALineamientos: Descifrar(resultado.psicometriaSensibilidadALineamientos), psicometriaPlaneacionOrganizacion: Descifrar(resultado.psicometriaPlaneacionOrganizacion), psicometriaAnalisisProblemas: Descifrar(resultado.psicometriaAnalisisProblemas),
+                        psicometriaEnfoqueResultados: Descifrar(resultado.psicometriaEnfoqueResultados), psicometriaControlActividades: Descifrar(resultado.psicometriaControlActividades), psicometriaEnfoqueCalidad: Descifrar(resultado.psicometriaEnfoqueCalidad), psicometriaRelacionesInterpersonales: Descifrar(resultado.psicometriaRelacionesInterpersonales),
+                        psicometriaLiderazgo: Descifrar(resultado.psicometriaLiderazgo), psicometriaTomaDecisiones: Descifrar(resultado.psicometriaTomaDecisiones), psicometriaDinamismo: Descifrar(resultado.psicometriaDinamismo), psicometriaInnovacion: Descifrar(resultado.psicometriaInnovacion),
+                        psicometriaPensamientoEstrategico: Descifrar(resultado.psicometriaPensamientoEstrategico), psicometriaNegociacion: Descifrar(resultado.psicometriaNegociacion)
+                    }
+                })
+                if (resultadoConsultado[0].idResultado > 0) {
+                    resultadoConsulta = { estado: 200, resultados: resultadoConsultado }
                 } else {
                     resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
                 }
@@ -368,7 +419,6 @@ export class ModeloCedula {
                     type: QueryTypes.RAW
                 }
             );
-
             const ResultadoQueryResultado = resultadoProcedimiento[0];
             if (ResultadoQueryResultado.length > 0) {
                 const resultadoConsultado = ResultadoQueryResultado[0];
@@ -426,22 +476,26 @@ export class ModeloCedula {
         return resultadoConsulta;
     }
 
-    static async InsertarCedulaExterna({ datos, tipoDeAcceso }) {
+    static async InsertarCedulaExterna({ datos, bitacoraFn,tipoDeAcceso }) {
         let resultadoInsercion;
         const sequelize = obtenerConexion(tipoDeAcceso);
+        let transaction;
         try {
+            transaction = await sequelize.transaction();
             const { FKIdCedula, nombre, archivo } = datos;
-            const fechaSubida = new Date();
             const bufferArchivo = Buffer.from(archivo, 'base64');
-
+            const archivoHex = bufferArchivo.toString('hex'); 
+            const zona = 'America/Mexico_City';
+            const fechaZona = toZonedTime(new Date(), zona);
+            const fechaSubida = format(fechaZona, 'yyyy-MM-dd HH:mm:ss', { timeZone: zona });
             const resultadoProcedimiento = await sequelize.query(
                 `EXEC sp_InsertarDocumentoCedulaExterna 
                 @FKIdCedula = :FKIdCedula, @nombre = :nombre, @archivo = :archivo, @fechaSubida = :fechaSubida`,
                 {
                     replacements: {
                         FKIdCedula,
-                        nombre,
-                        archivo: bufferArchivo,
+                        nombre: Cifrar(nombre),
+                        archivo: Cifrar(archivoHex),
                         fechaSubida
                     },
                     type: QueryTypes.RAW
@@ -452,6 +506,10 @@ export class ModeloCedula {
             if (Resultado.length > 0) {
                 const Registro = Resultado[0];
                 if (Registro.Codigo > 0) {
+                    if(bitacoraFn){
+                        await bitacoraFn(`Se ha insertado un documento de una cédula externa con id: ${FKIdCedula}`)
+                    }
+                    await transaction.commit();
                     resultadoInsercion = {
                         ...MensajeCedula.REGISTRO_EXITOSO,
                         estado: MensajeCedula.REGISTRO_EXITOSO.resultado
@@ -464,15 +522,19 @@ export class ModeloCedula {
                 }
             }
         } catch (error) {
+            if(transaction){
+                await transaction.rollback();
+            }
             throw error;
         }
         return resultadoInsercion;
     }
 
-    static async ObtenerCedulaExternaPorFKIdCedula(FKIdCedula, tipoDeAcceso) {
+    static async ObtenerCedulaExternaPorFKIdCedula({datos, tipoDeAcceso}) {
         let resultadoConsulta;
         const sequelize = obtenerConexion(tipoDeAcceso);
         try {
+            const {FKIdCedula} = datos;
             const resultadoProcedimiento = await sequelize.query(
                 `EXEC sp_ObtenerDocumentoExternoPorCedula @FKIdCedula = :FKIdCedula`,
                 {
@@ -480,20 +542,30 @@ export class ModeloCedula {
                     type: QueryTypes.RAW
                 }
             );
-
-            const documentos = resultadoProcedimiento[0];
+            let documentos = resultadoProcedimiento[0]; 
             if (documentos.length > 0) {
-                const documentoConsultado = documentos[0];
+                documentos = documentos.map(doc => {
+                    const archivoDescifrado = Descifrar(doc.archivo); 
+                    const archivoBuffer = archivoDescifrado 
+                        ? Buffer.from(archivoDescifrado, 'hex') 
+                        : null;
+                    return {
+                        ...doc,
+                        nombre:  Descifrar(doc.nombre),
+                        archivo: archivoBuffer ? archivoBuffer.toString('base64') : null 
+                    };
+                });
+
+                const documentoConsultado = documentos[0]; 
                 if (documentoConsultado.idDocumento > 0) {
-                    const base64Archivo = documentoConsultado.archivo.toString('base64');
                     resultadoConsulta = {
                         estado: 200,
                         documento: {
-                            idDocumento: documentoConsultado.idDocumento,
-                            FKIdCedula: documentoConsultado.FKIdCedula,
-                            nombre: documentoConsultado.nombre,
-                            fechaSubida: documentoConsultado.fechaSubida,
-                            archivo: base64Archivo
+                            idDocumento:  documentoConsultado.idDocumento,
+                            FKIdCedula:   documentoConsultado.FKIdCedula,
+                            nombre:       documentoConsultado.nombre,
+                            fechaSubida:  documentoConsultado.fechaSubida,
+                            archivo:      documentoConsultado.archivo  
                         }
                     };
                 } else {

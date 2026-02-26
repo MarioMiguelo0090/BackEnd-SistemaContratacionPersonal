@@ -75,7 +75,7 @@ export class CedulaControlador
             const Datos =  {FKIdProceso};
             const ResultadoValidacion = ValidarEdicionParcialCedula(Datos);
             if(ResultadoValidacion.success){
-                const ResultadoConsulta = await this.modeloCedula.ObtenerCedulaPorIdProceso({datos: ResultadoValidacion.data});
+                const ResultadoConsulta = await this.modeloCedula.ObtenerCedulaPorIdProceso({datos: ResultadoValidacion.data,tipoDeAcceso: req.tipoDeAcceso});
                 let resultadoConsulta = parseInt(ResultadoConsulta.estado);
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !== 200,
@@ -178,7 +178,7 @@ export class CedulaControlador
         {
             const ResultadoValidacion = ValidarEdicionParcialResultado(req.body);
             if(ResultadoValidacion.success){
-                const ResultadoInsercion = await this.modeloCedula.InsertarNuevoResultado({datos: ResultadoValidacion.data});
+                const ResultadoInsercion = await this.modeloCedula.InsertarNuevoResultado({datos: ResultadoValidacion.data,bitacoraFn: req.Bitacora ,tipoDeAcceso: req.tipoDeAcceso});
                 res.status(ResultadoInsercion.estado).json({
                     error: ResultadoInsercion.estado !== 200,
                     estado: ResultadoInsercion.estado,
@@ -209,7 +209,7 @@ export class CedulaControlador
             const Datos = {idResultado,...req.body};
             const ResultadoValidacion = ValidarEdicionParcialResultado(Datos);
             if(ResultadoValidacion.success){
-                const ResultadoEdicion = await this.modeloCedula.EditarResultadoExistente({datos: ResultadoValidacion.data});
+                const ResultadoEdicion = await this.modeloCedula.EditarResultadoExistente({datos: ResultadoValidacion.data,bitacoraFn: req.Bitacora ,tipoDeAcceso: req.tipoDeAcceso});
                 res.status(ResultadoEdicion.estado).json({
                     error: ResultadoEdicion.estado !== 200,
                     estado: ResultadoEdicion.estado,
@@ -265,7 +265,7 @@ export class CedulaControlador
     {
         try
         {
-            const ResultadoConsulta = await this.modeloCedula.ObtenerTodasCedulas();
+            const ResultadoConsulta = await this.modeloCedula.ObtenerTodasCedulas({tipoDeAcceso: req.tipoDeAcceso});
             let resultadoConsulta = parseInt(ResultadoConsulta.estado);
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
@@ -278,7 +278,7 @@ export class CedulaControlador
         }catch(error)
         {
             logger({mensaje:error});
-            res.status({
+            res.status(500).json({
                 error: true,
                 estado: 500,
                 mensaje: "Ha ocurrido un error en el servidor"
@@ -303,7 +303,7 @@ export class CedulaControlador
         }catch(error)
         {
             logger({mensaje:error});
-            res.status({
+            res.status(500).json({
                 error: true,
                 estado: 500,
                 mensaje: "Ha ocurrido un error en el servidor"
@@ -317,7 +317,7 @@ export class CedulaControlador
         {
             const ResultadoValidacion = ValidarEdicionParcialCedula(req.body);
             if(ResultadoValidacion.success){
-                const ResultadoInsercion = await this.modeloCedula.InsertarCedulaExterna({datos: ResultadoValidacion.data});
+                const ResultadoInsercion = await this.modeloCedula.InsertarCedulaExterna({datos: ResultadoValidacion.data,bitacoraFn: req.Bitacora ,tipoDeAcceso: req.tipoDeAcceso});
                 res.status(ResultadoInsercion.estado).json({
                     error: ResultadoInsercion.estado !== 200,
                     estado: ResultadoInsercion.estado,
@@ -348,7 +348,7 @@ export class CedulaControlador
             const Datos = {FKIdCedula};
             const ResultadoValidacion = ValidarEdicionParcialCedula(Datos);
             if(ResultadoValidacion.success){
-                const ResultadoConsulta = await this.modeloCedula.ObtenerCedulaExternaPorFKIdCedula(FKIdCedula);
+                const ResultadoConsulta = await this.modeloCedula.ObtenerCedulaExternaPorFKIdCedula({datos: ResultadoValidacion.data, tipoDeAcceso: req.tipoDeAcceso});
                 let resultadoConsulta = parseInt(ResultadoConsulta.estado);
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !== 200,
