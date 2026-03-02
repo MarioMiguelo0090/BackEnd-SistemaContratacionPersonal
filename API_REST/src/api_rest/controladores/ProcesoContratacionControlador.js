@@ -14,7 +14,7 @@ export class ProcesoContratacionControlador
         {
             const ResultadoValidacion = ValidarEdicionParcialProcesoContratacion(req.body);
             if(ResultadoValidacion.success){
-                const ResultadoInsercion = await this.modeloProcesoContratacion.InsertarNuevoProcesoContratacion({datos: ResultadoValidacion.data});                
+                const ResultadoInsercion = await this.modeloProcesoContratacion.InsertarNuevoProcesoContratacion({datos: ResultadoValidacion.data, bitacoraFn: req.Bitacora, tipoDeAcceso: req.tipoDeAcceso});                
                 res.status(ResultadoInsercion.estado).json({
                     error: ResultadoInsercion.estado !== 200,
                     estado: ResultadoInsercion.estado,
@@ -150,7 +150,7 @@ export class ProcesoContratacionControlador
                 atendioCita };
             const ResultadoValidacion = ValidarEdicionParcialProcesoContratacion(Datos);
             if (ResultadoValidacion.success) {
-                const ResultadoEdicion = await this.modeloProcesoContratacion.EditarProcesoContratacion({ datos: ResultadoValidacion.data });
+                const ResultadoEdicion = await this.modeloProcesoContratacion.EditarProcesoContratacion({ datos: ResultadoValidacion.data, bitacoraFn: req.Bitacora, tipoDeAcceso: req.tipoDeAcceso });
                 res.status(ResultadoEdicion.estado).json({
                     error: ResultadoEdicion.estado !== 200,
                     estado: ResultadoEdicion.estado,
@@ -191,7 +191,7 @@ export class ProcesoContratacionControlador
             const Datos = {idProceso};
             const ResultadoValidacion = ValidarEdicionParcialProcesoContratacion(Datos);
             if(ResultadoValidacion.success){
-                const ResultadoConsulta = await this.modeloProcesoContratacion.ObtenerProcesoContratacionPorIdProceso({datos: ResultadoValidacion.data});
+                const ResultadoConsulta = await this.modeloProcesoContratacion.ObtenerProcesoContratacionPorIdProceso({datos: ResultadoValidacion.data, tipoDeAcceso: req.tipoDeAcceso});
                 let resultadoConsulta = parseInt(ResultadoConsulta.estado);
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !== 200,
@@ -226,7 +226,7 @@ export class ProcesoContratacionControlador
             const Datos = {FKIdAcceso};
             const ResultadoValidacion = ValidarEdicionParcialProcesoContratacion(Datos);
             if(ResultadoValidacion.success){
-                const ResultadoConsulta = await this.modeloProcesoContratacion.ObtenerProcesosPorIdAcceso({datos: ResultadoValidacion.data});
+                const ResultadoConsulta = await this.modeloProcesoContratacion.ObtenerProcesosPorIdAcceso({datos: ResultadoValidacion.data, tipoDeAcceso: req.tipoDeAcceso});
                 let resultadoConsulta = parseInt(ResultadoConsulta.estado);
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !== 200,
@@ -261,7 +261,7 @@ export class ProcesoContratacionControlador
             const Datos = {FKIdEstadoProcesoContratacion};
             const ResultadoValidacion = ValidarEdicionParcialProcesoContratacion(Datos);
             if(ResultadoValidacion.success){
-                const ResultadoConsulta = await this.modeloProcesoContratacion.ObtenerProcesosPorIdEstado({datos: ResultadoValidacion.data});
+                const ResultadoConsulta = await this.modeloProcesoContratacion.ObtenerProcesosPorIdEstado({datos: ResultadoValidacion.data, tipoDeAcceso: req.tipoDeAcceso});
                 let resultadoConsulta = parseInt(ResultadoConsulta.estado);
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !== 200,
@@ -292,7 +292,7 @@ export class ProcesoContratacionControlador
     {
         try
         {
-            const ResultadoConsulta = await this.modeloProcesoContratacion.ObtenerTodosLosProcesosContratacion();
+            const ResultadoConsulta = await this.modeloProcesoContratacion.ObtenerTodosLosProcesosContratacion({tipoDeAcceso: req.tipoDeAcceso});
             let resultadoConsulta = parseInt(ResultadoConsulta.estado);
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
@@ -317,7 +317,7 @@ export class ProcesoContratacionControlador
     {
         try
         {
-            const ResultadoConsulta = await this.modeloProcesoContratacion.ObtenerNoBeneficiados();
+            const ResultadoConsulta = await this.modeloProcesoContratacion.ObtenerNoBeneficiados({tipoDeAcceso: req.tipoDeAcceso});
             let resultadoConsulta = parseInt(ResultadoConsulta.estado);
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
@@ -346,7 +346,7 @@ export class ProcesoContratacionControlador
             const Datos = {FKIdAcceso};
             const ResultadoValidacion = ValidarEdicionParcialProcesoContratacion(Datos);
             if(ResultadoValidacion.success){
-                const ResultadoConsulta = await this.modeloProcesoContratacion.ObtenerDatosAnalistaParaEstadistica({datos: ResultadoValidacion.data});
+                const ResultadoConsulta = await this.modeloProcesoContratacion.ObtenerDatosAnalistaParaEstadistica({datos: ResultadoValidacion.data, tipoDeAcceso: req.tipoDeAcceso});
                 let resultadoConsulta = parseInt(ResultadoConsulta.estado);
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !== 200,
@@ -379,7 +379,7 @@ export class ProcesoContratacionControlador
         {
             const ResultadoValidacion = ValidarEdicionParcialControlVersiones(req.body);
             if(ResultadoValidacion.success){
-                const ResultadoInsercion = await this.modeloProcesoContratacion.RegistrarControlVersion({datos: ResultadoValidacion.data});                
+                const ResultadoInsercion = await this.modeloProcesoContratacion.RegistrarControlVersion({ datos: ResultadoValidacion.data, bitacoraFn: req.Bitacora, tipoDeAcceso: req.tipoDeAcceso });                
                 res.status(ResultadoInsercion.estado).json({
                     error: ResultadoInsercion.estado !== 200,
                     estado: ResultadoInsercion.estado,
@@ -412,7 +412,7 @@ export class ProcesoContratacionControlador
             const Datos = {FKIdProceso};
             const ResultadoValidacion = ValidarEdicionParcialControlVersiones(Datos);
             if(ResultadoValidacion.success){
-                const ResultadoConsulta = await this.modeloProcesoContratacion.ObtenerControlVersionesPorFKIdProceso(FKIdProceso);
+                const ResultadoConsulta = await this.modeloProcesoContratacion.ObtenerControlVersionesPorFKIdProceso(FKIdProceso, {tipoDeAcceso: req.tipoDeAcceso});
                 let resultadoConsulta = parseInt(ResultadoConsulta.estado);
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !== 200,
@@ -449,7 +449,7 @@ export class ProcesoContratacionControlador
                     mensaje: 'El idProceso enviado no es válido.'
                 });
             }
-            const ResultadoEliminacion = await this.modeloProcesoContratacion.EliminarProcesoContratacionPorIdProceso(idProceso);
+            const ResultadoEliminacion = await this.modeloProcesoContratacion.EliminarProcesoContratacionPorIdProceso(idProceso, {bitacoraFn: req.Bitacora,tipoDeAcceso: req.tipoDeAcceso});
             const estadoRespuesta = parseInt(ResultadoEliminacion.estado);
             res.status(estadoRespuesta).json({
                 error: estadoRespuesta !== 200,
@@ -472,7 +472,7 @@ export class ProcesoContratacionControlador
         {
             const ResultadoValidacion = ValidarEdicionParcialOficio(req.body);
             if(ResultadoValidacion.success){
-                const ResultadoInsercion = await this.modeloProcesoContratacion.RegistrarActualizarOficio({datos: ResultadoValidacion.data});                
+                const ResultadoInsercion = await this.modeloProcesoContratacion.RegistrarActualizarOficio({datos: ResultadoValidacion.data, bitacoraFn: req.Bitacora, tipoDeAcceso: req.tipoDeAcceso});                
                 res.status(ResultadoInsercion.estado).json({
                     error: ResultadoInsercion.estado !== 200,
                     estado: ResultadoInsercion.estado,
@@ -534,58 +534,48 @@ export class ProcesoContratacionControlador
     }
 
     RegistrarActualizarSeguimientoHermes = async (req, res) => {
-    try {
-        const { registros } = req.body;
-
-        // 🔹 Validaciones mínimas
-        if (!Array.isArray(registros) || registros.length === 0) {
-            return res.status(400).json({
+        try {
+            const { registros } = req.body;
+            if (!Array.isArray(registros) || registros.length === 0) {
+                return res.status(400).json({
+                    error: true,
+                    estado: 400,
+                    mensaje: "Debe enviar un arreglo de registros válido."
+                });
+            }
+            const registrosValidos = registros.filter(r =>
+                r.folio && String(r.folio).trim() !== ""
+            );
+            if (registrosValidos.length === 0) {
+                return res.status(400).json({
+                    error: true,
+                    estado: 400,
+                    mensaje: "Ningún registro contiene los datos mínimos requeridos."
+                });
+            }
+            const resultado = await this.modeloProcesoContratacion
+                .RegistrarActualizarSeguimientoHermes({
+                    datos: registrosValidos, bitacoraFn: req.Bitacora,tipoDeAcceso: req.tipoDeAcceso
+                });
+            res.status(resultado.estado).json({
+                error: resultado.estado !== 200,
+                estado: resultado.estado,
+                mensaje: resultado.mensaje
+            });
+        } catch (error) {
+            logger({ mensaje: error });
+            res.status(500).json({
                 error: true,
-                estado: 400,
-                mensaje: "Debe enviar un arreglo de registros válido."
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
             });
         }
-
-        // 🔹 (Opcional) Validar estructura mínima por registro
-        const registrosValidos = registros.filter(r =>
-            r.folio && String(r.folio).trim() !== ""
-        );
-
-
-        if (registrosValidos.length === 0) {
-            return res.status(400).json({
-                error: true,
-                estado: 400,
-                mensaje: "Ningún registro contiene los datos mínimos requeridos."
-            });
-        }
-
-        // 🔹 Llamada al modelo
-        const resultado = await this.modeloProcesoContratacion
-            .RegistrarActualizarSeguimientoHermes({
-                datos: registrosValidos
-            });
-
-        res.status(resultado.estado).json({
-            error: resultado.estado !== 200,
-            estado: resultado.estado,
-            mensaje: resultado.mensaje
-        });
-
-    } catch (error) {
-        logger({ mensaje: error });
-        res.status(500).json({
-            error: true,
-            estado: 500,
-            mensaje: "Ha ocurrido un error en el servidor"
-        });
     }
-}
 
     ObtenerSeguimientoHermesServicio = async (req, res) => {
         try
         {
-            const ResultadoConsulta = await this.modeloProcesoContratacion.ObtenerTodosSeguimientoHermes();
+            const ResultadoConsulta = await this.modeloProcesoContratacion.ObtenerTodosSeguimientoHermes({tipoDeAcceso: req.tipoDeAcceso});
             let resultadoConsulta = parseInt(ResultadoConsulta.estado);
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,

@@ -4,8 +4,6 @@ import { obtenerConexion } from './config/config.js';
 import { QueryTypes } from "sequelize";
 import {toZonedTime, format} from 'date-fns-tz'
 
-//TODO: Faltan los métodos de obtener todas las cedulas, ya que va de la mano con proceso de contratación
-
 export class ModeloCedula {
     static async InsertarNuevaCedula({ datos, bitacoraFn,tipoDeAcceso }) {
         let resultadoInsercion;
@@ -174,7 +172,6 @@ export class ModeloCedula {
             );
 
             let ResultadoQueryCedula = resultadoProcedimiento[0];
-            
             if (ResultadoQueryCedula.length > 0) {
                 ResultadoQueryCedula = ResultadoQueryCedula.map(cedula => {
                     return {
@@ -337,7 +334,6 @@ export class ModeloCedula {
                     type: QueryTypes.RAW
                 }
             );
-
             const ResultadoSP = resultadoProcedimiento[0][0]?.actualizado;
             if (ResultadoSP === 1) {
                 if(bitacoraFn){
@@ -354,6 +350,7 @@ export class ModeloCedula {
                     estado: MensajeResultado.RESULTADO_INEXISTENTE.resultado
                 };
             } else {
+                await transaction.rollback();
                 resultadoEdicion = {
                     ...MensajeGeneralesBD.ERROR_DB,
                     estado: MensajeGeneralesBD.ERROR_DB.resultado
@@ -421,9 +418,19 @@ export class ModeloCedula {
             );
             const ResultadoQueryResultado = resultadoProcedimiento[0];
             if (ResultadoQueryResultado.length > 0) {
-                const resultadoConsultado = ResultadoQueryResultado[0];
-                if (resultadoConsultado.idResultado > 0) {
-                    resultadoConsulta = { estado: 200, resultados: ResultadoQueryResultado }
+                let resultadoConsultado = ResultadoQueryResultado[0];
+                resultadoConsultado = ResultadoQueryResultado.map(resultado => {
+                    return {
+                        ...resultado,
+                        psicometriaComunicacion: Descifrar(resultado.psicometriaComunicacion), psicometriaTrabajoEnEquipo: Descifrar(resultado.psicometriaTrabajoEnEquipo), psicometriaOrientacionAlServicio: Descifrar(resultado.psicometriaOrientacionAlServicio),
+                        psicometriaSensibilidadALineamientos: Descifrar(resultado.psicometriaSensibilidadALineamientos), psicometriaPlaneacionOrganizacion: Descifrar(resultado.psicometriaPlaneacionOrganizacion), psicometriaAnalisisProblemas: Descifrar(resultado.psicometriaAnalisisProblemas),
+                        psicometriaEnfoqueResultados: Descifrar(resultado.psicometriaEnfoqueResultados), psicometriaControlActividades: Descifrar(resultado.psicometriaControlActividades), psicometriaEnfoqueCalidad: Descifrar(resultado.psicometriaEnfoqueCalidad), psicometriaRelacionesInterpersonales: Descifrar(resultado.psicometriaRelacionesInterpersonales),
+                        psicometriaLiderazgo: Descifrar(resultado.psicometriaLiderazgo), psicometriaTomaDecisiones: Descifrar(resultado.psicometriaTomaDecisiones), psicometriaDinamismo: Descifrar(resultado.psicometriaDinamismo), psicometriaInnovacion: Descifrar(resultado.psicometriaInnovacion),
+                        psicometriaPensamientoEstrategico: Descifrar(resultado.psicometriaPensamientoEstrategico), psicometriaNegociacion: Descifrar(resultado.psicometriaNegociacion)
+                    }
+                })
+                if (resultadoConsultado[0].idResultado > 0) {
+                    resultadoConsulta = { estado: 200, resultados: resultadoConsultado }
                 } else {
                     resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
                 }
@@ -444,9 +451,34 @@ export class ModeloCedula {
                 `EXEC sp_ObtenerTodasCedulas`,
                 { type: QueryTypes.RAW }
             );
-            const cedulas = resultadoProcedimiento[0];
+            let cedulas = resultadoProcedimiento[0];
+            let cedulasDescifradas;
             if (cedulas.length > 0) {
-                resultadoConsulta = { estado: 200, cedulas };
+                cedulasDescifradas = cedulas.map(cedula => {
+                    return {
+                        ...cedula,
+                        edad: Descifrar(cedula.edad), educacionFormal: Descifrar(cedula.educacionFormal), referidoPor: Descifrar(cedula.referidoPor),
+                        antecedentesFamiliaresUV: Descifrar(cedula.antecedentesFamiliaresUV), expectativaLaboral: Descifrar(cedula.expectativaLaboral), experienciaRelacionada: Descifrar(cedula.experienciaRelacionada),
+                        experiencia: Descifrar(cedula.experiencia), conclusiones: Descifrar(cedula.conclusiones), resultado: Descifrar(cedula.resultado), efectoContratacion: Descifrar(cedula.efectoContratacion),
+                        competenciaReforzar: Descifrar(cedula.competenciaReforzar), competenciaDesarrollar: Descifrar(cedula.competenciaDesarrollar), motivoCedulaInterna: Descifrar(cedula.motivoCedulaInterna),
+                        motivoCedulaResultados: Descifrar(cedula.motivoCedulaResultados), puesto: Descifrar(cedula.puesto), plaza: Descifrar(cedula.plaza),
+                        oficioAutorizacionDeOcupacion: Descifrar(cedula.oficioAutorizacionDeOcupacion), evaluacionConocimientos: Descifrar(cedula.evaluacionConocimientos), competenciasSobresaliente: Descifrar(cedula.competenciasSobresaliente),
+                        descripcionDesarrollar: Descifrar(cedula.descripcionDesarrollar), descripcionReforzar: Descifrar(cedula.descripcionReforzar), folio: Descifrar(cedula.folio), numPlaza: Descifrar(cedula.numPlaza), fechaRecibido: Descifrar(cedula.fechaRecibido),
+                        fechaEntrevista: Descifrar(cedula.fechaEntrevista), resultadoEvaluacionConocimiento: Descifrar(cedula.resultadoEvaluacionConocimiento), fechaEnvioDEyDP: Descifrar(cedula.fechaEnvioDEyDP), fechaNotificacion: Descifrar(cedula.fechaNotificacion),
+                        categoriaPuestoOrigen: Descifrar(cedula.categoriaPuestoOrigen), diasProceso: Descifrar(cedula.diasProceso), hermesNotificacion: Descifrar(cedula.hermesNotificacion), titularPlaza: Descifrar(cedula.titularPlaza), lineamientoOficioContinuidad: Descifrar(cedula.lineamientoOficioContinuidad),
+                        motivo: Descifrar(cedula.motivo), fechaElaboracionPropuesta: Descifrar(cedula.fechaElaboracionPropuesta), fechaLiberacionOficio: Descifrar(cedula.fechaLiberacionOficio), periodoAutorizadoOficioInicio: Descifrar(cedula.periodoAutorizadoOficioInicio),
+                        periodoAutorizadoOficioFin: Descifrar(cedula.periodoAutorizadoOficioFin), observaciones: Descifrar(cedula.observaciones), numCarpeta: Descifrar(cedula.numCarpeta), nombreCandidato: Descifrar(cedula.nombreCandidato), funcionDesempeniar: Descifrar(cedula.funcionDesempeniar),
+                        familiaFuncional: Descifrar(cedula.familiaFuncional), fechaEvaluacionCompetencias: Descifrar(cedula.fechaEvaluacionCompetencias), fechaInicioProcesamiento: Descifrar(cedula.fechaInicioProcesamiento), resultadoEvaluacionCompetencias: Descifrar(cedula.resultadoEvaluacionCompetencias),
+                        experienciaLaboralSolicitada: Descifrar(cedula.experienciaLaboralSolicitada), resultadoReferenciasLaborales: Descifrar(cedula.resultadoReferenciasLaborales), fechaEnvioEvaluacionDesempenio: Descifrar(cedula.fechaEnvioEvaluacionDesempenio), resultadoHabilidadesWord: Descifrar(cedula.resultadoHabilidadesWord), resultadoHabilidadesExcel: Descifrar(cedula.resultadoHabilidadesExcel),
+                        resultadoOrtografia: Descifrar(cedula.resultadoOrtografia), resultadoProcesoEvaluacion: Descifrar(cedula.resultadoProcesoEvaluacion), fechaRevisionOfiEval: Descifrar(cedula.fechaRevisionOfiEval), observacionesAnalista: Descifrar(cedula.observacionesAnalista),
+                        consecutivoExpediente: Descifrar(cedula.consecutivoExpediente), seguimientoEvaluacionDesempenio: Descifrar(cedula.seguimientoEvaluacionDesempenio), fechaEvaluacionDesempenio: Descifrar(cedula.fechaEvaluacionDesempenio),resultadoSeguimientoEvaluacionDesempenio: Descifrar(cedula.resultadoSeguimientoEvaluacionDesempenio),psicometriaComunicacion: Descifrar(cedula.psicometriaComunicacion), psicometriaTrabajoEnEquipo: Descifrar(cedula.psicometriaTrabajoEnEquipo), psicometriaOrientacionAlServicio: Descifrar(cedula.psicometriaOrientacionAlServicio),
+                        psicometriaSensibilidadALineamientos: Descifrar(cedula.psicometriaSensibilidadALineamientos), psicometriaPlaneacionOrganizacion: Descifrar(cedula.psicometriaPlaneacionOrganizacion), psicometriaAnalisisProblemas: Descifrar(cedula.psicometriaAnalisisProblemas), psicometriaEnfoqueResultados: Descifrar(cedula.psicometriaEnfoqueResultados),
+                        psicometriaControlActividades: Descifrar(cedula.psicometriaControlActividades), psicometriaEnfoqueCalidad: Descifrar(cedula.psicometriaEnfoqueCalidad), psicometriaRelacionesInterpersonales: Descifrar(cedula.psicometriaRelacionesInterpersonales),
+                        psicometriaLiderazgo: Descifrar(cedula.psicometriaLiderazgo), psicometriaTomaDecisiones: Descifrar(cedula.psicometriaTomaDecisiones), psicometriaDinamismo: Descifrar(cedula.psicometriaDinamismo),
+                        psicometriaInnovacion: Descifrar(cedula.psicometriaInnovacion), psicometriaPensamientoEstrategico: Descifrar(cedula.psicometriaPensamientoEstrategico), psicometriaNegociacion: Descifrar(cedula.psicometriaNegociacion), resultadoPorcentaje: Descifrar(cedula.resultadoPorcentaje), analista: Descifrar(cedula.analista)
+                    };
+                });
+                resultadoConsulta = { estado: 200, cedulas: cedulasDescifradas };
             } else {
                 resultadoConsulta = { estado: 400, mensaje: MensajeCedula.CEDULA_INEXISTENTE };
             }
@@ -459,18 +491,34 @@ export class ModeloCedula {
     static async ObtenerCedulasActivas({ tipoDeAcceso }) {
         let resultadoConsulta;
         const sequelize = obtenerConexion(tipoDeAcceso);
+        
         try {
             const resultadoProcedimiento = await sequelize.query(
                 `EXEC sp_ObtenerCedulasActivas`,
                 { type: QueryTypes.RAW }
             );
-            const cedulas = resultadoProcedimiento[0];
-            if (cedulas.length > 0) {
-                resultadoConsulta = { estado: 200, cedulas };
+
+            const cedulasRaw = resultadoProcedimiento[0];
+
+            if (cedulasRaw.length > 0) {
+                const cedulasDescifradas = cedulasRaw.map(cedula => {
+                    return {
+                        ...cedula,
+                        edad: Descifrar(cedula.edad), educacionFormal: Descifrar(cedula.educacionFormal), referidoPor: Descifrar(cedula.referidoPor), nombreCandidato: Descifrar(cedula.nombreCandidato),
+                        antecedentesFamiliaresUV: Descifrar(cedula.antecedentesFamiliaresUV), expectativaLaboral: Descifrar(cedula.expectativaLaboral), experienciaRelacionada: Descifrar(cedula.experienciaRelacionada),
+                        experiencia: Descifrar(cedula.experiencia), conclusiones: Descifrar(cedula.conclusiones), resultado: Descifrar(cedula.resultado), efectoContratacion: Descifrar(cedula.efectoContratacion),
+                        competenciaReforzar: Descifrar(cedula.competenciaReforzar), competenciaDesarrollar: Descifrar(cedula.competenciaDesarrollar), competenciasSobresaliente: Descifrar(cedula.competenciasSobresaliente), evaluacionConocimientos: Descifrar(cedula.evaluacionConocimientos),
+                        motivoCedulaInterna: Descifrar(cedula.motivoCedulaInterna), motivoCedulaResultados: Descifrar(cedula.motivoCedulaResultados), puesto: Descifrar(cedula.puesto),
+                        plaza: Descifrar(cedula.plaza), oficioAutorizacionDeOcupacion: Descifrar(cedula.oficioAutorizacionDeOcupacion), descripcionDesarrollar: Descifrar(cedula.descripcionDesarrollar), descripcionReforzar: Descifrar(cedula.descripcionReforzar),
+                    };
+                });
+
+                resultadoConsulta = { estado: 200, cedulas: cedulasDescifradas };
             } else {
                 resultadoConsulta = { estado: 400, mensaje: MensajeCedula.CEDULA_INEXISTENTE };
             }
         } catch (error) {
+            console.error("Error en ObtenerCedulasActivas:", error);
             throw error;
         }
         return resultadoConsulta;

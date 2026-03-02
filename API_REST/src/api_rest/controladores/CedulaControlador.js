@@ -110,7 +110,7 @@ export class CedulaControlador
             const Datos = {FKIdClasificacionCedula};
             const ResultadoValidacion = ValidarEdicionParcialCedula(Datos);
             if(ResultadoValidacion.success){
-                const ResultadoConsulta = await this.modeloCedula.ObtenerCompetenciasPorClasificacionCedula({datos: ResultadoValidacion.data});
+                const ResultadoConsulta = await this.modeloCedula.ObtenerCompetenciasPorClasificacionCedula({datos: ResultadoValidacion.data, tipoDeAcceso: req.tipoDeAcceso});
                 let resultadoConsulta = parseInt(ResultadoConsulta.estado);
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !== 200,
@@ -234,7 +234,7 @@ export class CedulaControlador
             const Datos = {FKIdCedula};
             const ResultadoValidacion = ValidarEdicionParcialResultado(Datos);
             if(ResultadoValidacion.success){
-                const ResultadoConsulta = await this.modeloCedula.ObtenerResultadosPorIdCedula({datos: ResultadoValidacion.data});
+                const ResultadoConsulta = await this.modeloCedula.ObtenerResultadosPorIdCedula({datos: ResultadoValidacion.data, tipoDeAcceso: req.tipoDeAcceso});
                 let resultadoConsulta = parseInt(ResultadoConsulta.estado);
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !== 200,
@@ -290,7 +290,7 @@ export class CedulaControlador
     {
         try
         {
-            const ResultadoConsulta = await this.modeloCedula.ObtenerCedulasActivas();
+            const ResultadoConsulta = await this.modeloCedula.ObtenerCedulasActivas({tipoDeAcceso: req.tipoDeAcceso});
             let resultadoConsulta = parseInt(ResultadoConsulta.estado);
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
