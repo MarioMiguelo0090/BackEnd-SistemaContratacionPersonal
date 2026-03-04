@@ -235,13 +235,17 @@ export class AccesoControlador
             const ResultadoValidacion = ValidarInicioSesion(req.body);            
             if(ResultadoValidacion.success){
                 const ResultadoLogin = await this.modeloAcceso.LoginAcceso({datos: ResultadoValidacion.data, bitacoraFn: req.Bitacora, tipoDeAcceso: 'Inicio de sesion'});                
-                const DatosUsuario = {
-                    correo: req.body.correo,
-                    usuario: req.body.usuario,
-                    tipoDeAcceso: ResultadoLogin.usuario.tipoDeAcceso
-                };
-                const token = await GenerarJWT(DatosUsuario);
-                res.header('access_token',token);
+                let DatosUsuario;
+                let token;
+                if(ResultadoLogin.estado === 200){
+                    DatosUsuario = {
+                        correo: req.body.correo,
+                        usuario: req.body.usuario,
+                        tipoDeAcceso: ResultadoLogin.usuario.tipoDeAcceso
+                    };
+                    token = await GenerarJWT(DatosUsuario);
+                    res.header('access_token',token);
+                }
                 res.status(ResultadoLogin.estado).json({
                     error: ResultadoLogin.estado !== 200,
                     estado: ResultadoLogin.estado,

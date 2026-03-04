@@ -246,11 +246,13 @@ export class ModeloAcceso {
         return resultadoDesactivacion;
     }
 
-    static async LoginAcceso({ datos, bitacoraFn, tipoDeAcceso}) {
-        const sequelize = obtenerConexion(tipoDeAcceso)
+    static async LoginAcceso({ datos, bitacoraFn}) {
+        const sequelize = obtenerConexion()
         const { usuario, contrasenia } = datos;
         let resultadoDeLogin;
+        let transaction;
         try {
+            transaction = await sequelize.transaction();
             const resultadoProcedimiento = await sequelize.query(
                 `EXEC sp_LoginAcceso
                     @usuario = :usuario`,
@@ -262,7 +264,7 @@ export class ModeloAcceso {
             const ResultadoQuery = resultadoProcedimiento[0]?.[0];
             if (ResultadoQuery.Resultado === 0) {
                 const contraseniasCoinciden = await bcrypt.compare(contrasenia,ResultadoQuery.contrasenia);
-                if(!contraseniasCoinciden){
+                if(contraseniasCoinciden){
                     const {contrasenia: _, ...usuarioSinContrasenia} = ResultadoQuery;
                     const usuarioDescifrado = {
                             ...usuarioSinContrasenia,
@@ -272,6 +274,7 @@ export class ModeloAcceso {
                         }
                     if(bitacoraFn){
                         await bitacoraFn(`Se ha iniciado sesion con el usuario: ${usuario}`,'InicioDeSesion')
+                        await transaction.commit();
                     }      
                     resultadoDeLogin = {estado: 200, Mensaje: MensajesAcceso.LOGIN_EXITOSO, usuario: usuarioDescifrado}
                 }else{
@@ -285,6 +288,9 @@ export class ModeloAcceso {
                 resultadoDeLogin = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
             }
         } catch (error) {
+            if(transaction){
+                await transaction.rollback();
+            }
             throw error;
         }
 
