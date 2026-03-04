@@ -281,7 +281,7 @@ export class ModeloAcceso {
                     resultadoDeLogin = {estado: 401, Mensaje: MensajesAcceso.CREDENCIALES_INVALIDAS}
                 }
             } else if (ResultadoQuery.Resultado === 1) {
-                resultadoDeLogin = { estado: 404, mensaje: MensajesAcceso.CREDENCIALES_INVALIDAS };
+                resultadoDeLogin = { estado: 401, mensaje: MensajesAcceso.CREDENCIALES_INVALIDAS };
             } else if (ResultadoQuery.Resultado === 3) {
                 resultadoDeLogin = { estado: 401, mensaje: MensajesAcceso.USUARIO_INACTIVO };
             } else {

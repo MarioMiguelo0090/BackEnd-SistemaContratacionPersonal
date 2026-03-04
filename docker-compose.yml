@@ -8,14 +8,8 @@ services:
         
     container_name: sqlserver_db
         
-    environment:
-      # Contraseña del usuario 'sa' (Super Admin)
-      SA_PASSWORD: "RysuvDylan@jr25" 
-      # Configura SQL Server Express Edition
-      MSSQL_PID: "Express"
-      # Acepta los términos de licencia
-      ACCEPT_EULA: "Y"
-          
+    env_file:
+      - ./API_REST/initdb-scripts/.env
     ports:
       - "1434:1433" 
           
@@ -23,38 +17,40 @@ services:
       - sql_data:/var/opt/mssql
           
     restart: unless-stopped
-    
-  # 2. SERVICIO DE LA API REST (Node.js)
   api:
-    # Construye la imagen de la API usando el Dockerfile en la raíz de la API
     build:
       context: ./API_REST
       dockerfile: Dockerfile 
       
     container_name: nodejs_api
-    
-    # Depende de que la BD esté lista
     depends_on:
       - db
-      
-    # Mapeo de puertos: <host_port>:<container_port>
-    # Usa 3000 como lo definiste en tu .env (PUERTO)
     ports:
       - "3000:3000" 
-      
-    # Monta el código fuente (para desarrollo con nodemon)
     volumes:
       - ./API_REST/src:/usr/src/app/src
       - ./API_REST/index.js:/usr/src/app/index.js
       - ./API_REST/.env:/usr/src/app/.env
       
-    # Carga las variables de entorno desde el archivo .env de la API
     env_file:
       - ./API_REST/.env
       
-    # Detiene el servicio si falla
     restart: unless-stopped
+
+  nginx:
+      build:   
+        context: ./Nginx
+        dockerfile: Dockerfile
+      container_name: nginx_proxy
+      ports: 
+        - "80:80"
+        - "443:443"
+      volumes:
+      - ./Nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./Nginx/certs:/etc/nginx/certs 
+      depends_on:
+      - api
+      restart: unless-stopped
     
-# Definición de volúmenes para persistencia
 volumes:
   sql_data:
