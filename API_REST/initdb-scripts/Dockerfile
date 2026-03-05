@@ -8,4 +8,4 @@ COPY entrypoint.sh /usr/config/entrypoint.sh
 USER root 
 RUN chmod +x /usr/config/entrypoint.sh
 
-CMD /usr/config/entrypoint.sh
+CMD ["bash", "/usr/config/entrypoint.sh"]

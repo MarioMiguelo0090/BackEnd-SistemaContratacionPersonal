@@ -1,9 +1,8 @@
-import cors from 'cors';
+import cors from "cors";
 
-export const CorsMiddleware = () => cors({
-  origin: (origin, callback) => {
-    return callback(null, true); // 🔓 Permitir todos los orígenes
-  },
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-  credentials: false
-});
+export const CorsMiddleware = () =>
+  cors({
+    origin: [process.env.FRONTEND_CLIENT],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    credentials: true,
+  });
