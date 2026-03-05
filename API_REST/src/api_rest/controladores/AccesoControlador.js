@@ -120,10 +120,10 @@ export class AccesoControlador
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !==200,
                     estado: resultadoConsulta,
-                    ...(resultadoConsulta === 200
+                    mensaje: (resultadoConsulta === 200
                         ? {usuario: ResultadoConsulta.usuarioEncontrado}
-                        : {mensaje: ResultadoConsulta.mensaje}                        
-                        )
+                        : ResultadoConsulta.mensaje                     
+                    )
                 });
             }
             else        
@@ -160,10 +160,10 @@ export class AccesoControlador
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !==200,
                     estado: resultadoConsulta,
-                    ...(resultadoConsulta === 200
+                    mensaje: (resultadoConsulta === 200
                         ? {usuario: ResultadoConsulta.usuarioEncontrado}
-                        : {mensaje: ResultadoConsulta.mensaje}                        
-                        )
+                        : ResultadoConsulta.mensaje                  
+                    )
                 });
             }
             else
@@ -249,8 +249,7 @@ export class AccesoControlador
                 res.status(ResultadoLogin.estado).json({
                     error: ResultadoLogin.estado !== 200,
                     estado: ResultadoLogin.estado,
-                    mensaje: ResultadoLogin.mensaje,
-                    ...(ResultadoLogin.estado === 200 ? { usuario: ResultadoLogin.usuario } : {})
+                    mensaje: (ResultadoLogin.estado === 200 ? { usuario: ResultadoLogin.usuario } : ResultadoLogin.mensaje)
                 });
             }else{
                 res.status(400).json({
@@ -280,9 +279,9 @@ export class AccesoControlador
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
                 estado: resultadoConsulta,
-                ...(resultadoConsulta === 200
+                mensaje: (resultadoConsulta === 200
                     ? {tiposAcceso: ResultadoConsulta.tiposAcceso}
-                    : {mensaje: ResultadoConsulta.mensaje}
+                    : ResultadoConsulta.mensaje
                 )
             });  
         }
@@ -306,9 +305,9 @@ export class AccesoControlador
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
                 estado: resultadoConsulta,
-                ...(resultadoConsulta === 200
+                mensaje: (resultadoConsulta === 200
                     ? {usuarios: ResultadoConsulta.usuarios}
-                    : {mensaje: ResultadoConsulta.mensaje}
+                    : ResultadoConsulta.mensaje
                 )
             });            
         }catch(error)
@@ -331,9 +330,9 @@ export class AccesoControlador
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
                 estado: resultadoConsulta,
-                ...(resultadoConsulta === 200
+                mensaje: (resultadoConsulta === 200
                     ? {usuarios: ResultadoConsulta.usuarios}
-                    : {mensaje: ResultadoConsulta.mensaje}
+                    : ResultadoConsulta.mensaje
                 )
             });            
         }catch(error)

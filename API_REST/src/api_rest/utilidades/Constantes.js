@@ -11,6 +11,16 @@ export const MensajesAcceso = {
     CREDENCIALES_INVALIDAS: "Las credenciales de acceso son inválidas"
 };
 
+export const MensajeNoEncontrado = {
+    TIPOS_DE_PROCESO: 'No se han encontrado tipos de proceso registrados en la base de datos',
+    TIPO_DE_PERSONAL: 'No se ha encontrado ningún tipo de personal registrado en la base de datos',
+    PROCESOS_DE_CONTRATACION: 'No se ha encontrado ningún proces de contratación registrado en la base de datos',
+    TEMPORAL_DEFINITIVA_COMPLETA: 'No se ha encontrado ningún tipo de temporal definitiva completa',
+    TIPOS_DE_CEDULA: 'No se ha encontrado ningún tipo de cédula registrada en la base de datos',
+    DEPENDENCIA_COMPLETAS: 'No se ha encontrado ninguna dependencia completa registrada en la base de datos',
+    CLASIFICACION_CEDULA: 'No se ha encontrado una clasificación de cédula registrada en la base de datos'
+}
+
 export const MensajeGeneralesBD = {
     ERROR_DB: { estado: 500, mensaje: "Ha ocurrido un error en la base de datos" }
 };

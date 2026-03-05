@@ -1,5 +1,5 @@
 import { obtenerConexion } from "./config/config.js";
-import { CodigosDeEstado, MensajeGeneralesBD } from "../../utilidades/Constantes.js";
+import { CodigosDeEstado, MensajeGeneralesBD, MensajeNoEncontrado} from "../../utilidades/Constantes.js";
 import { QueryTypes } from "sequelize";
 
 export class ModeloCatalogo {
@@ -16,9 +16,13 @@ export class ModeloCatalogo {
             );
             let tiposDeProceso = resultadoProcedimiento[0]
             if(tiposDeProceso.length > 0){
-                resultadoConsulta = {estado: CodigosDeEstado.OK, tiposDeProceso: tiposDeProceso};
+                if(tiposDeProceso[0].idTipoProceso === -1){
+                    resultadoConsulta = {estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB }
+                }else {
+                    resultadoConsulta = {estado: CodigosDeEstado.OK, tiposDeProceso: tiposDeProceso};
+                }
             }else{
-                resultadoConsulta = {estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB }
+                resultadoConsulta = {estado: CodigosDeEstado.NotFound, mensaje: MensajeNoEncontrado.TIPOS_DE_PROCESO}
             }
         }catch(error){
             throw error;
@@ -36,9 +40,13 @@ export class ModeloCatalogo {
             );
             const tiposPersonal = resultadoProcedimiento[0];
             if (tiposPersonal.length > 0) {
-                resultadoConsulta = { estado: CodigosDeEstado.OK, tiposPersonal };
+                if(tiposPersonal[0].idTipoPersonal === -1){
+                    resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
+                }else{
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, tiposPersonal };
+                }
             } else {
-                resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajeNoEncontrado.TIPO_DE_PERSONAL };
             }
         } catch (error) {
             throw error;
@@ -56,9 +64,13 @@ export class ModeloCatalogo {
             );
             const estadosProcesosContratacion = resultadoProcedimiento[0];
             if (estadosProcesosContratacion.length > 0) {
-                resultadoConsulta = { estado: CodigosDeEstado.OK, estadosProcesosContratacion };
+                if(estadosProcesosContratacion[0].idEstadoProcesoContratacion === -1){
+                    resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
+                }else{
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, estadosProcesosContratacion };
+                }
             } else {
-                resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajeNoEncontrado.PROCESOS_DE_CONTRATACION };
             }
         } catch (error) {
             throw error;
@@ -76,9 +88,13 @@ export class ModeloCatalogo {
             );
             const temporalDefinitiva = resultadoProcedimiento[0];
             if (temporalDefinitiva.length > 0) {
-                resultadoConsulta = { estado: CodigosDeEstado.OK, temporalDefinitiva };
+                if(temporalDefinitiva[0].idTemporalDefinitiva === -1){
+                    resultadoConsulta = {estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB}
+                }else{
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, temporalDefinitiva };
+                }
             } else {
-                resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajeNoEncontrado.TEMPORAL_DEFINITIVA_COMPLETA };
             }
         } catch (error) {
             throw error;
@@ -96,9 +112,13 @@ export class ModeloCatalogo {
             );
             const tiposCedula = resultadoProcedimiento[0];
             if (tiposCedula.length > 0) {
-                resultadoConsulta = { estado: CodigosDeEstado.OK, tiposCedula };
+                if(tiposCedula[0].idTipoCedula === -1){
+                    resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
+                }else{
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, tiposCedula };
+                }
             } else {
-                resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajeNoEncontrado.TIPOS_DE_CEDULA };
             }
         } catch (error) {
             throw error;
@@ -116,9 +136,13 @@ export class ModeloCatalogo {
             );
             const dependencias = resultadoProcedimiento[0];
             if (dependencias.length > 0) {
-                resultadoConsulta = { estado: CodigosDeEstado.OK, dependencias };
+                if(dependencias[0].idDependencia === -1){
+                    resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
+                }else{
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, dependencias };
+                }
             } else {
-                resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajeNoEncontrado.DEPENDENCIA_COMPLETAS };
             }
         } catch (error) {
             throw error;
@@ -136,9 +160,13 @@ export class ModeloCatalogo {
             );
             const clasificacionesCedula = resultadoProcedimiento[0];
             if (clasificacionesCedula.length > 0) {
-                resultadoConsulta = { estado: CodigosDeEstado.OK, clasificacionesCedula };
+                if(clasificacionesCedula[0].idClasificacionCedulas === -1){
+                    resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
+                }else{
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, clasificacionesCedula };
+                }
             } else {
-                resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajeNoEncontrado.CLASIFICACION_CEDULA };
             }
         } catch (error) {
             throw error;
