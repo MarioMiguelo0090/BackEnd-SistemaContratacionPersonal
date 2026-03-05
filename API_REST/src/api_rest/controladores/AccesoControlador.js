@@ -20,21 +20,19 @@ export class AccesoControlador
                 let resultadoInsercion=parseInt(ResultadoInsercion.resultado);
                 if(resultadoInsercion === 500)
                 {
-                    res.status(resultadoInsercion).json(
-                        {
-                            error: true,
-                            estado: ResultadoInsercion.resultado,
-                            mensaje: 'Ha ocurrido un error al intentar realizar el registro de Acceso.'
-                        });
+                    res.status(resultadoInsercion).json({
+                        error: true,
+                        estado: ResultadoInsercion.resultado,
+                        mensaje: 'Ha ocurrido un error al intentar realizar el registro de Acceso.'
+                    });
                 }
                 else
                 {
-                    res.status(resultadoInsercion).json(
-                        {
-                            error: resultadoInsercion !== 200,
-                            estado: ResultadoInsercion.resultado,
-                            mensaje: ResultadoInsercion.mensaje
-                        });
+                    res.status(resultadoInsercion).json({
+                        error: resultadoInsercion !== 200,
+                        estado: ResultadoInsercion.resultado,
+                        mensaje: ResultadoInsercion.mensaje
+                    });
                 }
             }
             else
@@ -44,19 +42,16 @@ export class AccesoControlador
                     estado: 400,
                     mensaje: 'Datos con formato inválido, por favor verifique los datos enviados.'
                 })
-            }
-            
+            } 
         }
         catch(error)
         {
             logger({mensaje:error});
-            res.status(500).json(
-                {
-                    error: true,
-                    estado: 500,
-                    mensaje: "Ha ocurrido un error en el servidor"
-                }
-            )
+            res.status(500).json({
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
+            })
         }        
     }
 
@@ -74,20 +69,20 @@ export class AccesoControlador
                 let resultadoEdicion = parseInt(ResultadoEdicion.estado);
                 if(resultadoEdicion === 500){
                     res.status(resultadoEdicion).json(
-                        {
-                            error: true,
-                            estado: ResultadoEdicion.estado,
-                            mensaje: 'Ha ocurrido un error al intentar editar los datos de acceso'
-                        });
+                    {
+                        error: true,
+                        estado: ResultadoEdicion.estado,
+                        mensaje: 'Ha ocurrido un error al intentar editar los datos de acceso'
+                    });
                 }
                 else
                 {
                     res.status(resultadoEdicion).json(
-                        {
-                            error: resultadoEdicion !==200,
-                            estado: resultadoEdicion,
-                            mensaje: ResultadoEdicion.mensaje
-                        });
+                    {
+                        error: resultadoEdicion !==200,
+                        estado: resultadoEdicion,
+                        mensaje: ResultadoEdicion.mensaje
+                    });
                 }
             }
             else
@@ -103,11 +98,11 @@ export class AccesoControlador
         {           
             logger({mensaje:error}); 
             res.status(500).json(
-                {
-                    error: true,
-                    estado: 500,
-                    mensaje: "Ha ocurrido un error en el servidor"
-                });
+            {
+                error: true,
+                estado: 500,
+                mensaje: "Ha ocurrido un error en el servidor"
+            });
         }
     }
 
@@ -244,13 +239,18 @@ export class AccesoControlador
                         tipoDeAcceso: ResultadoLogin.usuario.tipoDeAcceso
                     };
                     token = await GenerarJWT(DatosUsuario);
-                    res.header('access_token',token);
+                    res.cookie('access_token', token, {
+                        httpOnly: true,
+                        secure: true,
+                        sameSite: 'strict',
+                        maxAge: 1000 * 60 * 60 * 8
+                    })
                 }
                 res.status(ResultadoLogin.estado).json({
                     error: ResultadoLogin.estado !== 200,
                     estado: ResultadoLogin.estado,
                     mensaje: ResultadoLogin.mensaje,
-                    ...(ResultadoLogin.estado === 200 ? { usuario: ResultadoLogin.usuario, token } : {})
+                    ...(ResultadoLogin.estado === 200 ? { usuario: ResultadoLogin.usuario } : {})
                 });
             }else{
                 res.status(400).json({

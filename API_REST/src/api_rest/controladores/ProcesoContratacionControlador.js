@@ -15,6 +15,7 @@ export class ProcesoContratacionControlador
             const ResultadoValidacion = ValidarEdicionParcialProcesoContratacion(req.body);
             if(ResultadoValidacion.success){
                 const ResultadoInsercion = await this.modeloProcesoContratacion.InsertarNuevoProcesoContratacion({datos: ResultadoValidacion.data, bitacoraFn: req.Bitacora, tipoDeAcceso: req.tipoDeAcceso});                
+                console.log(ResultadoInsercion)
                 res.status(ResultadoInsercion.estado).json({
                     error: ResultadoInsercion.estado !== 200,
                     estado: ResultadoInsercion.estado,

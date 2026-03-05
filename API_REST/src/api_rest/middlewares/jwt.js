@@ -16,10 +16,10 @@ export const ValidarJwt = (req, res, next) => {
             });
         }
         
-        const { correo, usuario } = jwt.verify(Token, process.env.SECRETO_JWT);        
+        const { correo, usuario, tipoDeAcceso } = jwt.verify(Token, process.env.SECRETO_JWT);        
         req.correo = correo;
         req.usuario = usuario;
-
+        req.tipoDeAcceso = tipoDeAcceso
         next();
     } catch (error) {
         logger(error);

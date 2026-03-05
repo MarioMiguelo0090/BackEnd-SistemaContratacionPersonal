@@ -57,10 +57,11 @@ export const sequelizeInicioDeSesion= new Sequelize(
 
 export const obtenerConexion = (IdTipoDeAcceso) => {
     const conexiones = {
-        'Administrador': sequelizeAdministrador,
-        'Analista': sequelizeAnalista,
-        'Gestor de solicitudes': sequelizeGestorDeSolicitudes,
-        'Jefe de departamento': sequelizeJefeDeDepartamento
+        1: sequelizeAdministrador,
+        2: sequelizeAnalista,
+        3: sequelizeGestorDeSolicitudes,
+        4: sequelizeJefeDeDepartamento
     };
+    console.log(conexiones[IdTipoDeAcceso])
     return conexiones[IdTipoDeAcceso] ?? sequelizeInicioDeSesion;
 }

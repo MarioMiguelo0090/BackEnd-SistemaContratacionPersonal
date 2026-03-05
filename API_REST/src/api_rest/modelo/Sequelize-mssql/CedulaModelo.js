@@ -1,5 +1,5 @@
-import { Cifrar, Descifrar } from '../../utilidades/Cifrado.js';
-import { MensajeCedula, MensajeGeneralesBD, MensajeResultado } from '../../utilidades/Constantes.js';
+import { Cifrar, Descifrar} from '../../utilidades/Cifrado.js';
+import { MensajeCedula, MensajeGeneralesBD, MensajeResultado, CodigosDeEstado} from '../../utilidades/Constantes.js';
 import { obtenerConexion } from './config/config.js';
 import { QueryTypes } from "sequelize";
 import {toZonedTime, format} from 'date-fns-tz'
@@ -61,18 +61,18 @@ export class ModeloCedula {
                     await transaction.commit();
                     resultadoInsercion = {
                         ...MensajeCedula.REGISTRO_EXITOSO,
-                        estado: MensajeCedula.REGISTRO_EXITOSO.resultado,
+                        estado: CodigosDeEstado.OK,
                         idCedula: CedulaRegistrada.idCedula
                     };
                 } else if (CedulaRegistrada.idCedula == -2) {
                     resultadoInsercion = {
                         ...MensajeCedula.CEDULA_DUPLICADA,
-                        estado: MensajeCedula.CEDULA_DUPLICADA.resultado
+                        estado: CodigosDeEstado.Conflict
                     };
                 } else {
                     resultadoInsercion = {
                         ...MensajeGeneralesBD.ERROR_DB,
-                        estado: MensajeGeneralesBD.ERROR_DB.resultado
+                        estado: CodigosDeEstado.InternalServerError
                     };
                 }
             }
@@ -136,17 +136,17 @@ export class ModeloCedula {
                 await transaction.commit();
                 resultadoEdicion = {
                     ...MensajeCedula.ACTUALIZACION_EXITOSA,
-                    estado: MensajeCedula.ACTUALIZACION_EXITOSA.resultado
+                    estado: CodigosDeEstado.OK
                 };
             } else if (ResultadoSP === 2) {
                 resultadoEdicion = {
                     ...MensajeCedula.CEDULA_INEXISTENTE,
-                    estado: MensajeCedula.CEDULA_INEXISTENTE.resultado
+                    estado: CodigosDeEstado.NotFound
                 };
             } else {
                 resultadoEdicion = {
                     ...MensajeGeneralesBD.ERROR_DB,
-                    estado: MensajeGeneralesBD.ERROR_DB.resultado
+                    estado: CodigosDeEstado.InternalServerError
                 };
             }
         } catch (error) {
@@ -186,13 +186,13 @@ export class ModeloCedula {
                     };
                 });
                 if (ResultadoQueryCedula[0].idCedula > 0) {
-                    resultadoConsulta = { estado: 200, cedula: ResultadoQueryCedula }
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, cedula: ResultadoQueryCedula }
                 }
                 else {
-                    resultadoConsulta = { estado: 404, mensaje: MensajeCedula.CEDULA_INEXISTENTE };
+                    resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
                 }
             } else {
-                resultadoConsulta = { estado: 404, mensaje: MensajeCedula.CEDULA_INEXISTENTE };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajeCedula.CEDULA_INEXISTENTE };
             }
         } catch (error) {
             throw error;
@@ -217,12 +217,12 @@ export class ModeloCedula {
             if (ResultadoQueryCompetencias.length > 0) {
                 const competencia = ResultadoQueryCompetencias[0];
                 if (competencia.idCompetencia > 0) {
-                    resultadoConsulta = { estado: 200, competencias: ResultadoQueryCompetencias }
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, competencias: ResultadoQueryCompetencias }
                 } else {
-                    resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
+                    resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
                 }
             } else {
-                resultadoConsulta = { estado: 404, mensaje: MensajeCedula.COMPETENCIA_INEXISTENTE };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajeCedula.COMPETENCIA_INEXISTENTE };
             }
         } catch (error) {
             throw error;
@@ -279,12 +279,12 @@ export class ModeloCedula {
                     await transaction.commit();
                     resultadoInsercion = {
                         ...MensajeResultado.REGISTRO_EXITOSO,
-                        estado: MensajeResultado.REGISTRO_EXITOSO.resultado
+                        estado: CodigosDeEstado.OK
                     };
                 } else {
                     resultadoInsercion = {
                         ...MensajeResultado.RESULTADO_INEXISTENTE,
-                        estado: MensajeResultado.RESULTADO_INEXISTENTE.resultado
+                        estado: CodigosDeEstado.NotFound
                     };
                 }
             }
@@ -342,18 +342,18 @@ export class ModeloCedula {
                 await transaction.commit();
                 resultadoEdicion = {
                     ...MensajeCedula.ACTUALIZACION_EXITOSA,
-                    estado: MensajeCedula.ACTUALIZACION_EXITOSA.resultado
+                    estado: CodigosDeEstado.OK
                 };
             } else if (ResultadoSP === 0) {
                 resultadoEdicion = {
                     ...MensajeResultado.RESULTADO_INEXISTENTE,
-                    estado: MensajeResultado.RESULTADO_INEXISTENTE.resultado
+                    estado: CodigosDeEstado.NotFound
                 };
             } else {
                 await transaction.rollback();
                 resultadoEdicion = {
                     ...MensajeGeneralesBD.ERROR_DB,
-                    estado: MensajeGeneralesBD.ERROR_DB.resultado
+                    estado: CodigosDeEstado.InternalServerError
                 };
             }
         } catch (error) {
@@ -392,12 +392,12 @@ export class ModeloCedula {
                     }
                 })
                 if (resultadoConsultado[0].idResultado > 0) {
-                    resultadoConsulta = { estado: 200, resultados: resultadoConsultado }
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, resultados: resultadoConsultado }
                 } else {
-                    resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
+                    resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
                 }
             } else {
-                resultadoConsulta = { estado: 404, mensaje: MensajeResultado.RESULTADO_INEXISTENTE };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajeResultado.RESULTADO_INEXISTENTE };
             }
         } catch (error) {
             throw error;
@@ -430,12 +430,12 @@ export class ModeloCedula {
                     }
                 })
                 if (resultadoConsultado[0].idResultado > 0) {
-                    resultadoConsulta = { estado: 200, resultados: resultadoConsultado }
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, resultados: resultadoConsultado }
                 } else {
-                    resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
+                    resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
                 }
             } else {
-                resultadoConsulta = { estado: 404, mensaje: MensajeResultado.RESULTADO_INEXISTENTE };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajeResultado.RESULTADO_INEXISTENTE };
             }
         } catch (error) {
             throw error;
@@ -478,9 +478,9 @@ export class ModeloCedula {
                         psicometriaInnovacion: Descifrar(cedula.psicometriaInnovacion), psicometriaPensamientoEstrategico: Descifrar(cedula.psicometriaPensamientoEstrategico), psicometriaNegociacion: Descifrar(cedula.psicometriaNegociacion), resultadoPorcentaje: Descifrar(cedula.resultadoPorcentaje), analista: Descifrar(cedula.analista)
                     };
                 });
-                resultadoConsulta = { estado: 200, cedulas: cedulasDescifradas };
+                resultadoConsulta = { estado: CodigosDeEstado.OK, cedulas: cedulasDescifradas };
             } else {
-                resultadoConsulta = { estado: 400, mensaje: MensajeCedula.CEDULA_INEXISTENTE };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajeCedula.CEDULA_INEXISTENTE };
             }
         } catch (error) {
             throw error;
@@ -513,9 +513,9 @@ export class ModeloCedula {
                     };
                 });
 
-                resultadoConsulta = { estado: 200, cedulas: cedulasDescifradas };
+                resultadoConsulta = { estado: CodigosDeEstado.OK, cedulas: cedulasDescifradas };
             } else {
-                resultadoConsulta = { estado: 400, mensaje: MensajeCedula.CEDULA_INEXISTENTE };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajeCedula.CEDULA_INEXISTENTE };
             }
         } catch (error) {
             console.error("Error en ObtenerCedulasActivas:", error);
@@ -560,12 +560,12 @@ export class ModeloCedula {
                     await transaction.commit();
                     resultadoInsercion = {
                         ...MensajeCedula.REGISTRO_EXITOSO,
-                        estado: MensajeCedula.REGISTRO_EXITOSO.resultado
+                        estado: CodigosDeEstado.OK
                     };
                 } else {
                     resultadoInsercion = {
                         ...MensajeGeneralesBD.ERROR_DB,
-                        estado: MensajeGeneralesBD.ERROR_DB.resultado
+                        estado: CodigosDeEstado.InternalServerError
                     };
                 }
             }
@@ -617,10 +617,10 @@ export class ModeloCedula {
                         }
                     };
                 } else {
-                    resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
+                    resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
                 }
             } else {
-                resultadoConsulta = { estado: 404, mensaje: MensajeCedula.CEDULA_INEXISTENTE };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajeCedula.CEDULA_INEXISTENTE };
             }
         } catch (error) {
             throw error;

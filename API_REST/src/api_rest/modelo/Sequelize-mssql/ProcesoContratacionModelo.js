@@ -1,4 +1,4 @@
-import { MensajeGeneralesBD, MensajeProcesoContratacion, MensajeResultado } from '../../utilidades/Constantes.js';
+import { MensajeGeneralesBD, MensajeProcesoContratacion, MensajeResultado, CodigosDeEstado} from '../../utilidades/Constantes.js';
 import { obtenerConexion } from './config/config.js';
 import { QueryTypes } from 'sequelize';
 import { Cifrar, Descifrar } from '../../utilidades/Cifrado.js';
@@ -80,17 +80,17 @@ export class ModeloProcesoContratacion {
                     await transaction.commit();
                     resultadoInsercion = {
                         ...MensajeProcesoContratacion.REGISTRO_EXITOSO,
-                        estado: MensajeProcesoContratacion.REGISTRO_EXITOSO.resultado
+                        estado: CodigosDeEstado.OK
                     };
                 } else if (ProcesoContratacion.idProceso == -2) {
                     resultadoInsercion = {
                         ...MensajeProcesoContratacion.REGISTRO_DUPLICADO,
-                        estado: MensajeProcesoContratacion.REGISTRO_DUPLICADO.resultado
+                        estado: CodigosDeEstado.Conflict
                     };
                 } else {
                     resultadoInsercion = {
                         ...MensajeGeneralesBD.ERROR_DB,
-                        estado: MensajeGeneralesBD.ERROR_DB.resultado
+                        estado: CodigosDeEstado.InternalServerError
                     };
                 }
             }
@@ -184,17 +184,17 @@ export class ModeloProcesoContratacion {
                 await transaction.commit();
                 resultadoEdicion = {
                     ...MensajeProcesoContratacion.ACTUALIZACION_EXITOSA,
-                    estado: MensajeProcesoContratacion.ACTUALIZACION_EXITOSA.resultado
+                    estado: CodigosDeEstado.OK
                 };
             } else if (ResultadoSP == 2) {
                 resultadoEdicion = {
                     ...MensajeProcesoContratacion.PROCESO_INEXISTENTE,
-                    estado: MensajeProcesoContratacion.PROCESO_INEXISTENTE.resultado
+                    estado: CodigosDeEstado.NotFound
                 };
             } else {
                 resultadoEdicion = {
                     ...MensajeGeneralesBD.ERROR_DB,
-                    estado: MensajeGeneralesBD.ERROR_DB.resultado
+                    estado: CodigosDeEstado.InternalServerError
                 };
             }
         } catch (error) {
@@ -243,12 +243,12 @@ export class ModeloProcesoContratacion {
                 });
                 if (ResultadoQueryProceso[0].idProceso > 0) {
                     
-                    resultadoConsulta = { estado: 200, procesoContratacion: ResultadoQueryProceso };
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, procesoContratacion: ResultadoQueryProceso };
                 } else {
-                    resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
+                    resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
                 }
             } else {
-                resultadoConsulta = { estado: 404, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE };
             }
         } catch (error) {
             throw error;
@@ -293,12 +293,12 @@ export class ModeloProcesoContratacion {
                 });
                 if (ResultadoQueryProceso[0].idProceso > 0) {
                     
-                    resultadoConsulta = { estado: 200, procesoContratacion: ResultadoQueryProceso };
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, procesoContratacion: ResultadoQueryProceso };
                 } else {
-                    resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
+                    resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
                 }
             } else {
-                resultadoConsulta = { estado: 404, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE };
+                resultadoConsulta = { estado: categoriaAutorizadaOficio.NotFound, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE };
             }
         } catch (error) {
             throw error;
@@ -308,7 +308,7 @@ export class ModeloProcesoContratacion {
 
     static async ObtenerProcesosPorIdEstado({ datos, tipoDeAcceso}) {
         let resultadoConsulta;
-        const sequelize = obtenerConexion();
+        const sequelize = obtenerConexion(tipoDeAcceso);
         try {
             const { FKIdEstadoProcesoContratacion } = datos;
             const resultadoProcedimiento = await sequelize.query(
@@ -343,12 +343,12 @@ export class ModeloProcesoContratacion {
                 });
                 if (ResultadoQueryProceso[0].idProceso > 0) {
                     
-                    resultadoConsulta = { estado: 200, procesoContratacion: ResultadoQueryProceso };
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, procesoContratacion: ResultadoQueryProceso };
                 } else {
-                    resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
+                    resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
                 }
             } else {
-                resultadoConsulta = { estado: 404, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE };
             }
         } catch (error) {
             throw error;
@@ -392,12 +392,12 @@ export class ModeloProcesoContratacion {
                 });
                 if (ResultadoQueryProceso[0].idProceso > 0) {
                     
-                    resultadoConsulta = { estado: 200, procesos: ResultadoQueryProceso };
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, procesos: ResultadoQueryProceso };
                 } else {
-                    resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
+                    resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
                 }
             } else {
-                resultadoConsulta = { estado: 404, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE };
             }
         } catch (error) {
             throw error;
@@ -441,12 +441,12 @@ export class ModeloProcesoContratacion {
                 });
                 if (ResultadoQueryProceso[0].idProceso > 0) {
                     
-                    resultadoConsulta = { estado: 200, procesos: ResultadoQueryProceso };
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, procesos: ResultadoQueryProceso };
                 } else {
-                    resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
+                    resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
                 }
             } else {
-                resultadoConsulta = { estado: 404, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE };
             }
         } catch (error) {
             throw error;
@@ -492,12 +492,12 @@ export class ModeloProcesoContratacion {
                 });
                 if (ResultadoQueryProceso[0].idProceso > 0) {
                     
-                    resultadoConsulta = { estado: 200, evaluacionesAnalista: ResultadoQueryProceso };
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, evaluacionesAnalista: ResultadoQueryProceso };
                 } else {
-                    resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
+                    resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
                 }
             } else {
-                resultadoConsulta = { estado: 404, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE };
             }
         } catch (error) {
             throw error;
@@ -530,12 +530,12 @@ export class ModeloProcesoContratacion {
                     transaction.commit();
                     resultadoInsercion = {
                         ...MensajeProcesoContratacion.REGISTRO_EXITOSO,
-                        estado: MensajeProcesoContratacion.REGISTRO_EXITOSO.resultado
+                        estado: CodigosDeEstado.OK
                     };
                 } else {
                     resultadoInsercion = {
                         ...MensajeGeneralesBD.ERROR_DB,
-                        estado: MensajeGeneralesBD.ERROR_DB.resultado
+                        estado: CodigosDeEstado.InternalServerError
                     };
                 }
             }
@@ -560,12 +560,12 @@ export class ModeloProcesoContratacion {
             if (ControlVersionQueryResultado.length > 0) {
                 const controlVersion = ControlVersionQueryResultado[0];
                 if (controlVersion.idControlVersion > 0) {
-                    resultadoConsulta = { estado: 200, controlesVersiones: ControlVersionQueryResultado };
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, controlesVersiones: ControlVersionQueryResultado };
                 } else {
-                    resultadoConsulta = { estado: 500, mensaje: controlVersion.mensajeError || MensajeGeneralesBD.ERROR_DB };
+                    resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: controlVersion.mensajeError || MensajeGeneralesBD.ERROR_DB };
                 }
             } else {
-                resultadoConsulta = { estado: 404, mensaje: MensajeGeneralesBD.ERROR_DB };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajeGeneralesBD.ERROR_DB };
             }
         } catch (error) {
             throw error;
@@ -589,11 +589,11 @@ export class ModeloProcesoContratacion {
                     await bitacoraFn(`Se ha eliminado un proceso de contratacion con id: ${idProceso}`);
                 }
                 await transaction.commit();
-                resultadoEliminacion = { estado: 200, mensaje: MensajeProcesoContratacion.ELIMINACION_EXITOSA };
+                resultadoEliminacion = { estado: CodigosDeEstado.OK, mensaje: MensajeProcesoContratacion.ELIMINACION_EXITOSA };
             } else if (registro.idProceso === -1) {
-                resultadoEliminacion = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
+                resultadoEliminacion = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
             } else {
-                resultadoEliminacion = { estado: 404, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE };
+                resultadoEliminacion = { estado: CodigosDeEstado.NotFound, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE };
             }
         } catch (error) {
             if(transaction){
@@ -633,12 +633,12 @@ export class ModeloProcesoContratacion {
                     transaction.commit();
                     resultadoInsercion = {
                         ...MensajeProcesoContratacion.REGISTRO_EXITOSO,
-                        estado: MensajeProcesoContratacion.REGISTRO_EXITOSO.resultado
+                        estado: CodigosDeEstado.OK
                     };
                 } else {
                     resultadoInsercion = {
                         ...MensajeGeneralesBD.ERROR_DB,
-                        estado: MensajeGeneralesBD.ERROR_DB.resultado
+                        estado: CodigosDeEstado.InternalServerError
                     };
                 }
             }
@@ -663,12 +663,12 @@ export class ModeloProcesoContratacion {
             if (ResultadoQueryResultado.length > 0) {
                 const resultadoConsultado = ResultadoQueryResultado[0];
                 if (resultadoConsultado.Resultado > 0) {
-                    resultadoConsulta = { estado: 200, oficios: ResultadoQueryResultado };
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, oficios: ResultadoQueryResultado };
                 } else {
-                    resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
+                    resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
                 }
             } else {
-                resultadoConsulta = { estado: 404, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE };
             }
         } catch (error) {
             throw error;
@@ -708,12 +708,12 @@ export class ModeloProcesoContratacion {
                     await bitacoraFn(`Se ha registrado el seguimiento hermes con folio: ${lastFolio}`)
                 }
                 await transaction.commit();
-                resultado = {estado: 200, mensaje: MensajeResultado.REGISTRO_EXITOSO}
+                resultado = {estado: CodigosDeEstado.OK, mensaje: MensajeResultado.REGISTRO_EXITOSO}
             }else if(res === 2){
-                resultado = {estado: 400, mensaje: 'Ya se ha registrado el frolio del seguimiento hermes ingresado.'}
+                resultado = {estado: CodigosDeEstado.Conflict, mensaje: 'Ya se ha registrado el frolio del seguimiento hermes ingresado.'}
             }else{
                 await transaction.rollback();
-                resultado = {estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB}
+                resultado = {estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB}
             }
             
         } catch (err) {
@@ -742,9 +742,9 @@ export class ModeloProcesoContratacion {
                         estatus: Descifrar(s.estatus), acciones: Descifrar(s.acciones)
                     };
                 });
-                resultadoConsulta = { estado: 200, seguimientos };
+                resultadoConsulta = { estado: CodigosDeEstado.OK, seguimientos };
             } else {
-                resultadoConsulta = { estado: 400, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE };
             }
         } catch (error) {
             throw error;

@@ -1,6 +1,6 @@
 import {obtenerConexion} from './config/config.js'
 import bcrypt from 'bcrypt'
-import { MensajesAcceso, MensajeGeneralesBD } from '../../utilidades/Constantes.js';
+import { MensajesAcceso, MensajeGeneralesBD, CodigosDeEstado} from '../../utilidades/Constantes.js';
 import { QueryTypes } from 'sequelize';
 import {Cifrar, Descifrar} from '../../utilidades/Cifrado.js';
 
@@ -50,7 +50,7 @@ export class ModeloAcceso {
                 resultadoInsercion = MensajesAcceso.USUARIO_DUPLICADO;
             } else {
                 if(bitacoraFn){
-                    await bitacoraFn(`Se ha insertado una nueva cuenta con el usuario: ${usuario}`)
+                    await bitacoraFn(`Se ha insertado una nueva cuenta con el usuario: ${usuario}`, transaction)
                 }
                 await transaction.commit();
                 resultadoInsercion = MensajesAcceso.REGISTRO_EXITOSO;
@@ -104,21 +104,18 @@ export class ModeloAcceso {
                 }
             );
             const resultado = resultadoProcedimiento[0]?.[0]?.resultado;
-            if (resultado === -1) {
+            if (resultado === -2){
                 await transaction.rollback();
-                resultadoModificacion = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };                
-            } else if (resultado === -2){
-                await transaction.rollback();
-                resultadoModificacion = { estado: 409, mensaje: MensajesAcceso.USUARIO_DUPLICADO };
+                resultadoModificacion = { estado: CodigosDeEstado.Conflict, mensaje: MensajesAcceso.USUARIO_DUPLICADO };
             } else if(resultado === 1) {
                 if(bitacoraFn){
-                    await bitacoraFn(`Se ha editado el usuario con id: ${idAcceso}`)
+                    await bitacoraFn(`Se ha editado el usuario con id: ${idAcceso}`, transaction)
                 }
                 await transaction.commit();
-                resultadoModificacion = { estado: 200, mensaje: MensajesAcceso.ACTUALIZACION_EXITOSA };
+                resultadoModificacion = { estado: CodigosDeEstado.OK, mensaje: MensajesAcceso.ACTUALIZACION_EXITOSA };
             } else {
                 await transaction.rollback();
-                resultadoModificacion = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };                
+                resultadoModificacion = MensajeGeneralesBD.ERROR_DB;                
             }
         }catch(error){
             if(transaction){
@@ -153,14 +150,12 @@ export class ModeloAcceso {
                         primerApellido: Descifrar(usuario.primerApellido),
                         segundoApellido: Descifrar(usuario.segundoApellido)
                     }
-                    resultadoConsulta = { estado: 200, usuarioEncontrado: usuarioDescifrado };
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, usuarioEncontrado: usuarioDescifrado };
                 } else if (usuario.idAcceso === -1) {
-                    resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
-                } else {
-                    resultadoConsulta = { estado: 404, mensaje: MensajesAcceso.USUARIO_PERDIDO };
-                }
+                    resultadoConsulta = MensajeGeneralesBD.ERROR_DB;
+                } 
             } else {
-                resultadoConsulta = { estado: 404, mensaje: MensajesAcceso.USUARIO_PERDIDO };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajesAcceso.USUARIO_PERDIDO };
             }
         } catch (error) {
             throw error;
@@ -192,14 +187,12 @@ export class ModeloAcceso {
                         primerApellido: Descifrar(usuarioConsultado.primerApellido),
                         segundoApellido: Descifrar(usuarioConsultado.segundoApellido)
                     }
-                    resultadoConsulta = { estado: 200, usuarioEncontrado: usuarioDescifrado };
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, usuarioEncontrado: usuarioDescifrado };
                 } else if (usuarioConsultado.idAcceso === -1) {
-                    resultadoConsulta = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
-                } else {
-                    resultadoConsulta = { estado: 404, mensaje: MensajesAcceso.USUARIO_PERDIDO };
+                    resultadoConsulta = MensajeGeneralesBD.ERROR_DB;
                 }
             } else {
-                resultadoConsulta = { estado: 404, mensaje: MensajesAcceso.USUARIO_PERDIDO };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajesAcceso.USUARIO_PERDIDO };
             }
         } catch (error) {
             throw error;
@@ -226,16 +219,16 @@ export class ModeloAcceso {
             const ResultadoQuery = resultadoProcedimiento[0]?.[0];
             if (ResultadoQuery.Resultado === 1) {
                 if(bitacoraFn){
-                    await bitacoraFn(`Se ha desactivado el usuario con id: ${idAcceso}`)
+                    await bitacoraFn(`Se ha desactivado el usuario con id: ${idAcceso}`, transaction)
                 }
                 await transaction.commit();
-                resultadoDesactivacion = { estado: 200, mensaje: MensajesAcceso.DESACTIVACION_EXITOSA };
+                resultadoDesactivacion = { estado: CodigosDeEstado.OK, mensaje: MensajesAcceso.DESACTIVACION_EXITOSA };
             } else if (ResultadoQuery.Resultado === 0) {
                 await transaction.rollback();
-                resultadoDesactivacion = { estado: 404, mensaje: MensajesAcceso.USUARIO_PERDIDO };
+                resultadoDesactivacion = { estado: CodigosDeEstado.NotFound, mensaje: MensajesAcceso.USUARIO_PERDIDO };
             } else {
                 await transaction.rollback();
-                resultadoDesactivacion = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
+                resultadoDesactivacion =MensajeGeneralesBD.ERROR_DB;
             }
         } catch (error) {
             if (transaction) {
@@ -252,7 +245,6 @@ export class ModeloAcceso {
         let resultadoDeLogin;
         let transaction;
         try {
-            transaction = await sequelize.transaction();
             const resultadoProcedimiento = await sequelize.query(
                 `EXEC sp_LoginAcceso
                     @usuario = :usuario`,
@@ -265,6 +257,7 @@ export class ModeloAcceso {
             if (ResultadoQuery.Resultado === 0) {
                 const contraseniasCoinciden = await bcrypt.compare(contrasenia,ResultadoQuery.contrasenia);
                 if(contraseniasCoinciden){
+                    transaction = await sequelize.transaction();
                     const {contrasenia: _, ...usuarioSinContrasenia} = ResultadoQuery;
                     const usuarioDescifrado = {
                             ...usuarioSinContrasenia,
@@ -273,19 +266,17 @@ export class ModeloAcceso {
                             segundoApellido: Descifrar(usuarioSinContrasenia.segundoApellido)
                         }
                     if(bitacoraFn){
-                        await bitacoraFn(`Se ha iniciado sesion con el usuario: ${usuario}`,'InicioDeSesion')
-                        await transaction.commit();
+                        await bitacoraFn(`Se ha iniciado sesion con el usuario: ${usuario}`,transaction)
                     }      
-                    resultadoDeLogin = {estado: 200, Mensaje: MensajesAcceso.LOGIN_EXITOSO, usuario: usuarioDescifrado}
+                    await transaction.commit();
+                    resultadoDeLogin = {estado: CodigosDeEstado.OK, Mensaje: MensajesAcceso.LOGIN_EXITOSO, usuario: usuarioDescifrado}
                 }else{
-                    resultadoDeLogin = {estado: 401, Mensaje: MensajesAcceso.CREDENCIALES_INVALIDAS}
+                    resultadoDeLogin = {estado: CodigosDeEstado.Unauthorized, Mensaje: MensajesAcceso.CREDENCIALES_INVALIDAS}
                 }
-            } else if (ResultadoQuery.Resultado === 1) {
-                resultadoDeLogin = { estado: 401, mensaje: MensajesAcceso.CREDENCIALES_INVALIDAS };
-            } else if (ResultadoQuery.Resultado === 3) {
-                resultadoDeLogin = { estado: 401, mensaje: MensajesAcceso.USUARIO_INACTIVO };
-            } else {
-                resultadoDeLogin = { estado: 500, mensaje: MensajeGeneralesBD.ERROR_DB };
+            } else if (ResultadoQuery.Resultado === 1 || ResultadoQuery.Resultado === 3) {
+                resultadoDeLogin = { estado: CodigosDeEstado.Unauthorized, mensaje: MensajesAcceso.CREDENCIALES_INVALIDAS };
+            }else {
+                resultadoDeLogin = MensajeGeneralesBD.ERROR_DB;
             }
         } catch (error) {
             if(transaction){
@@ -293,7 +284,6 @@ export class ModeloAcceso {
             }
             throw error;
         }
-
         return resultadoDeLogin;
     }
 
@@ -309,9 +299,13 @@ export class ModeloAcceso {
             );
             const tiposAcceso = resultadoProcedimiento[0];
             if (tiposAcceso.length > 0) {
-                resultadoConsulta = { estado: 200, tiposAcceso };
+                if(tiposAcceso[0].idTipoAcceso === -1){
+                    resultadoConsulta = MensajeGeneralesBD.ERROR_DB;
+                }else{
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, tiposAcceso };
+                }
             } else {
-                resultadoConsulta = { estado: 400, mensaje: MensajesAcceso.TIPOS_ACCESO_PERDIDOS };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajesAcceso.TIPOS_ACCESO_PERDIDOS };
             }
         } catch (error) {
             throw error;
@@ -332,18 +326,22 @@ export class ModeloAcceso {
             );
             let usuarios = resultadoProcedimiento[0];
             if (usuarios.length > 0) {
-                usuarios = usuarios.map(usuario => {
+                if(usuarios[0].idAcceso === -1){
+                    resultadoConsulta = MensajeGeneralesBD.ERROR_DB;
+                }else{
+                    usuarios = usuarios.map(usuario => {
                     const { contrasenia: _, ...usuarioSinContrasenia } = usuario;
-                    return {
-                        ...usuarioSinContrasenia,
-                        nombre:          Descifrar(usuario.nombre),
-                        primerApellido:  Descifrar(usuario.primerApellido),
-                        segundoApellido: Descifrar(usuario.segundoApellido)
-                    };
-                });
-                resultadoConsulta = { estado: 200, usuarios };
+                        return {
+                            ...usuarioSinContrasenia,
+                            nombre:          Descifrar(usuario.nombre),
+                            primerApellido:  Descifrar(usuario.primerApellido),
+                            segundoApellido: Descifrar(usuario.segundoApellido)
+                        };
+                    });
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, usuarios };
+                }
             } else {
-                resultadoConsulta = { estado: 400, mensaje: MensajesAcceso.USUARIO_PERDIDO };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajesAcceso.USUARIO_PERDIDO };
             }
         } catch (error) {
             throw error;
@@ -363,18 +361,22 @@ export class ModeloAcceso {
             );
             let usuarios = resultadoProcedimiento[0];
             if (usuarios.length > 0) {
-                usuarios = usuarios.map(usuario => {
-                    const { contrasenia: _, ...usuarioSinContrasenia } = usuario;
-                    return {
-                        ...usuarioSinContrasenia,
-                        nombre:          Descifrar(usuario.nombre),
-                        primerApellido:  Descifrar(usuario.primerApellido),
-                        segundoApellido: Descifrar(usuario.segundoApellido)
-                    };
-                });
-                resultadoConsulta = { estado: 200, usuarios };
+                if(usuarios[0].idAcceso === -1){
+                    resultadoConsulta = MensajesGeneralesBD.ERROR_DB;
+                }else{
+                    usuarios = usuarios.map(usuario => {
+                        const { contrasenia: _, ...usuarioSinContrasenia } = usuario;
+                        return {
+                            ...usuarioSinContrasenia,
+                            nombre:          Descifrar(usuario.nombre),
+                            primerApellido:  Descifrar(usuario.primerApellido),
+                            segundoApellido: Descifrar(usuario.segundoApellido)
+                        };
+                    });
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, usuarios };
+                }
             } else {
-                resultadoConsulta = { estado: 400, mensaje: MensajesAcceso.USUARIO_PERDIDO };
+                resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajesAcceso.USUARIO_PERDIDO };
             }
         } catch (error) {
             throw error;

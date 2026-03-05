@@ -6,12 +6,12 @@ import { ObtenerTipoDeUsuario } from '../utilidades/TipoDeAcceso.js';
 export function BitacoraLogger(req, res, next){
     const Ip = RequestIP.getClientIp(req)
 
-    req.Bitacora = async (accion, usuarioBitacora) => {
+    req.Bitacora = async (accion, transaction = null) => {
         let usuario;
-        if(usuarioBitacora){
-            usuario = usuarioBitacora
-        }else{
+        if(req.usuario){
             usuario = req.usuario
+        }else{
+            usuario = 'InicioDeSesion'
         }
         let tipoDeUsuario;
         if(req.tipoDeAcceso){
@@ -28,7 +28,7 @@ export function BitacoraLogger(req, res, next){
             usuario: usuario,
             tipoDeUsuario: tipoDeUsuario,
             accion: accion,
-        });
+        }, {transaction});
     }
     next();
 }
