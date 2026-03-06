@@ -62,6 +62,5 @@ export const obtenerConexion = (IdTipoDeAcceso) => {
         3: sequelizeGestorDeSolicitudes,
         4: sequelizeJefeDeDepartamento
     };
-    console.log(conexiones[IdTipoDeAcceso])
     return conexiones[IdTipoDeAcceso] ?? sequelizeInicioDeSesion;
 }

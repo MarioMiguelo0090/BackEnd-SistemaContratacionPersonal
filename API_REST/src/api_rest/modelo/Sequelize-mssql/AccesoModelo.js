@@ -44,16 +44,16 @@ export class ModeloAcceso {
             const idAcceso = resultado[0]?.[0]?.idAcceso;
             if (idAcceso === -1) {
                 await transaction.rollback();
-                resultadoInsercion = MensajeGeneralesBD.ERROR_DB;
+                resultadoInsercion = {estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB}
             } else if (idAcceso === -2){
                 await transaction.rollback();
-                resultadoInsercion = MensajesAcceso.USUARIO_DUPLICADO;
+                resultadoInsercion = {resultado: CodigosDeEstado.Conflict, mensaje: MensajesAcceso.USUARIO_DUPLICADO}
             } else {
                 if(bitacoraFn){
-                    await bitacoraFn(`Se ha insertado una nueva cuenta con el usuario: ${usuario}`, transaction)
+                    await bitacoraFn(`Se ha insertado una nueva cuenta con el usuario: ${usuario}`,transaction)
                 }
                 await transaction.commit();
-                resultadoInsercion = MensajesAcceso.REGISTRO_EXITOSO;
+                resultadoInsercion = {resultado: CodigosDeEstado.OK, mensaje: MensajesAcceso.REGISTRO_EXITOSO}
             }
         }catch(error){
             if(transaction){
@@ -115,7 +115,7 @@ export class ModeloAcceso {
                 resultadoModificacion = { estado: CodigosDeEstado.OK, mensaje: MensajesAcceso.ACTUALIZACION_EXITOSA };
             } else {
                 await transaction.rollback();
-                resultadoModificacion = MensajeGeneralesBD.ERROR_DB;                
+                resultadoModificacion = {estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB}               
             }
         }catch(error){
             if(transaction){
@@ -152,7 +152,7 @@ export class ModeloAcceso {
                     }
                     resultadoConsulta = { estado: CodigosDeEstado.OK, usuarioEncontrado: usuarioDescifrado };
                 } else if (usuario.idAcceso === -1) {
-                    resultadoConsulta = MensajeGeneralesBD.ERROR_DB;
+                    resultadoConsulta ={estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB}
                 } 
             } else {
                 resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajesAcceso.USUARIO_PERDIDO };
@@ -189,7 +189,7 @@ export class ModeloAcceso {
                     }
                     resultadoConsulta = { estado: CodigosDeEstado.OK, usuarioEncontrado: usuarioDescifrado };
                 } else if (usuarioConsultado.idAcceso === -1) {
-                    resultadoConsulta = MensajeGeneralesBD.ERROR_DB;
+                    resultadoConsulta = {estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB}
                 }
             } else {
                 resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajesAcceso.USUARIO_PERDIDO };
@@ -228,7 +228,7 @@ export class ModeloAcceso {
                 resultadoDesactivacion = { estado: CodigosDeEstado.NotFound, mensaje: MensajesAcceso.USUARIO_PERDIDO };
             } else {
                 await transaction.rollback();
-                resultadoDesactivacion =MensajeGeneralesBD.ERROR_DB;
+                resultadoDesactivacion = {estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB}
             }
         } catch (error) {
             if (transaction) {
@@ -271,12 +271,15 @@ export class ModeloAcceso {
                     await transaction.commit();
                     resultadoDeLogin = {estado: CodigosDeEstado.OK, Mensaje: MensajesAcceso.LOGIN_EXITOSO, usuario: usuarioDescifrado}
                 }else{
+                    await transaction.rollback();
                     resultadoDeLogin = {estado: CodigosDeEstado.Unauthorized, Mensaje: MensajesAcceso.CREDENCIALES_INVALIDAS}
                 }
             } else if (ResultadoQuery.Resultado === 1 || ResultadoQuery.Resultado === 3) {
+                await transaction.rollback();
                 resultadoDeLogin = { estado: CodigosDeEstado.Unauthorized, mensaje: MensajesAcceso.CREDENCIALES_INVALIDAS };
             }else {
-                resultadoDeLogin = MensajeGeneralesBD.ERROR_DB;
+                await transaction.rollback();
+                resultadoDeLogin = {estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB}
             }
         } catch (error) {
             if(transaction){
@@ -300,7 +303,7 @@ export class ModeloAcceso {
             const tiposAcceso = resultadoProcedimiento[0];
             if (tiposAcceso.length > 0) {
                 if(tiposAcceso[0].idTipoAcceso === -1){
-                    resultadoConsulta = MensajeGeneralesBD.ERROR_DB;
+                    resultadoConsulta = {estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB}
                 }else{
                     resultadoConsulta = { estado: CodigosDeEstado.OK, tiposAcceso };
                 }
@@ -327,7 +330,7 @@ export class ModeloAcceso {
             let usuarios = resultadoProcedimiento[0];
             if (usuarios.length > 0) {
                 if(usuarios[0].idAcceso === -1){
-                    resultadoConsulta = MensajeGeneralesBD.ERROR_DB;
+                    resultadoConsulta = {estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB}
                 }else{
                     usuarios = usuarios.map(usuario => {
                     const { contrasenia: _, ...usuarioSinContrasenia } = usuario;
@@ -362,7 +365,7 @@ export class ModeloAcceso {
             let usuarios = resultadoProcedimiento[0];
             if (usuarios.length > 0) {
                 if(usuarios[0].idAcceso === -1){
-                    resultadoConsulta = MensajesGeneralesBD.ERROR_DB;
+                    resultadoConsulta = {estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB}
                 }else{
                     usuarios = usuarios.map(usuario => {
                         const { contrasenia: _, ...usuarioSinContrasenia } = usuario;

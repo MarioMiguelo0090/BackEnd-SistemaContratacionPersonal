@@ -80,9 +80,9 @@ export class CedulaControlador
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !== 200,
                     estado: resultadoConsulta,
-                    ...(resultadoConsulta === 200
+                    mensaje: (resultadoConsulta === 200
                         ? {cedula: ResultadoConsulta.cedula}
-                        : {mensaje: ResultadoConsulta.mensaje}
+                        : ResultadoConsulta.mensaje
                     )
                 });
             }else{  
@@ -115,9 +115,9 @@ export class CedulaControlador
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !== 200,
                     estado: resultadoConsulta,
-                    ...(resultadoConsulta === 200
+                    mensaje: (resultadoConsulta === 200
                         ? {competencias: ResultadoConsulta.competencias}
-                        : {mensaje: ResultadoConsulta.mensaje}
+                        : ResultadoConsulta.mensaje
                     )
                 });
             }else{
@@ -145,14 +145,14 @@ export class CedulaControlador
             const Datos = {IdProceso};
             const ResultadoValidacion = ValidarEdicionParcialCedula(Datos);
             if(ResultadoValidacion.success){
-                const ResultadoConsulta = await this.modeloCedula.ObtenerResultadosPorIdCedulaResultados(IdProceso);
+                const ResultadoConsulta = await this.modeloCedula.ObtenerResultadosPorIdCedulaResultados(IdProceso, req.tipoDeAcceso);
                 let resultadoConsulta = parseInt(ResultadoConsulta.estado);
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !== 200,
                     estado: resultadoConsulta,
-                    ...(resultadoConsulta === 200
+                    mensaje: (resultadoConsulta === 200
                         ? {resultados: ResultadoConsulta.resultados}
-                        : {mensaje: ResultadoConsulta.mensaje}
+                        : ResultadoConsulta.mensaje
                     )
                 });
             }else{
@@ -239,9 +239,9 @@ export class CedulaControlador
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !== 200,
                     estado: resultadoConsulta,
-                    ...(resultadoConsulta === 200
+                    mensaje: (resultadoConsulta === 200
                         ? {resultados: ResultadoConsulta.resultados}
-                        : {mensaje: ResultadoConsulta.mensaje}
+                        : ResultadoConsulta.mensaje
                     )
                 });
             }else{
@@ -270,9 +270,9 @@ export class CedulaControlador
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
                 estado: resultadoConsulta,
-                ...(resultadoConsulta === 200
+                mensaje: (resultadoConsulta === 200
                     ? {cedulas: ResultadoConsulta.cedulas}
-                    : {mensaje: ResultadoConsulta.mensaje}
+                    : ResultadoConsulta.mensaje
                 )
             });            
         }catch(error)
@@ -295,9 +295,9 @@ export class CedulaControlador
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
                 estado: resultadoConsulta,
-                ...(resultadoConsulta === 200
+                mensaje: (resultadoConsulta === 200
                     ? {cedulas: ResultadoConsulta.cedulas}
-                    : {mensaje: ResultadoConsulta.mensaje}
+                    : ResultadoConsulta.mensaje
                 )
             });            
         }catch(error)

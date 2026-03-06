@@ -13,12 +13,13 @@ export class CatalogoControlador
         {
             const ResultadoConsulta = await this.modeloCatalogo.ObtenerTiposDeProceso({tipoDeAcceso: req.tipoDeAcceso});
             let resultadoConsulta = parseInt(ResultadoConsulta.estado);
+            console.log(ResultadoConsulta.tipos)
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
                 estado: resultadoConsulta,
-                ...(resultadoConsulta === 200
-                    ? { tiposProceso: ResultadoConsulta.tiposProceso }
-                    : { mensaje: ResultadoConsulta.mensaje }
+                mensaje: (resultadoConsulta === 200
+                    ? { tiposProceso: ResultadoConsulta.tiposDeProceso }
+                    : ResultadoConsulta.mensaje
                 )
             });
 
@@ -45,9 +46,9 @@ export class CatalogoControlador
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
                 estado: resultadoConsulta,
-                ...(resultadoConsulta === 200
+                mensaje: (resultadoConsulta === 200
                     ? { tiposPersonal: ResultadoConsulta.tiposPersonal }
-                    : { mensaje: ResultadoConsulta.mensaje }
+                    : ResultadoConsulta.mensaje
                 )
             });
         }
@@ -73,9 +74,9 @@ export class CatalogoControlador
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
                 estado: resultadoConsulta,
-                ...(resultadoConsulta === 200
+                mensaje: (resultadoConsulta === 200
                     ? { estadosProcesosContratacion: ResultadoConsulta.estadosProcesosContratacion }
-                    : { mensaje: ResultadoConsulta.mensaje }
+                    : ResultadoConsulta.mensaje
                 )
             });
         }
@@ -101,9 +102,9 @@ export class CatalogoControlador
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
                 estado: resultadoConsulta,
-                ...(resultadoConsulta === 200
+                mensaje: (resultadoConsulta === 200
                     ? { temporalDefinitiva: ResultadoConsulta.temporalDefinitiva }
-                    : { mensaje: ResultadoConsulta.mensaje }
+                    : ResultadoConsulta.mensaje 
                 )
             });
         }
@@ -129,9 +130,9 @@ export class CatalogoControlador
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
                 estado: resultadoConsulta,
-                ...(resultadoConsulta === 200
+                mensaje: (resultadoConsulta === 200
                     ? { tiposCedula: ResultadoConsulta.tiposCedula }
-                    : { mensaje: ResultadoConsulta.mensaje }
+                    : ResultadoConsulta.mensaje 
                 )
             });
         }
@@ -157,9 +158,9 @@ export class CatalogoControlador
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
                 estado: resultadoConsulta,
-                ...(resultadoConsulta === 200
+                mensaje: (resultadoConsulta === 200
                     ? { dependencias: ResultadoConsulta.dependencias }
-                    : { mensaje: ResultadoConsulta.mensaje }
+                    : ResultadoConsulta.mensaje
                 )
             });
         }
@@ -185,9 +186,9 @@ export class CatalogoControlador
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
                 estado: resultadoConsulta,
-                ...(resultadoConsulta === 200
+                mensaje: (resultadoConsulta === 200
                     ? { clasificacionesCedula: ResultadoConsulta.clasificacionesCedula }
-                    : { mensaje: ResultadoConsulta.mensaje }
+                    : ResultadoConsulta.mensaje
                 )
             });
         }

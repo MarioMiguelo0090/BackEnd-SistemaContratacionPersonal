@@ -75,21 +75,23 @@ export class ModeloProcesoContratacion {
                 const ProcesoContratacion = ResultadoProcesoContratacion[0];
                 if (ProcesoContratacion.idProceso > 0) {
                     if(bitacoraFn){
-                        await bitacoraFn(`Se ha registrado un nuevo proceso de contratacion`)
+                        await bitacoraFn(`Se ha registrado un nuevo proceso de contratacion`,transaction)
                     }
                     await transaction.commit();
                     resultadoInsercion = {
-                        ...MensajeProcesoContratacion.REGISTRO_EXITOSO,
+                        mensaje: MensajeProcesoContratacion.REGISTRO_EXITOSO,
                         estado: CodigosDeEstado.OK
                     };
                 } else if (ProcesoContratacion.idProceso == -2) {
+                    await transaction.rollback();
                     resultadoInsercion = {
-                        ...MensajeProcesoContratacion.REGISTRO_DUPLICADO,
+                        mensaje: MensajeProcesoContratacion.REGISTRO_DUPLICADO,
                         estado: CodigosDeEstado.Conflict
                     };
                 } else {
+                    await transaction.rollback();
                     resultadoInsercion = {
-                        ...MensajeGeneralesBD.ERROR_DB,
+                        mensaje: MensajeGeneralesBD.ERROR_DB,
                         estado: CodigosDeEstado.InternalServerError
                     };
                 }
@@ -179,21 +181,23 @@ export class ModeloProcesoContratacion {
             const ResultadoSP = resultadoProcedimiento[0]?.[0]?.Resultado;
             if (ResultadoSP === 1) {
                 if(bitacoraFn){
-                    await bitacoraFn(`Se ha editado el proceso de contratación con ID: ${idProceso}`)
+                    await bitacoraFn(`Se ha editado el proceso de contratación con ID: ${idProceso}`,transaction)
                 }
                 await transaction.commit();
                 resultadoEdicion = {
-                    ...MensajeProcesoContratacion.ACTUALIZACION_EXITOSA,
+                    mensaje: MensajeProcesoContratacion.ACTUALIZACION_EXITOSA,
                     estado: CodigosDeEstado.OK
                 };
             } else if (ResultadoSP == 2) {
+                await transaction.rollback();
                 resultadoEdicion = {
-                    ...MensajeProcesoContratacion.PROCESO_INEXISTENTE,
+                    mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE,
                     estado: CodigosDeEstado.NotFound
                 };
             } else {
+                await transaction.rollback();
                 resultadoEdicion = {
-                    ...MensajeGeneralesBD.ERROR_DB,
+                    mensaje: MensajeGeneralesBD.ERROR_DB,
                     estado: CodigosDeEstado.InternalServerError
                 };
             }
@@ -525,16 +529,17 @@ export class ModeloProcesoContratacion {
                 const ControlVersion = ResultadoRegistroControlVersion[0];
                 if (ControlVersion.idControlVersion > 0) {
                     if(bitacoraFn){
-                        await bitacoraFn(`Se ha hecho un registro dentro del control de versiones`)
+                        await bitacoraFn(`Se ha hecho un registro dentro del control de versiones`,transaction)
                     }
                     transaction.commit();
                     resultadoInsercion = {
-                        ...MensajeProcesoContratacion.REGISTRO_EXITOSO,
+                        mensaje: MensajeProcesoContratacion.REGISTRO_EXITOSO,
                         estado: CodigosDeEstado.OK
                     };
                 } else {
+                    await transaction.rollback();
                     resultadoInsercion = {
-                        ...MensajeGeneralesBD.ERROR_DB,
+                        mensaje: MensajeGeneralesBD.ERROR_DB,
                         estado: CodigosDeEstado.InternalServerError
                     };
                 }
@@ -586,13 +591,15 @@ export class ModeloProcesoContratacion {
             const registro = resultadoProcedimiento[0]?.[0];
             if (registro.idProceso > 0) {
                 if(bitacoraFn){
-                    await bitacoraFn(`Se ha eliminado un proceso de contratacion con id: ${idProceso}`);
+                    await bitacoraFn(`Se ha eliminado un proceso de contratacion con id: ${idProceso}`,transaction);
                 }
                 await transaction.commit();
                 resultadoEliminacion = { estado: CodigosDeEstado.OK, mensaje: MensajeProcesoContratacion.ELIMINACION_EXITOSA };
             } else if (registro.idProceso === -1) {
+                await transaction.rollback();
                 resultadoEliminacion = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
             } else {
+                await transaction.rollback();
                 resultadoEliminacion = { estado: CodigosDeEstado.NotFound, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE };
             }
         } catch (error) {
@@ -628,16 +635,17 @@ export class ModeloProcesoContratacion {
                 const Registro = Resultado[0];
                 if (Registro.Resultado > 0) {
                     if(bitacoraFn){
-                        await bitacoraFn(`Se ha registrado la actualización de un oficio asociado al proceso de contratación: ${FKIdProcesoContratacion}`);
+                        await bitacoraFn(`Se ha registrado la actualización de un oficio asociado al proceso de contratación: ${FKIdProcesoContratacion}`,transaction);
                     }
                     transaction.commit();
                     resultadoInsercion = {
-                        ...MensajeProcesoContratacion.REGISTRO_EXITOSO,
+                        mensaje: MensajeProcesoContratacion.REGISTRO_EXITOSO,
                         estado: CodigosDeEstado.OK
                     };
                 } else {
+                    await transaction.rollback();
                     resultadoInsercion = {
-                        ...MensajeGeneralesBD.ERROR_DB,
+                        mensaje: MensajeGeneralesBD.ERROR_DB,
                         estado: CodigosDeEstado.InternalServerError
                     };
                 }
@@ -705,11 +713,12 @@ export class ModeloProcesoContratacion {
             const res = resultadoInsercion[0][0].resultado;
             if(res === 1){
                 if(bitacoraFn){
-                    await bitacoraFn(`Se ha registrado el seguimiento hermes con folio: ${lastFolio}`)
+                    await bitacoraFn(`Se ha registrado el seguimiento hermes con folio: ${lastFolio}`,transaction)
                 }
                 await transaction.commit();
                 resultado = {estado: CodigosDeEstado.OK, mensaje: MensajeResultado.REGISTRO_EXITOSO}
             }else if(res === 2){
+                await transaction.rollback();
                 resultado = {estado: CodigosDeEstado.Conflict, mensaje: 'Ya se ha registrado el frolio del seguimiento hermes ingresado.'}
             }else{
                 await transaction.rollback();
@@ -733,16 +742,20 @@ export class ModeloProcesoContratacion {
             );
             let seguimientos = resultadoProcedimiento[0];
             if (seguimientos.length > 0) {
-                seguimientos = seguimientos.map(s => {
-                    return {
-                        ...s,
-                        fechaRecepcion: Descifrar(s.fechaRecepcion), importancia: Descifrar(s.importancia),
-                        tipoEnvio: Descifrar(s.tipoEnvio), solicita: Descifrar(s.solicita),
-                        entidadDependencia: Descifrar(s.entidadDependencia), asunto: Descifrar(s.asunto),
-                        estatus: Descifrar(s.estatus), acciones: Descifrar(s.acciones)
-                    };
-                });
-                resultadoConsulta = { estado: CodigosDeEstado.OK, seguimientos };
+                if(seguimientos[0].idSeguimiento === -1){
+                    resultadoConsulta = {estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB}
+                }else{
+                    seguimientos = seguimientos.map(s => {
+                        return {
+                            ...s,
+                            fechaRecepcion: Descifrar(s.fechaRecepcion), importancia: Descifrar(s.importancia),
+                            tipoEnvio: Descifrar(s.tipoEnvio), solicita: Descifrar(s.solicita),
+                            entidadDependencia: Descifrar(s.entidadDependencia), asunto: Descifrar(s.asunto),
+                            estatus: Descifrar(s.estatus), acciones: Descifrar(s.acciones)
+                        };
+                    });
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, seguimientos };
+                }
             } else {
                 resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajeProcesoContratacion.PROCESO_INEXISTENTE };
             }

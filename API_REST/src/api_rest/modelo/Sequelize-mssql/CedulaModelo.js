@@ -56,22 +56,24 @@ export class ModeloCedula {
                 const CedulaRegistrada = ResultadoCedula[0];
                 if (CedulaRegistrada.idCedula > 0) {
                     if(bitacoraFn){
-                        await bitacoraFn(`Se ha registrado una nueva cédula`)
+                        await bitacoraFn(`Se ha registrado una nueva cédula`,transaction)
                     }
                     await transaction.commit();
                     resultadoInsercion = {
-                        ...MensajeCedula.REGISTRO_EXITOSO,
+                        mensaje: MensajeCedula.REGISTRO_EXITOSO,
                         estado: CodigosDeEstado.OK,
                         idCedula: CedulaRegistrada.idCedula
                     };
                 } else if (CedulaRegistrada.idCedula == -2) {
+                    await transaction.rollback();
                     resultadoInsercion = {
-                        ...MensajeCedula.CEDULA_DUPLICADA,
+                        mensaje: MensajeCedula.CEDULA_DUPLICADA,
                         estado: CodigosDeEstado.Conflict
                     };
                 } else {
+                    await transaction.rollback();
                     resultadoInsercion = {
-                        ...MensajeGeneralesBD.ERROR_DB,
+                        mensaje: MensajeGeneralesBD.ERROR_DB,
                         estado: CodigosDeEstado.InternalServerError
                     };
                 }
@@ -131,21 +133,23 @@ export class ModeloCedula {
             const ResultadoSP = resultadoProcedimiento[0][0]?.Resultado;
             if (ResultadoSP === 1) {
                 if(bitacoraFn){
-                    await bitacoraFn(`Se ha modificado una cedula con el id: ${idCedula}`)
+                    await bitacoraFn(`Se ha modificado una cedula con el id: ${idCedula}`,transaction)
                 }
                 await transaction.commit();
                 resultadoEdicion = {
-                    ...MensajeCedula.ACTUALIZACION_EXITOSA,
+                    mensaje: MensajeCedula.ACTUALIZACION_EXITOSA,
                     estado: CodigosDeEstado.OK
                 };
             } else if (ResultadoSP === 2) {
+                await transaction.rollback();
                 resultadoEdicion = {
-                    ...MensajeCedula.CEDULA_INEXISTENTE,
+                    mensaje: MensajeCedula.CEDULA_INEXISTENTE,
                     estado: CodigosDeEstado.NotFound
                 };
             } else {
+                await transaction.rollback();
                 resultadoEdicion = {
-                    ...MensajeGeneralesBD.ERROR_DB,
+                    mensaje: MensajeGeneralesBD.ERROR_DB,
                     estado: CodigosDeEstado.InternalServerError
                 };
             }
@@ -172,6 +176,7 @@ export class ModeloCedula {
             );
 
             let ResultadoQueryCedula = resultadoProcedimiento[0];
+            console.log(ResultadoQueryCedula)
             if (ResultadoQueryCedula.length > 0) {
                 ResultadoQueryCedula = ResultadoQueryCedula.map(cedula => {
                     return {
@@ -274,16 +279,17 @@ export class ModeloCedula {
                 const Registro = Resultado[0];
                 if (Registro.idResultado > 0) {
                     if(bitacoraFn){
-                        await bitacoraFn(`Se ha registrado el resultado de la cédula con id: ${FKIdCedula}`)
+                        await bitacoraFn(`Se ha registrado el resultado de la cédula con id: ${FKIdCedula}`,transaction)
                     }
                     await transaction.commit();
                     resultadoInsercion = {
-                        ...MensajeResultado.REGISTRO_EXITOSO,
+                        mensaje: MensajeResultado.REGISTRO_EXITOSO,
                         estado: CodigosDeEstado.OK
                     };
                 } else {
+                    await transaction.rollback();
                     resultadoInsercion = {
-                        ...MensajeResultado.RESULTADO_INEXISTENTE,
+                        mensaje: MensajeResultado.RESULTADO_INEXISTENTE,
                         estado: CodigosDeEstado.NotFound
                     };
                 }
@@ -337,16 +343,17 @@ export class ModeloCedula {
             const ResultadoSP = resultadoProcedimiento[0][0]?.actualizado;
             if (ResultadoSP === 1) {
                 if(bitacoraFn){
-                    await bitacoraFn(`Se ha editado un resultado de una cédula con id: ${idResultado}`)
+                    await bitacoraFn(`Se ha editado un resultado de una cédula con id: ${idResultado}`,transaction)
                 }
                 await transaction.commit();
                 resultadoEdicion = {
-                    ...MensajeCedula.ACTUALIZACION_EXITOSA,
+                    mensaje: MensajeCedula.ACTUALIZACION_EXITOSA,
                     estado: CodigosDeEstado.OK
                 };
             } else if (ResultadoSP === 0) {
+                await transaction.rollback();
                 resultadoEdicion = {
-                    ...MensajeResultado.RESULTADO_INEXISTENTE,
+                    mensaje: MensajeResultado.RESULTADO_INEXISTENTE,
                     estado: CodigosDeEstado.NotFound
                 };
             } else {
@@ -454,31 +461,41 @@ export class ModeloCedula {
             let cedulas = resultadoProcedimiento[0];
             let cedulasDescifradas;
             if (cedulas.length > 0) {
-                cedulasDescifradas = cedulas.map(cedula => {
-                    return {
-                        ...cedula,
-                        edad: Descifrar(cedula.edad), educacionFormal: Descifrar(cedula.educacionFormal), referidoPor: Descifrar(cedula.referidoPor),
-                        antecedentesFamiliaresUV: Descifrar(cedula.antecedentesFamiliaresUV), expectativaLaboral: Descifrar(cedula.expectativaLaboral), experienciaRelacionada: Descifrar(cedula.experienciaRelacionada),
-                        experiencia: Descifrar(cedula.experiencia), conclusiones: Descifrar(cedula.conclusiones), resultado: Descifrar(cedula.resultado), efectoContratacion: Descifrar(cedula.efectoContratacion),
-                        competenciaReforzar: Descifrar(cedula.competenciaReforzar), competenciaDesarrollar: Descifrar(cedula.competenciaDesarrollar), motivoCedulaInterna: Descifrar(cedula.motivoCedulaInterna),
-                        motivoCedulaResultados: Descifrar(cedula.motivoCedulaResultados), puesto: Descifrar(cedula.puesto), plaza: Descifrar(cedula.plaza),
-                        oficioAutorizacionDeOcupacion: Descifrar(cedula.oficioAutorizacionDeOcupacion), evaluacionConocimientos: Descifrar(cedula.evaluacionConocimientos), competenciasSobresaliente: Descifrar(cedula.competenciasSobresaliente),
-                        descripcionDesarrollar: Descifrar(cedula.descripcionDesarrollar), descripcionReforzar: Descifrar(cedula.descripcionReforzar), folio: Descifrar(cedula.folio), numPlaza: Descifrar(cedula.numPlaza), fechaRecibido: Descifrar(cedula.fechaRecibido),
-                        fechaEntrevista: Descifrar(cedula.fechaEntrevista), resultadoEvaluacionConocimiento: Descifrar(cedula.resultadoEvaluacionConocimiento), fechaEnvioDEyDP: Descifrar(cedula.fechaEnvioDEyDP), fechaNotificacion: Descifrar(cedula.fechaNotificacion),
-                        categoriaPuestoOrigen: Descifrar(cedula.categoriaPuestoOrigen), diasProceso: Descifrar(cedula.diasProceso), hermesNotificacion: Descifrar(cedula.hermesNotificacion), titularPlaza: Descifrar(cedula.titularPlaza), lineamientoOficioContinuidad: Descifrar(cedula.lineamientoOficioContinuidad),
-                        motivo: Descifrar(cedula.motivo), fechaElaboracionPropuesta: Descifrar(cedula.fechaElaboracionPropuesta), fechaLiberacionOficio: Descifrar(cedula.fechaLiberacionOficio), periodoAutorizadoOficioInicio: Descifrar(cedula.periodoAutorizadoOficioInicio),
-                        periodoAutorizadoOficioFin: Descifrar(cedula.periodoAutorizadoOficioFin), observaciones: Descifrar(cedula.observaciones), numCarpeta: Descifrar(cedula.numCarpeta), nombreCandidato: Descifrar(cedula.nombreCandidato), funcionDesempeniar: Descifrar(cedula.funcionDesempeniar),
-                        familiaFuncional: Descifrar(cedula.familiaFuncional), fechaEvaluacionCompetencias: Descifrar(cedula.fechaEvaluacionCompetencias), fechaInicioProcesamiento: Descifrar(cedula.fechaInicioProcesamiento), resultadoEvaluacionCompetencias: Descifrar(cedula.resultadoEvaluacionCompetencias),
-                        experienciaLaboralSolicitada: Descifrar(cedula.experienciaLaboralSolicitada), resultadoReferenciasLaborales: Descifrar(cedula.resultadoReferenciasLaborales), fechaEnvioEvaluacionDesempenio: Descifrar(cedula.fechaEnvioEvaluacionDesempenio), resultadoHabilidadesWord: Descifrar(cedula.resultadoHabilidadesWord), resultadoHabilidadesExcel: Descifrar(cedula.resultadoHabilidadesExcel),
-                        resultadoOrtografia: Descifrar(cedula.resultadoOrtografia), resultadoProcesoEvaluacion: Descifrar(cedula.resultadoProcesoEvaluacion), fechaRevisionOfiEval: Descifrar(cedula.fechaRevisionOfiEval), observacionesAnalista: Descifrar(cedula.observacionesAnalista),
-                        consecutivoExpediente: Descifrar(cedula.consecutivoExpediente), seguimientoEvaluacionDesempenio: Descifrar(cedula.seguimientoEvaluacionDesempenio), fechaEvaluacionDesempenio: Descifrar(cedula.fechaEvaluacionDesempenio),resultadoSeguimientoEvaluacionDesempenio: Descifrar(cedula.resultadoSeguimientoEvaluacionDesempenio),psicometriaComunicacion: Descifrar(cedula.psicometriaComunicacion), psicometriaTrabajoEnEquipo: Descifrar(cedula.psicometriaTrabajoEnEquipo), psicometriaOrientacionAlServicio: Descifrar(cedula.psicometriaOrientacionAlServicio),
-                        psicometriaSensibilidadALineamientos: Descifrar(cedula.psicometriaSensibilidadALineamientos), psicometriaPlaneacionOrganizacion: Descifrar(cedula.psicometriaPlaneacionOrganizacion), psicometriaAnalisisProblemas: Descifrar(cedula.psicometriaAnalisisProblemas), psicometriaEnfoqueResultados: Descifrar(cedula.psicometriaEnfoqueResultados),
-                        psicometriaControlActividades: Descifrar(cedula.psicometriaControlActividades), psicometriaEnfoqueCalidad: Descifrar(cedula.psicometriaEnfoqueCalidad), psicometriaRelacionesInterpersonales: Descifrar(cedula.psicometriaRelacionesInterpersonales),
-                        psicometriaLiderazgo: Descifrar(cedula.psicometriaLiderazgo), psicometriaTomaDecisiones: Descifrar(cedula.psicometriaTomaDecisiones), psicometriaDinamismo: Descifrar(cedula.psicometriaDinamismo),
-                        psicometriaInnovacion: Descifrar(cedula.psicometriaInnovacion), psicometriaPensamientoEstrategico: Descifrar(cedula.psicometriaPensamientoEstrategico), psicometriaNegociacion: Descifrar(cedula.psicometriaNegociacion), resultadoPorcentaje: Descifrar(cedula.resultadoPorcentaje), analista: Descifrar(cedula.analista)
-                    };
-                });
-                resultadoConsulta = { estado: CodigosDeEstado.OK, cedulas: cedulasDescifradas };
+                if(cedulas[0].idCedula > 0){
+                    console.log(cedulas)
+                    cedulasDescifradas = cedulas.map(cedula => {
+                        return {
+                            ...cedula,
+                            edad: Descifrar(cedula.edad), educacionFormal: Descifrar(cedula.educacionFormal), referidoPor: Descifrar(cedula.referidoPor),
+                            antecedentesFamiliaresUV: Descifrar(cedula.antecedentesFamiliaresUV), expectativaLaboral: Descifrar(cedula.expectativaLaboral), experienciaRelacionada: Descifrar(cedula.experienciaRelacionada),
+                            experiencia: Descifrar(cedula.experiencia), conclusiones: Descifrar(cedula.conclusiones), resultado: Descifrar(cedula.resultado), efectoContratacion: Descifrar(cedula.efectoContratacion),
+                            competenciaReforzar: Descifrar(cedula.competenciaReforzar), competenciaDesarrollar: Descifrar(cedula.competenciaDesarrollar), motivoCedulaInterna: Descifrar(cedula.motivoCedulaInterna),
+                            motivoCedulaResultados: Descifrar(cedula.motivoCedulaResultados), puesto: Descifrar(cedula.puesto), plaza: Descifrar(cedula.plaza),
+                            oficioAutorizacionDeOcupacion: Descifrar(cedula.oficioAutorizacionDeOcupacion), evaluacionConocimientos: Descifrar(cedula.evaluacionConocimientos), competenciasSobresaliente: Descifrar(cedula.competenciasSobresaliente),
+                            descripcionDesarrollar: Descifrar(cedula.descripcionDesarrollar), descripcionReforzar: Descifrar(cedula.descripcionReforzar), folio: Descifrar(cedula.folio), numPlaza: Descifrar(cedula.numPlaza), fechaRecibido: Descifrar(cedula.fechaRecibido),
+                            fechaEntrevista: Descifrar(cedula.fechaEntrevista), resultadoEvaluacionConocimiento: Descifrar(cedula.resultadoEvaluacionConocimiento), fechaEnvioDEyDP: Descifrar(cedula.fechaEnvioDEyDP), fechaNotificacion: Descifrar(cedula.fechaNotificacion),
+                            categoriaPuestoOrigen: Descifrar(cedula.categoriaPuestoOrigen), diasProceso: Descifrar(cedula.diasProceso), hermesNotificacion: Descifrar(cedula.hermesNotificacion), titularPlaza: Descifrar(cedula.titularPlaza), lineamientoOficioContinuidad: Descifrar(cedula.lineamientoOficioContinuidad),
+                            motivo: Descifrar(cedula.motivo), fechaElaboracionPropuesta: Descifrar(cedula.fechaElaboracionPropuesta), fechaLiberacionOficio: Descifrar(cedula.fechaLiberacionOficio), periodoAutorizadoOficioInicio: Descifrar(cedula.periodoAutorizadoOficioInicio),
+                            periodoAutorizadoOficioFin: Descifrar(cedula.periodoAutorizadoOficioFin), observaciones: Descifrar(cedula.observaciones), numCarpeta: Descifrar(cedula.numCarpeta), nombreCandidato: Descifrar(cedula.nombreCandidato), funcionDesempeniar: Descifrar(cedula.funcionDesempeniar),
+                            familiaFuncional: Descifrar(cedula.familiaFuncional), fechaEvaluacionCompetencias: Descifrar(cedula.fechaEvaluacionCompetencias), fechaInicioProcesamiento: Descifrar(cedula.fechaInicioProcesamiento), resultadoEvaluacionCompetencias: Descifrar(cedula.resultadoEvaluacionCompetencias),
+                            experienciaLaboralSolicitada: Descifrar(cedula.experienciaLaboralSolicitada), resultadoReferenciasLaborales: Descifrar(cedula.resultadoReferenciasLaborales), fechaEnvioEvaluacionDesempenio: Descifrar(cedula.fechaEnvioEvaluacionDesempenio), resultadoHabilidadesWord: Descifrar(cedula.resultadoHabilidadesWord), resultadoHabilidadesExcel: Descifrar(cedula.resultadoHabilidadesExcel),
+                            resultadoOrtografia: Descifrar(cedula.resultadoOrtografia), resultadoProcesoEvaluacion: Descifrar(cedula.resultadoProcesoEvaluacion), fechaRevisionOfiEval: Descifrar(cedula.fechaRevisionOfiEval), observacionesAnalista: Descifrar(cedula.observacionesAnalista),
+                            consecutivoExpediente: Descifrar(cedula.consecutivoExpediente), seguimientoEvaluacionDesempenio: Descifrar(cedula.seguimientoEvaluacionDesempenio), fechaEvaluacionDesempenio: Descifrar(cedula.fechaEvaluacionDesempenio),resultadoSeguimientoEvaluacionDesempenio: Descifrar(cedula.resultadoSeguimientoEvaluacionDesempenio),psicometriaComunicacion: Descifrar(cedula.psicometriaComunicacion), psicometriaTrabajoEnEquipo: Descifrar(cedula.psicometriaTrabajoEnEquipo), psicometriaOrientacionAlServicio: Descifrar(cedula.psicometriaOrientacionAlServicio),
+                            psicometriaSensibilidadALineamientos: Descifrar(cedula.psicometriaSensibilidadALineamientos), psicometriaPlaneacionOrganizacion: Descifrar(cedula.psicometriaPlaneacionOrganizacion), psicometriaAnalisisProblemas: Descifrar(cedula.psicometriaAnalisisProblemas), psicometriaEnfoqueResultados: Descifrar(cedula.psicometriaEnfoqueResultados),
+                            psicometriaControlActividades: Descifrar(cedula.psicometriaControlActividades), psicometriaEnfoqueCalidad: Descifrar(cedula.psicometriaEnfoqueCalidad), psicometriaRelacionesInterpersonales: Descifrar(cedula.psicometriaRelacionesInterpersonales),
+                            psicometriaLiderazgo: Descifrar(cedula.psicometriaLiderazgo), psicometriaTomaDecisiones: Descifrar(cedula.psicometriaTomaDecisiones), psicometriaDinamismo: Descifrar(cedula.psicometriaDinamismo),
+                            psicometriaInnovacion: Descifrar(cedula.psicometriaInnovacion), psicometriaPensamientoEstrategico: Descifrar(cedula.psicometriaPensamientoEstrategico), psicometriaNegociacion: Descifrar(cedula.psicometriaNegociacion), resultadoPorcentaje: Descifrar(cedula.resultadoPorcentaje), 
+                            analista: [
+                                Descifrar(cedula.analistaNombre),
+                                Descifrar(cedula.analistaPrimerApellido),
+                                Descifrar(cedula.analistaSegundoApellido)
+                            ].filter(Boolean).join(' ')
+                        };
+                    });
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, cedulas: cedulasDescifradas };
+                }else{
+                    resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
+                }
             } else {
                 resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajeCedula.CEDULA_INEXISTENTE };
             }
@@ -501,19 +518,22 @@ export class ModeloCedula {
             const cedulasRaw = resultadoProcedimiento[0];
 
             if (cedulasRaw.length > 0) {
-                const cedulasDescifradas = cedulasRaw.map(cedula => {
-                    return {
-                        ...cedula,
-                        edad: Descifrar(cedula.edad), educacionFormal: Descifrar(cedula.educacionFormal), referidoPor: Descifrar(cedula.referidoPor), nombreCandidato: Descifrar(cedula.nombreCandidato),
-                        antecedentesFamiliaresUV: Descifrar(cedula.antecedentesFamiliaresUV), expectativaLaboral: Descifrar(cedula.expectativaLaboral), experienciaRelacionada: Descifrar(cedula.experienciaRelacionada),
-                        experiencia: Descifrar(cedula.experiencia), conclusiones: Descifrar(cedula.conclusiones), resultado: Descifrar(cedula.resultado), efectoContratacion: Descifrar(cedula.efectoContratacion),
-                        competenciaReforzar: Descifrar(cedula.competenciaReforzar), competenciaDesarrollar: Descifrar(cedula.competenciaDesarrollar), competenciasSobresaliente: Descifrar(cedula.competenciasSobresaliente), evaluacionConocimientos: Descifrar(cedula.evaluacionConocimientos),
-                        motivoCedulaInterna: Descifrar(cedula.motivoCedulaInterna), motivoCedulaResultados: Descifrar(cedula.motivoCedulaResultados), puesto: Descifrar(cedula.puesto),
-                        plaza: Descifrar(cedula.plaza), oficioAutorizacionDeOcupacion: Descifrar(cedula.oficioAutorizacionDeOcupacion), descripcionDesarrollar: Descifrar(cedula.descripcionDesarrollar), descripcionReforzar: Descifrar(cedula.descripcionReforzar),
-                    };
-                });
-
-                resultadoConsulta = { estado: CodigosDeEstado.OK, cedulas: cedulasDescifradas };
+                if(cedulasRaw[0].idCedula > 0){
+                    const cedulasDescifradas = cedulasRaw.map(cedula => {
+                        return {
+                            ...cedula,
+                            edad: Descifrar(cedula.edad), educacionFormal: Descifrar(cedula.educacionFormal), referidoPor: Descifrar(cedula.referidoPor), nombreCandidato: Descifrar(cedula.nombreCandidato),
+                            antecedentesFamiliaresUV: Descifrar(cedula.antecedentesFamiliaresUV), expectativaLaboral: Descifrar(cedula.expectativaLaboral), experienciaRelacionada: Descifrar(cedula.experienciaRelacionada),
+                            experiencia: Descifrar(cedula.experiencia), conclusiones: Descifrar(cedula.conclusiones), resultado: Descifrar(cedula.resultado), efectoContratacion: Descifrar(cedula.efectoContratacion),
+                            competenciaReforzar: Descifrar(cedula.competenciaReforzar), competenciaDesarrollar: Descifrar(cedula.competenciaDesarrollar), competenciasSobresaliente: Descifrar(cedula.competenciasSobresaliente), evaluacionConocimientos: Descifrar(cedula.evaluacionConocimientos),
+                            motivoCedulaInterna: Descifrar(cedula.motivoCedulaInterna), motivoCedulaResultados: Descifrar(cedula.motivoCedulaResultados), puesto: Descifrar(cedula.puesto),
+                            plaza: Descifrar(cedula.plaza), oficioAutorizacionDeOcupacion: Descifrar(cedula.oficioAutorizacionDeOcupacion), descripcionDesarrollar: Descifrar(cedula.descripcionDesarrollar), descripcionReforzar: Descifrar(cedula.descripcionReforzar),
+                        };
+                    });
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, cedulas: cedulasDescifradas };
+                }else{
+                    resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
+                }
             } else {
                 resultadoConsulta = { estado: CodigosDeEstado.NotFound, mensaje: MensajeCedula.CEDULA_INEXISTENTE };
             }
@@ -555,16 +575,17 @@ export class ModeloCedula {
                 const Registro = Resultado[0];
                 if (Registro.Codigo > 0) {
                     if(bitacoraFn){
-                        await bitacoraFn(`Se ha insertado un documento de una cédula externa con id: ${FKIdCedula}`)
+                        await bitacoraFn(`Se ha insertado un documento de una cédula externa con id: ${FKIdCedula}`,transaction)
                     }
                     await transaction.commit();
                     resultadoInsercion = {
-                        ...MensajeCedula.REGISTRO_EXITOSO,
+                        mensaje: MensajeCedula.REGISTRO_EXITOSO,
                         estado: CodigosDeEstado.OK
                     };
                 } else {
+                    await transaction.rollback();
                     resultadoInsercion = {
-                        ...MensajeGeneralesBD.ERROR_DB,
+                        mensaje: MensajeGeneralesBD.ERROR_DB,
                         estado: CodigosDeEstado.InternalServerError
                     };
                 }

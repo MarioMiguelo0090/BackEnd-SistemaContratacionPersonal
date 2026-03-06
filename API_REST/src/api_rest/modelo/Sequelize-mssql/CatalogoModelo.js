@@ -19,7 +19,7 @@ export class ModeloCatalogo {
                 if(tiposDeProceso[0].idTipoProceso === -1){
                     resultadoConsulta = {estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB }
                 }else {
-                    resultadoConsulta = {estado: CodigosDeEstado.OK, tiposDeProceso: tiposDeProceso};
+                    resultadoConsulta = {estado: CodigosDeEstado.OK, tiposDeProceso};
                 }
             }else{
                 resultadoConsulta = {estado: CodigosDeEstado.NotFound, mensaje: MensajeNoEncontrado.TIPOS_DE_PROCESO}

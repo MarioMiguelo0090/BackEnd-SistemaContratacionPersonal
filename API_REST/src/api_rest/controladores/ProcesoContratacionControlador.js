@@ -197,9 +197,9 @@ export class ProcesoContratacionControlador
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !== 200,
                     estado: resultadoConsulta,
-                    ...(resultadoConsulta === 200
+                    mensaje: (resultadoConsulta === 200
                         ? {procesoContratacion: ResultadoConsulta.procesoContratacion}
-                        : {mensaje: ResultadoConsulta.mensaje}
+                        : ResultadoConsulta.mensaje
                     )
                 });
             }else{
@@ -232,9 +232,9 @@ export class ProcesoContratacionControlador
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !== 200,
                     estado: resultadoConsulta,
-                    ...(resultadoConsulta === 200
+                    mensaje: (resultadoConsulta === 200
                         ? {procesoContratacion: ResultadoConsulta.procesoContratacion}
-                        : {mensaje: ResultadoConsulta.mensaje}
+                        : ResultadoConsulta.mensaje
                     )
                 });
             }else{
@@ -267,9 +267,9 @@ export class ProcesoContratacionControlador
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !== 200,
                     estado: resultadoConsulta,
-                    ...(resultadoConsulta === 200
+                    mensaje: (resultadoConsulta === 200
                         ? {procesoContratacion: ResultadoConsulta.procesoContratacion}
-                        : {mensaje: ResultadoConsulta.mensaje}
+                        : ResultadoConsulta.mensaje
                     )
                 });
             }else{
@@ -298,9 +298,9 @@ export class ProcesoContratacionControlador
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
                 estado: resultadoConsulta,
-                ...(resultadoConsulta === 200
+                mensaje: (resultadoConsulta === 200
                     ? {procesos: ResultadoConsulta.procesos}
-                    : {mensaje: ResultadoConsulta.mensaje}
+                    : ResultadoConsulta.mensaje
                 )
             });            
         }catch(error)
@@ -323,9 +323,9 @@ export class ProcesoContratacionControlador
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
                 estado: resultadoConsulta,
-                ...(resultadoConsulta === 200
+                mensaje: (resultadoConsulta === 200
                     ? {procesos: ResultadoConsulta.procesos}
-                    : {mensaje: ResultadoConsulta.mensaje}
+                    : ResultadoConsulta.mensaje
                 )
             });            
         }catch(error)
@@ -352,9 +352,9 @@ export class ProcesoContratacionControlador
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !== 200,
                     estado: resultadoConsulta,
-                    ...(resultadoConsulta === 200
+                    mensaje: (resultadoConsulta === 200
                         ? {evaluacionesAnalista: ResultadoConsulta.evaluacionesAnalista}
-                        : {mensaje: ResultadoConsulta.mensaje}
+                        : ResultadoConsulta.mensaje
                     )
                 });
             }else{
@@ -418,9 +418,9 @@ export class ProcesoContratacionControlador
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !== 200,
                     estado: resultadoConsulta,
-                    ...(resultadoConsulta === 200
+                    mensaje: (resultadoConsulta === 200
                         ? {controlesVersiones: ResultadoConsulta.controlesVersiones}
-                        : {mensaje: ResultadoConsulta.mensaje}
+                        : ResultadoConsulta.mensaje
                     )
                 });
             }else{
@@ -511,9 +511,9 @@ export class ProcesoContratacionControlador
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !== 200,
                     estado: resultadoConsulta,
-                    ...(resultadoConsulta === 200
+                    mensaje: (resultadoConsulta === 200
                         ? {oficios: ResultadoConsulta.oficios}
-                        : {mensaje: ResultadoConsulta.mensaje}
+                        : ResultadoConsulta.mensaje
                     )
                 });
             }else{
@@ -581,9 +581,9 @@ export class ProcesoContratacionControlador
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
                 estado: resultadoConsulta,
-                ...(resultadoConsulta === 200
+                mensaje: (resultadoConsulta === 200
                     ? {seguimientos: ResultadoConsulta.seguimientos}
-                    : {mensaje: ResultadoConsulta.mensaje}
+                    : ResultadoConsulta.mensaje
                 )
             });
         }catch(error){
