@@ -3,37 +3,37 @@ services:
     build:
       context: ./API_REST/initdb-scripts
       dockerfile: Dockerfile
-
     container_name: sqlserver_db
-
     env_file:
       - ./API_REST/initdb-scripts/.env
-    ports:
-      - "1434:1433"
+    expose:
+      - "1433"
 
     volumes:
       - sql_data:/var/opt/mssql
-
     restart: unless-stopped
+    networks:
+      - data-base
+
   api:
     build:
       context: ./API_REST
       dockerfile: Dockerfile
-
     container_name: nodejs_api
     depends_on:
       - db
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     volumes:
       - ./API_REST/src:/usr/src/app/src
       - ./API_REST/index.js:/usr/src/app/index.js
       - ./API_REST/.env:/usr/src/app/.env
-
     env_file:
       - ./API_REST/.env
-
     restart: unless-stopped
+    networks:
+      - data-base
+      - backend
 
   nginx:
     build:
@@ -49,6 +49,20 @@ services:
     depends_on:
       - api
     restart: unless-stopped
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+    name: proxy-to-api
+    driver_opts:
+      com.docker.network.bridge.host_binding_ipv4: 127.0.0.1
+  data-base:
+    driver: bridge
+    name: database-to-api
+    driver_opts:
+      com.docker.network.bridge.host_binding_ipv4: 127.0.0.1
 
 volumes:
   sql_data:
