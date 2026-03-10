@@ -55,6 +55,65 @@
  *         description: Datos con formato inválido
  */
 
+/**
+ * @swagger
+ * /rysuv/acceso/logout:
+ *   post:
+ *     summary: Cerrar sesión
+ *     tags: [Acceso]
+ *     security:
+ *       - cookieAuth: []
+ *     description: Cierra la sesión del usuario eliminando la cookie de acceso.
+ *     responses:
+ *       200:
+ *         description: Sesión cerrada correctamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: boolean
+ *                   example: false
+ *                 estado:
+ *                   type: integer
+ *                   example: 200
+ *                 mensaje:
+ *                   type: string
+ *                   example: "Sesión cerrada de manera correcta."
+ *       404:
+ *         description: No se encontró una sesión activa.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: boolean
+ *                   example: true
+ *                 estado:
+ *                   type: integer
+ *                   example: 404
+ *                 mensaje:
+ *                   type: string
+ *                   example: "No se ha podido encontrar la sesión a cerrar"
+ *       500:
+ *         description: Error interno del servidor.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: boolean
+ *                   example: true
+ *                 estado:
+ *                   type: integer
+ *                   example: 500
+ *                 mensaje:
+ *                   type: string
+ *                   example: "Ha ocurrido un error al intentar cerrar la sesión."
+ */
 
 /**
  * @swagger

@@ -34,6 +34,26 @@ services:
     networks:
       - data-base
       - backend
+  
+  api-mirror:
+    build:
+      context: ./API_REST
+      dockerfile: Dockerfile
+    container_name: nodejs_api_mirror
+    depends_on:
+      - db
+    expose:
+      - "3000"
+    volumes:
+      - ./API_REST/src:/usr/src/app/src
+      - ./API_REST/index.js:/usr/src/app/index.js
+      - ./API_REST/.env:/usr/src/app/.env
+    env_file:
+      - ./API_REST/.env
+    restart: unless-stopped
+    networks:
+      - data-base
+      - backend
 
   nginx:
     build:
@@ -51,6 +71,7 @@ services:
       - ./Nginx/certs:/etc/nginx/certs
     depends_on:
       - api
+      - api-mirror
     restart: unless-stopped
     networks:
       - backend
