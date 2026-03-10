@@ -1,7 +1,7 @@
 [DEFAULT]
 bantime  = 3600
 findtime = 60
-maxretry = 15
+maxretry = 10
 
 [sshd]
 enabled = false
