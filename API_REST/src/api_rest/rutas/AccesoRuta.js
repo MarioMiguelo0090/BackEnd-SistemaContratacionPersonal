@@ -438,6 +438,7 @@ export const CrearRutaAcceso = ({ModeloAcceso}) =>
     const AccesoEnrutador = Router();
     const ControladorAccesoEnrutador = new AccesoControlador({ModeloAcceso});    
     AccesoEnrutador.post('/login',BitacoraLogger,ControladorAccesoEnrutador.RealizarLogin);
+    AccesoEnrutador.delete('/logout',ControladorAccesoEnrutador.RealizarLogout);
     AccesoEnrutador.post('/',ValidarJwt,BitacoraLogger,ControladorAccesoEnrutador.RegistrarAcceso);
     AccesoEnrutador.get('/usuarios',ValidarJwt,ControladorAccesoEnrutador.ObtenerUsuarios);
     AccesoEnrutador.get('/tiposAcceso',ControladorAccesoEnrutador.ObtenerTiposDeAccesos);

@@ -273,6 +273,36 @@ export class AccesoControlador {
     }
   };
 
+  RealizarLogout = async (req, res) => {
+    try{
+      if(req.cookies?.access_token){
+        res.clearCookie("access_token", {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+        });
+        res.status(200).json({
+          error: false,
+          estado: 200,
+          mensaje: "Sesión cerrada de manera correcta."
+        })
+      }else{
+        res.status(404).json({
+          error: true,
+          estado: 404,
+          mensaje: "No se ha podido encontrar la sesión a cerrar"
+        })
+      }
+    }catch(error){
+      logger({mensaje: error});
+      res.status(500).json({
+        error: true,
+        estado: 500,
+        mensaje: "Ha ocurrido un error al intentar cerrar la sesión."
+      })
+    }
+  }
+
   ObtenerTiposDeAccesos = async (req, res) => {
     try {
       const ResultadoConsulta =
