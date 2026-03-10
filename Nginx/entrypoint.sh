@@ -9,4 +9,16 @@ if [ ! -f /etc/nginx/cert.pem ]; then
     chmod 644 /etc/nginx/cert.pem /etc/nginx/key.pem
 fi
 
+mkdir -p /var/log/nginx
+mkdir -p /var/run/fail2ban
+
+rm -f /var/log/nginx/access.log
+touch /var/log/nginx/access.log
+
+fail2ban-server -b -x
+
+sleep 2
+
+fail2ban-client status
+
 exec /docker-entrypoint.sh "$@"

@@ -40,6 +40,9 @@ services:
       context: ./Nginx
       dockerfile: Dockerfile
     container_name: nginx_proxy
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
     ports:
       - "80:80"
       - "443:443"

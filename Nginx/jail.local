@@ -1,0 +1,14 @@
+[DEFAULT]
+bantime  = 3600
+findtime = 60
+maxretry = 15
+
+[sshd]
+enabled = false
+
+[nginx-429]
+enabled  = true
+port     = http,https
+filter   = nginx-429
+logpath  = /var/log/nginx/access.log
+action   = iptables-multiport[name=nginx-429, port="80,443", protocol=tcp, blocktype=REJECT]
