@@ -4,10 +4,8 @@ import { logger } from '../utilidades/logger.js';
 export const ValidarJwt = (req, res, next) => {
     try {        
         const HeaderAutenticacion = req.header('authorization') || req.header('access_token');
-        const Token = HeaderAutenticacion?.startsWith('Bearer ')
-            ? HeaderAutenticacion.split(' ')[1]
-            : null;
-
+        const Token = req.cookies?.access_token || (HeaderAutenticacion?.startsWith('Bearer ') ? HeaderAutenticacion.split(' ')[1] : null);
+        console.log(req.cookies?.access_token)
         if (!Token) {
             return res.status(401).json({
                 error: true,

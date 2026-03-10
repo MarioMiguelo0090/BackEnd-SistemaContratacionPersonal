@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import express, { json, urlencoded  } from 'express';
 import fs from 'fs';
 import https from 'https';
+import cookieparser from 'cookie-parser'
 import { CorsMiddleware } from './middlewares/cors.js';
 import { CrearRutaAcceso } from './rutas/AccesoRuta.js';
 import { CrearRutaCatalogo } from './rutas/CatalogoRuta.js';
@@ -14,6 +15,7 @@ export const CrearServidor = ({ModeloAcceso,ModeloCatalogo,ModeloProcesoContrata
   dotenv.config();
   const app = express();
   
+  app.use(cookieparser());
   app.use(json({ limit: '50mb' }));
   app.use(urlencoded({ limit: '50mb', extended: true }));
 
