@@ -1,0 +1,1732 @@
+
+  /proceso-contratacion/:
+    post:
+      tags: [Proceso de Contratación]
+      summary: Registrar nuevo proceso de contratación
+      description: Registra un nuevo proceso de contratación. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                folio:
+                  type: string
+                  description: Folio del proceso. Texto válido.
+                numPlaza:
+                  type: string
+                  description: Número de plaza. Máximo 10 caracteres.
+                  maxLength: 10
+                fechaRecibido:
+                  type: string
+                  description: Fecha de recibido.
+                fechaEntrevista:
+                  type: string
+                  description: Fecha de entrevista.
+                resultadoEvaluacionConocimiento:
+                  type: string
+                  description: Resultado de evaluación de conocimiento.
+                fechaEnvioDEyDP:
+                  type: string
+                  description: Fecha de envío DEyDP.
+                fechaNotificacion:
+                  type: string
+                  description: Fecha de notificación.
+                categoriaPuestoOrigen:
+                  type: string
+                  description: Categoría (puesto/origen). Máximo 8000 caracteres.
+                  maxLength: 8000
+                diasProceso:
+                  type: string
+                  description: Días de proceso. Máximo 3 caracteres.
+                  maxLength: 3
+                beneficiado:
+                  type: boolean
+                  description: Indica si el candidato fue beneficiado.
+                FKIdTipoProceso:
+                  type: integer
+                  nullable: true
+                  description: ID del tipo de proceso.
+                FKIdTipoPersonal:
+                  type: integer
+                  nullable: true
+                  description: ID del tipo de personal.
+                FKIdEstadoProcesoContratacion:
+                  type: integer
+                  nullable: true
+                  description: ID del estado del proceso de contratación.
+                FKIdTemporalDefinitiva:
+                  type: integer
+                  nullable: true
+                  description: ID de temporal/definitiva.
+                FKIdDependencia:
+                  type: integer
+                  nullable: true
+                  description: ID de la dependencia.
+                hermesNotificacion:
+                  type: string
+                  description: Hermes de notificación.
+                titularPlaza:
+                  type: string
+                  description: Titular de la plaza.
+                lineamientoOficioContinuidad:
+                  type: string
+                  description: Lineamiento de oficio continuidad.
+                motivo:
+                  type: string
+                  description: Motivo del proceso.
+                fechaElaboracionPropuesta:
+                  type: string
+                  description: Fecha de elaboración de propuesta.
+                fechaLiberacionOficio:
+                  type: string
+                  description: Fecha de liberación de oficio.
+                periodoAutorizadoOficioInicio:
+                  type: string
+                  description: Inicio del período autorizado del oficio. Máximo 50 caracteres.
+                  maxLength: 50
+                periodoAutorizadoOficioFin:
+                  type: string
+                  description: Fin del período autorizado del oficio. Máximo 50 caracteres.
+                  maxLength: 50
+                categoriaAutorizadaOficio:
+                  type: string
+                  description: Categoría autorizada del oficio.
+                observaciones:
+                  type: string
+                  description: Observaciones del proceso.
+                numCarpeta:
+                  type: string
+                  description: Número de carpeta. Máximo 10 caracteres.
+                  maxLength: 10
+                nombreCandidato:
+                  type: string
+                  description: Nombre del candidato. Máximo 100 caracteres.
+                  maxLength: 100
+                funcionDesempeniar:
+                  type: string
+                  description: Función a desempeñar.
+                familiaFuncional:
+                  type: string
+                  description: Familia funcional.
+                fechaEvaluacionCompetencias:
+                  type: string
+                  description: Fecha de evaluación de competencias.
+                fechaInicioProcesamiento:
+                  type: string
+                  description: Fecha de inicio de procesamiento.
+                resultadoEvaluacionCompetencias:
+                  type: string
+                  description: Resultado de evaluación de competencias. Máximo 6 caracteres.
+                  maxLength: 6
+                experienciaLaboralSolicitada:
+                  type: string
+                  description: Experiencia laboral solicitada. Máximo 50 caracteres.
+                  maxLength: 50
+                resultadoReferenciasLaborales:
+                  type: string
+                  description: Resultado de referencias laborales. Máximo 50 caracteres.
+                  maxLength: 50
+                fechaEnvioEvaluacionDesempenio:
+                  type: string
+                  description: Fecha de envío de evaluación de desempeño.
+                resultadoHabilidadesWord:
+                  type: string
+                  description: Resultado de habilidades de Word. Máximo 5 caracteres.
+                  maxLength: 5
+                resultadoHabilidadesExcel:
+                  type: string
+                  description: Resultado de habilidades de Excel. Máximo 5 caracteres.
+                  maxLength: 5
+                resultadoOrtografia:
+                  type: string
+                  description: Resultado de ortografía. Máximo 5 caracteres.
+                  maxLength: 5
+                resultadoProcesoEvaluacion:
+                  type: string
+                  description: Resultado del proceso de evaluación. Máximo 50 caracteres.
+                  maxLength: 50
+                fechaRevisionOfiEval:
+                  type: string
+                  description: Fecha de revisión de oficio de evaluación.
+                observacionesAnalista:
+                  type: string
+                  description: Observaciones del analista.
+                consecutivoExpediente:
+                  type: string
+                  description: Consecutivo de expediente. Máximo 10 caracteres.
+                  maxLength: 10
+                resultadoSeguimientoEvaluacionDesempenio:
+                  type: string
+                  description: Resultado de seguimiento de evaluación de desempeño. Máximo 10 caracteres.
+                  maxLength: 10
+                FKIdAcceso:
+                  type: integer
+                  nullable: true
+                  description: ID del usuario analista asignado.
+                autorizacion:
+                  type: boolean
+                  description: Indica si el proceso fue autorizado.
+      responses:
+        '200':
+          description: Proceso de contratación registrado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: string
+                    example: "Registro exitoso"
+        '400':
+          description: Datos con formato inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 400
+                  mensaje:
+                    type: string
+                    example: "Datos con formato inválido, por favor verifique los datos enviados."
+        '409':
+          description: El registro ya existe en el sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 409
+                  mensaje:
+                    type: string
+                    example: "El registro que intenta realizar ya existe en el sistema"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /proceso-contratacion/{idProceso}:
+    put:
+      tags: [Proceso de Contratación]
+      summary: Editar proceso de contratación existente
+      description: Edita los datos de un proceso de contratación. Todos los campos del body son opcionales (edición parcial con .partial()). Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: idProceso
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del proceso de contratación a editar.
+          example: 10
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                folio:
+                  type: string
+                numPlaza:
+                  type: string
+                  maxLength: 10
+                fechaRecibido:
+                  type: string
+                fechaEntrevista:
+                  type: string
+                resultadoEvaluacionConocimiento:
+                  type: string
+                fechaEnvioDEyDP:
+                  type: string
+                fechaNotificacion:
+                  type: string
+                categoriaPuestoOrigen:
+                  type: string
+                  maxLength: 8000
+                diasProceso:
+                  type: string
+                  maxLength: 3
+                beneficiado:
+                  type: boolean
+                FKIdTipoProceso:
+                  type: integer
+                  nullable: true
+                FKIdTipoPersonal:
+                  type: integer
+                  nullable: true
+                FKIdEstadoProcesoContratacion:
+                  type: integer
+                  nullable: true
+                FKIdTemporalDefinitiva:
+                  type: integer
+                  nullable: true
+                FKIdDependencia:
+                  type: integer
+                  nullable: true
+                hermesNotificacion:
+                  type: string
+                titularPlaza:
+                  type: string
+                lineamientoOficioContinuidad:
+                  type: string
+                motivo:
+                  type: string
+                fechaElaboracionPropuesta:
+                  type: string
+                fechaLiberacionOficio:
+                  type: string
+                periodoAutorizadoOficioInicio:
+                  type: string
+                  maxLength: 50
+                periodoAutorizadoOficioFin:
+                  type: string
+                  maxLength: 50
+                categoriaAutorizadaOficio:
+                  type: string
+                observaciones:
+                  type: string
+                numCarpeta:
+                  type: string
+                  maxLength: 10
+                nombreCandidato:
+                  type: string
+                  maxLength: 100
+                funcionDesempeniar:
+                  type: string
+                familiaFuncional:
+                  type: string
+                fechaEvaluacionCompetencias:
+                  type: string
+                fechaInicioProcesamiento:
+                  type: string
+                resultadoEvaluacionCompetencias:
+                  type: string
+                  maxLength: 6
+                experienciaLaboralSolicitada:
+                  type: string
+                  maxLength: 50
+                resultadoReferenciasLaborales:
+                  type: string
+                  maxLength: 50
+                fechaEnvioEvaluacionDesempenio:
+                  type: string
+                resultadoHabilidadesWord:
+                  type: string
+                  maxLength: 5
+                resultadoHabilidadesExcel:
+                  type: string
+                  maxLength: 5
+                resultadoOrtografia:
+                  type: string
+                  maxLength: 5
+                resultadoProcesoEvaluacion:
+                  type: string
+                  maxLength: 50
+                fechaRevisionOfiEval:
+                  type: string
+                observacionesAnalista:
+                  type: string
+                consecutivoExpediente:
+                  type: string
+                  maxLength: 10
+                seguimientoEvaluacionDesempenio:
+                  type: boolean
+                resultadoSeguimientoEvaluacionDesempenio:
+                  type: string
+                  maxLength: 10
+                FKIdAcceso:
+                  type: integer
+                  nullable: true
+                educacionFormal:
+                  type: string
+                avaladoPor:
+                  type: string
+                fechaAsignacionAnalista:
+                  type: string
+                capacitado:
+                  type: boolean
+                citaVirtual:
+                  type: boolean
+                atendioCita:
+                  type: boolean
+      responses:
+        '200':
+          description: Proceso de contratación actualizado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: string
+                    example: "Los datos han sido actualizados correctamente"
+        '400':
+          description: Algunos campos contienen errores
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 400
+                  mensaje:
+                    type: string
+                    example: "Algunos campos contienen errores."
+                  detalles:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        campo:
+                          type: string
+                          example: "folio"
+                        mensaje:
+                          type: string
+                          example: "El folio debe ser un texto válido"
+        '404':
+          description: Proceso no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "El proceso no fue encontrado"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /proceso-contratacion/noBeneficiados:
+    get:
+      tags: [Proceso de Contratación]
+      summary: Obtener todos los procesos no beneficiados
+      description: Retorna todos los procesos de contratación donde el candidato no fue beneficiado. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Lista de procesos no beneficiados obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: object
+                    properties:
+                      procesos:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            idProceso:
+                              type: integer
+                              example: 10
+                            folio:
+                              type: string
+                              example: "FOL-001"
+                            numPlaza:
+                              type: string
+                              example: "PL-01"
+                            beneficiado:
+                              type: boolean
+                              example: false
+        '404':
+          description: No se encontraron procesos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "El proceso no fue encontrado"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /proceso-contratacion/busqueda/procesos/:
+    get:
+      tags: [Proceso de Contratación]
+      summary: Obtener todos los procesos de contratación
+      description: Retorna todos los procesos de contratación registrados. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Lista de procesos de contratación obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: object
+                    properties:
+                      procesos:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            idProceso:
+                              type: integer
+                              example: 10
+                            folio:
+                              type: string
+                              example: "FOL-001"
+                            numPlaza:
+                              type: string
+                              example: "PL-01"
+                            beneficiado:
+                              type: boolean
+                              example: true
+                            FKIdTipoProceso:
+                              type: integer
+                              example: 1
+                            FKIdTipoPersonal:
+                              type: integer
+                              example: 2
+                            FKIdEstadoProcesoContratacion:
+                              type: integer
+                              example: 1
+                            FKIdTemporalDefinitiva:
+                              type: integer
+                              example: 1
+                            FKIdDependencia:
+                              type: integer
+                              example: 3
+                            FKIdAcceso:
+                              type: integer
+                              example: 5
+        '404':
+          description: No se encontraron procesos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "El proceso no fue encontrado"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /proceso-contratacion/busqueda:
+    post:
+      tags: [Proceso de Contratación]
+      summary: Buscar proceso de contratación por ID
+      description: Busca y retorna un proceso de contratación por su ID enviado en el body. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                idProceso:
+                  type: integer
+                  description: ID del proceso de contratación a buscar.
+                  example: 10
+      responses:
+        '200':
+          description: Proceso de contratación encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: object
+                    properties:
+                      procesoContratacion:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            idProceso:
+                              type: integer
+                              example: 10
+                            folio:
+                              type: string
+                              example: "FOL-001"
+                            numPlaza:
+                              type: string
+                              example: "PL-01"
+                            beneficiado:
+                              type: boolean
+                              example: true
+                            FKIdTipoProceso:
+                              type: integer
+                              example: 1
+                            FKIdTipoPersonal:
+                              type: integer
+                              example: 2
+                            FKIdEstadoProcesoContratacion:
+                              type: integer
+                              example: 1
+                            FKIdTemporalDefinitiva:
+                              type: integer
+                              example: 1
+                            FKIdDependencia:
+                              type: integer
+                              example: 3
+                            FKIdAcceso:
+                              type: integer
+                              example: 5
+        '400':
+          description: Datos con formato inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 400
+                  mensaje:
+                    type: string
+                    example: "Datos con formato inválido, por favor verifique los datos enviados."
+        '404':
+          description: Proceso no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "El proceso no fue encontrado"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /proceso-contratacion/busqueda/{FKIdAcceso}:
+    get:
+      tags: [Proceso de Contratación]
+      summary: Buscar procesos por ID de acceso (analista)
+      description: Retorna todos los procesos de contratación asignados a un analista por su ID de acceso. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: FKIdAcceso
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del acceso (analista) por el que se filtran los procesos.
+          example: 5
+      responses:
+        '200':
+          description: Procesos encontrados para el analista
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: object
+                    properties:
+                      procesoContratacion:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            idProceso:
+                              type: integer
+                              example: 10
+                            folio:
+                              type: string
+                              example: "FOL-001"
+                            FKIdAcceso:
+                              type: integer
+                              example: 5
+        '400':
+          description: Datos con formato inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 400
+                  mensaje:
+                    type: string
+                    example: "Datos con formato inválido, por favor verifique los datos enviados."
+        '404':
+          description: Proceso no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "El proceso no fue encontrado"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /proceso-contratacion/busqueda/estado/{FKIdEstadoProcesoContratacion}:
+    get:
+      tags: [Proceso de Contratación]
+      summary: Buscar procesos por ID de estado
+      description: Retorna todos los procesos de contratación filtrados por estado. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: FKIdEstadoProcesoContratacion
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del estado del proceso de contratación.
+          example: 1
+      responses:
+        '200':
+          description: Procesos encontrados para el estado indicado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: object
+                    properties:
+                      procesoContratacion:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            idProceso:
+                              type: integer
+                              example: 10
+                            folio:
+                              type: string
+                              example: "FOL-001"
+                            FKIdEstadoProcesoContratacion:
+                              type: integer
+                              example: 1
+        '400':
+          description: Datos con formato inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 400
+                  mensaje:
+                    type: string
+                    example: "Datos con formato inválido, por favor verifique los datos enviados."
+        '404':
+          description: Proceso no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "El proceso no fue encontrado"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /proceso-contratacion/estadistica/{FKIdAcceso}:
+    get:
+      tags: [Proceso de Contratación]
+      summary: Obtener datos del analista para estadística
+      description: Retorna los procesos de un analista con datos adicionales de nombre y apellidos para estadísticas. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: FKIdAcceso
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del acceso (analista) para obtener estadísticas.
+          example: 5
+      responses:
+        '200':
+          description: Evaluaciones del analista obtenidas correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: object
+                    properties:
+                      evaluacionesAnalista:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            idProceso:
+                              type: integer
+                              example: 10
+                            folio:
+                              type: string
+                              example: "FOL-001"
+                            nombre:
+                              type: string
+                              example: "Juan"
+                            primerApellido:
+                              type: string
+                              example: "Pérez"
+                            segundoApellido:
+                              type: string
+                              example: "García"
+                            FKIdAcceso:
+                              type: integer
+                              example: 5
+        '400':
+          description: Datos con formato inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 400
+                  mensaje:
+                    type: string
+                    example: "Datos con formato inválido, por favor verifique los datos enviados."
+        '404':
+          description: Proceso no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "El proceso no fue encontrado"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /proceso-contratacion/eliminacion/{idProceso}:
+    delete:
+      tags: [Proceso de Contratación]
+      summary: Eliminar proceso de contratación por ID
+      description: Elimina un proceso de contratación por su ID. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: idProceso
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del proceso de contratación a eliminar.
+          example: 10
+      responses:
+        '200':
+          description: Proceso eliminado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: string
+                    example: "Eliminación exitosa"
+        '400':
+          description: El idProceso enviado no es válido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 400
+                  mensaje:
+                    type: string
+                    example: "El idProceso enviado no es válido."
+        '404':
+          description: Proceso no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "El proceso no fue encontrado"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /proceso-contratacion/control-version:
+    post:
+      tags: [Control de Versiones]
+      summary: Registrar nuevo control de versión
+      description: Registra una nueva entrada en el control de versiones de un proceso. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                FKIdProceso:
+                  type: integer
+                  description: ID del proceso de contratación asociado.
+                  example: 10
+                nombreCompleto:
+                  type: string
+                  description: Nombre completo del usuario que realiza el registro.
+                  example: "Juan Pérez García"
+                jsonDatos:
+                  type: string
+                  description: Datos del proceso en formato JSON serializado.
+                  example: "{\"folio\":\"FOL-001\"}"
+      responses:
+        '200':
+          description: Control de versión registrado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: string
+                    example: "Registro exitoso"
+        '400':
+          description: Datos con formato inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 400
+                  mensaje:
+                    type: string
+                    example: "Datos con formato inválido, por favor verifique los datos enviados."
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /proceso-contratacion/busqueda/control-version/{FKIdProceso}:
+    get:
+      tags: [Control de Versiones]
+      summary: Obtener controles de versión por ID de proceso
+      description: Retorna todos los registros de control de versiones de un proceso. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: FKIdProceso
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del proceso de contratación.
+          example: 10
+      responses:
+        '200':
+          description: Controles de versiones obtenidos correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: object
+                    properties:
+                      controlesVersiones:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            idControlVersion:
+                              type: integer
+                              example: 1
+                            FKIdProceso:
+                              type: integer
+                              example: 10
+                            nombreCompleto:
+                              type: string
+                              example: "Juan Pérez García"
+                            jsonDatos:
+                              type: string
+                              example: "{\"folio\":\"FOL-001\"}"
+        '400':
+          description: Datos con formato inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 400
+                  mensaje:
+                    type: string
+                    example: "Datos con formato inválido, por favor verifique los datos enviados."
+        '404':
+          description: No se encontraron controles de versión
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en la base de datos"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /proceso-contratacion/oficio:
+    post:
+      tags: [Oficios]
+      summary: Registrar o actualizar oficio
+      description: Registra o actualiza un oficio asociado a un proceso de contratación. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                idOficio:
+                  type: integer
+                  description: ID del oficio. Si se envía, se actualiza; si no, se crea uno nuevo.
+                  example: 1
+                FKIdProcesoContratacion:
+                  type: integer
+                  description: ID del proceso de contratación asociado.
+                  example: 10
+                folio:
+                  type: string
+                  description: Folio del oficio.
+                  example: "OF-2024-001"
+                fecha:
+                  type: string
+                  description: Fecha del oficio.
+                  example: "2024-01-15"
+                dirigido:
+                  type: string
+                  description: Destinatario del oficio.
+                  example: "Director General"
+                puestoDirigido:
+                  type: string
+                  description: Puesto del destinatario.
+                  example: "Director"
+                machote:
+                  type: string
+                  description: Contenido del oficio (machote).
+                  example: "Por medio del presente..."
+                piePagina:
+                  type: string
+                  description: Pie de página del oficio.
+                  example: "Atentamente"
+                tipo:
+                  type: string
+                  description: Tipo del oficio.
+                  example: "Notificación"
+      responses:
+        '200':
+          description: Oficio registrado o actualizado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: string
+                    example: "Registro exitoso"
+        '400':
+          description: Datos con formato inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 400
+                  mensaje:
+                    type: string
+                    example: "Datos con formato inválido, por favor verifique los datos enviados."
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /proceso-contratacion/oficios/{FKIdProcesoContratacion}:
+    get:
+      tags: [Oficios]
+      summary: Obtener oficios por ID de proceso
+      description: Retorna todos los oficios asociados a un proceso de contratación. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: FKIdProcesoContratacion
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del proceso de contratación.
+          example: 10
+      responses:
+        '200':
+          description: Oficios obtenidos correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: object
+                    properties:
+                      oficios:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            idOficio:
+                              type: integer
+                              example: 1
+                            FKIdProcesoContratacion:
+                              type: integer
+                              example: 10
+                            folio:
+                              type: string
+                              example: "OF-2024-001"
+                            fecha:
+                              type: string
+                              example: "2024-01-15"
+                            dirigido:
+                              type: string
+                              example: "Director General"
+                            puestoDirigido:
+                              type: string
+                              example: "Director"
+                            machote:
+                              type: string
+                              example: "Por medio del presente..."
+                            piePagina:
+                              type: string
+                              example: "Atentamente"
+                            tipo:
+                              type: string
+                              example: "Notificación"
+        '400':
+          description: Datos con formato inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 400
+                  mensaje:
+                    type: string
+                    example: "Datos con formato inválido, por favor verifique los datos enviados."
+        '404':
+          description: No se encontraron oficios para el proceso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "El proceso no fue encontrado"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /proceso-contratacion/seguimiento-hermes:
+    post:
+      tags: [Seguimiento Hermes]
+      summary: Registrar o actualizar seguimiento Hermes
+      description: Registra o actualiza un arreglo de registros de seguimiento Hermes. El campo folio es requerido en cada registro. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - registros
+              properties:
+                registros:
+                  type: array
+                  description: Arreglo de registros de seguimiento Hermes. Debe contener al menos un elemento con folio válido.
+                  items:
+                    type: object
+                    required:
+                      - folio
+                    properties:
+                      folio:
+                        type: string
+                        description: Folio del seguimiento. Campo requerido y no puede estar vacío.
+                        example: "HRM-2024-001"
+                      fechaRecepcion:
+                        type: string
+                        description: Fecha de recepción.
+                        example: "2024-01-15"
+                      importancia:
+                        type: string
+                        description: Nivel de importancia.
+                        example: "Alta"
+                      tipoEnvio:
+                        type: string
+                        description: Tipo de envío.
+                        example: "Correo"
+                      requiereRespuesta:
+                        type: boolean
+                        description: Indica si requiere respuesta.
+                        example: true
+                      solicita:
+                        type: string
+                        description: Quien solicita.
+                        example: "Dirección General"
+                      entidadDependencia:
+                        type: string
+                        description: Entidad o dependencia.
+                        example: "Secretaría de Salud"
+                      asunto:
+                        type: string
+                        description: Asunto del seguimiento.
+                        example: "Solicitud de información"
+                      estatus:
+                        type: string
+                        description: Estatus del seguimiento.
+                        example: "Pendiente"
+                      acciones:
+                        type: string
+                        description: Acciones realizadas.
+                        example: "En revisión"
+      responses:
+        '200':
+          description: Seguimiento Hermes registrado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: string
+                    example: "Los resultados se registraron correctamente"
+        '400':
+          description: Arreglo de registros inválido o vacío
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 400
+                  mensaje:
+                    type: string
+                    example: "Debe enviar un arreglo de registros válido."
+        '409':
+          description: El folio del seguimiento Hermes ya fue registrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 409
+                  mensaje:
+                    type: string
+                    example: "Ya se ha registrado el frolio del seguimiento hermes ingresado."
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /proceso-contratacion/obtencion-seguimiento-hermes:
+    get:
+      tags: [Seguimiento Hermes]
+      summary: Obtener todos los seguimientos Hermes
+      description: Retorna todos los registros de seguimiento Hermes. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Seguimientos Hermes obtenidos correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: object
+                    properties:
+                      seguimientos:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            idSeguimiento:
+                              type: integer
+                              example: 1
+                            folio:
+                              type: string
+                              example: "HRM-2024-001"
+                            fechaRecepcion:
+                              type: string
+                              example: "2024-01-15"
+                            importancia:
+                              type: string
+                              example: "Alta"
+                            tipoEnvio:
+                              type: string
+                              example: "Correo"
+                            requiereRespuesta:
+                              type: boolean
+                              example: true
+                            solicita:
+                              type: string
+                              example: "Dirección General"
+                            entidadDependencia:
+                              type: string
+                              example: "Secretaría de Salud"
+                            asunto:
+                              type: string
+                              example: "Solicitud de información"
+                            estatus:
+                              type: string
+                              example: "Pendiente"
+                            acciones:
+                              type: string
+                              example: "En revisión"
+        '404':
+          description: No se encontraron seguimientos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "El proceso no fue encontrado"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"

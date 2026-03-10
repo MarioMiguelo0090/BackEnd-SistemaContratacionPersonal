@@ -1,0 +1,462 @@
+
+  /catalogo/tiposProceso:
+    get:
+      tags: [Catálogo]
+      summary: Obtener tipos de proceso
+      description: Retorna todos los tipos de proceso registrados. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Lista de tipos de proceso obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: object
+                    properties:
+                      tiposProceso:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            idTipoProceso:
+                              type: integer
+                              example: 1
+        '404':
+          description: No se encontraron tipos de proceso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "No se han encontrado tipos de proceso registrados en la base de datos"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /catalogo/tiposPersonal:
+    get:
+      tags: [Catálogo]
+      summary: Obtener tipos de personal
+      description: Retorna todos los tipos de personal registrados. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Lista de tipos de personal obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: object
+                    properties:
+                      tiposPersonal:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            idTipoPersonal:
+                              type: integer
+                              example: 1
+        '404':
+          description: No se encontraron tipos de personal
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "No se ha encontrado ningún tipo de personal registrado en la base de datos"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /catalogo/estadosProcesoContratacion:
+    get:
+      tags: [Catálogo]
+      summary: Obtener estados de proceso de contratación
+      description: Retorna todos los estados de procesos de contratación registrados. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Lista de estados de procesos de contratación obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: object
+                    properties:
+                      estadosProcesosContratacion:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            idEstadoProcesoContratacion:
+                              type: integer
+                              example: 1
+        '404':
+          description: No se encontraron estados de proceso de contratación
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "No se ha encontrado ningún proces de contratación registrado en la base de datos"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /catalogo/temporalDefinitiva:
+    get:
+      tags: [Catálogo]
+      summary: Obtener tipos de temporal definitiva
+      description: Retorna todos los registros de temporal definitiva completa. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Lista de temporal definitiva obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: object
+                    properties:
+                      temporalDefinitiva:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            idTemporalDefinitiva:
+                              type: integer
+                              example: 1
+        '404':
+          description: No se encontraron registros de temporal definitiva
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "No se ha encontrado ningún tipo de temporal definitiva completa"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /catalogo/tiposCedula:
+    get:
+      tags: [Catálogo]
+      summary: Obtener tipos de cédula
+      description: Retorna todos los tipos de cédula registrados. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Lista de tipos de cédula obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: object
+                    properties:
+                      tiposCedula:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            idTipoCedula:
+                              type: integer
+                              example: 1
+        '404':
+          description: No se encontraron tipos de cédula
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "No se ha encontrado ningún tipo de cédula registrada en la base de datos"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /catalogo/dependencias:
+    get:
+      tags: [Catálogo]
+      summary: Obtener dependencias
+      description: Retorna todas las dependencias registradas. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Lista de dependencias obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: object
+                    properties:
+                      dependencias:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            idDependencia:
+                              type: integer
+                              example: 1
+        '404':
+          description: No se encontraron dependencias
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "No se ha encontrado ninguna dependencia completa registrada en la base de datos"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /catalogo/clasificacionesCedula:
+    get:
+      tags: [Catálogo]
+      summary: Obtener clasificaciones de cédula
+      description: Retorna todas las clasificaciones de cédula registradas. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Lista de clasificaciones de cédula obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: object
+                    properties:
+                      clasificacionesCedula:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            idClasificacionCedulas:
+                              type: integer
+                              example: 1
+        '404':
+          description: No se encontraron clasificaciones de cédula
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "No se ha encontrado una clasificación de cédula registrada en la base de datos"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: access_token
+      description: Token JWT almacenado en cookie HTTP-only. Se obtiene al hacer login.

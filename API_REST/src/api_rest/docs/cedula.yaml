@@ -1,0 +1,1818 @@
+
+  /cedula/:
+    post:
+      tags: [Cédula]
+      summary: Insertar nueva cédula
+      description: Registra una nueva cédula en el sistema. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                FKIdTipoCedula:
+                  type: integer
+                  nullable: true
+                  example: 1
+                FKIdProceso:
+                  type: integer
+                  nullable: true
+                  example: 10
+                fechaCedulaInterna:
+                  type: string
+                  example: "2024-01-15"
+                fechaCedulaResultados:
+                  type: string
+                  example: "2024-01-20"
+                edad:
+                  type: string
+                  maxLength: 3
+                  example: "28"
+                educacionFormal:
+                  type: string
+                  example: "Licenciatura en Administración"
+                referidoPor:
+                  type: string
+                  example: "Juan Pérez"
+                antecedentesFamiliaresUV:
+                  type: string
+                  example: "Ninguno"
+                expectativaLaboral:
+                  type: string
+                  example: "Crecimiento profesional"
+                experienciaRelacionada:
+                  type: string
+                  example: "3 años en puesto similar"
+                experiencia:
+                  type: string
+                  example: "Descripción de experiencia general"
+                conclusiones:
+                  type: string
+                  example: "Candidato apto para el puesto"
+                resultado:
+                  type: string
+                  maxLength: 50
+                  example: "Aprobado"
+                efectoContratacion:
+                  type: string
+                  example: "Contratación definitiva"
+                competenciaReforzar:
+                  type: string
+                  example: "Liderazgo"
+                competenciaDesarrollar:
+                  type: string
+                  example: "Comunicación"
+                FKIdClasificacionCedula:
+                  type: integer
+                  nullable: true
+                  example: 2
+                FKIdResultado:
+                  type: integer
+                  nullable: true
+                  example: 3
+                motivoCedulaInterna:
+                  type: string
+                  example: "Vacante por jubilación"
+                motivoCedulaResultados:
+                  type: string
+                  example: "Evaluación psicométrica completada"
+                puesto:
+                  type: string
+                  example: "Analista de RRHH"
+                competenciasSobresaliente:
+                  type: string
+                  example: "Trabajo en equipo"
+                descripcionDesarrollar:
+                  type: string
+                  example: "Desarrollar habilidades de negociación"
+                descripcionReforzar:
+                  type: string
+                  example: "Reforzar orientación al servicio"
+                plaza:
+                  type: string
+                  example: "Plaza 001"
+                oficioAutorizacionDeOcupacion:
+                  type: string
+                  example: "Oficio-2024-001"
+                evaluacionConocimientos:
+                  type: string
+                  example: "85/100"
+                aprobadoJefeOficina:
+                  type: boolean
+                  example: true
+                aprobadoDireccion:
+                  type: boolean
+                  example: false
+                archivoAdjunto:
+                  type: boolean
+                  example: true
+      responses:
+        '200':
+          description: Cédula registrada correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: string
+                    example: "La cédula ha sido registrada"
+                  idCedula:
+                    type: integer
+                    example: 45
+        '400':
+          description: Datos con formato inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 400
+                  mensaje:
+                    type: string
+                    example: "Datos con formato inválido, por favor verifique los datos enviados."
+        '409':
+          description: La cédula ya existe
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 409
+                  mensaje:
+                    type: string
+                    example: "El registro que intenta realizar ya existe en el sistema"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /cedula/obtencionCedulas:
+    get:
+      tags: [Cédula]
+      summary: Obtener todas las cédulas
+      description: Retorna todas las cédulas registradas en el sistema. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Lista de cédulas obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: object
+                    properties:
+                      cedulas:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            idCedula:
+                              type: integer
+                              example: 45
+                            FKIdTipoCedula:
+                              type: integer
+                              nullable: true
+                              example: 1
+                            FKIdProceso:
+                              type: integer
+                              nullable: true
+                              example: 10
+                            fechaCedulaInterna:
+                              type: string
+                              example: "2024-01-15"
+                            fechaCedulaResultados:
+                              type: string
+                              example: "2024-01-20"
+                            edad:
+                              type: string
+                              example: "28"
+                            educacionFormal:
+                              type: string
+                              example: "Licenciatura en Administración"
+                            referidoPor:
+                              type: string
+                              example: "Juan Pérez"
+                            antecedentesFamiliaresUV:
+                              type: string
+                              example: "Ninguno"
+                            expectativaLaboral:
+                              type: string
+                              example: "Crecimiento profesional"
+                            experienciaRelacionada:
+                              type: string
+                              example: "3 años en puesto similar"
+                            experiencia:
+                              type: string
+                              example: "Descripción de experiencia general"
+                            conclusiones:
+                              type: string
+                              example: "Candidato apto para el puesto"
+                            resultado:
+                              type: string
+                              example: "Aprobado"
+                            efectoContratacion:
+                              type: string
+                              example: "Contratación definitiva"
+                            competenciaReforzar:
+                              type: string
+                              example: "Liderazgo"
+                            competenciaDesarrollar:
+                              type: string
+                              example: "Comunicación"
+                            FKIdClasificacionCedula:
+                              type: integer
+                              nullable: true
+                              example: 2
+                            FKIdResultado:
+                              type: integer
+                              nullable: true
+                              example: 3
+                            motivoCedulaInterna:
+                              type: string
+                              example: "Vacante por jubilación"
+                            motivoCedulaResultados:
+                              type: string
+                              example: "Evaluación psicométrica completada"
+                            puesto:
+                              type: string
+                              example: "Analista de RRHH"
+                            competenciasSobresaliente:
+                              type: string
+                              example: "Trabajo en equipo"
+                            descripcionDesarrollar:
+                              type: string
+                              example: "Desarrollar habilidades de negociación"
+                            descripcionReforzar:
+                              type: string
+                              example: "Reforzar orientación al servicio"
+                            plaza:
+                              type: string
+                              example: "Plaza 001"
+                            oficioAutorizacionDeOcupacion:
+                              type: string
+                              example: "Oficio-2024-001"
+                            evaluacionConocimientos:
+                              type: string
+                              example: "85/100"
+                            aprobadoJefeOficina:
+                              type: boolean
+                              example: true
+                            aprobadoDireccion:
+                              type: boolean
+                              example: false
+                            archivoAdjunto:
+                              type: boolean
+                              example: true
+                            folio:
+                              type: string
+                              example: "FOL-001"
+                            numPlaza:
+                              type: string
+                              example: "NP-001"
+                            fechaRecibido:
+                              type: string
+                              example: "2024-01-10"
+                            fechaEntrevista:
+                              type: string
+                              example: "2024-01-12"
+                            resultadoEvaluacionConocimiento:
+                              type: string
+                              example: "85/100"
+                            fechaEnvioDEyDP:
+                              type: string
+                              example: "2024-01-14"
+                            fechaNotificacion:
+                              type: string
+                              example: "2024-01-16"
+                            categoriaPuestoOrigen:
+                              type: string
+                              example: "Nivel C"
+                            diasProceso:
+                              type: string
+                              example: "15"
+                            hermesNotificacion:
+                              type: string
+                              example: "HN-2024-001"
+                            titularPlaza:
+                              type: string
+                              example: "María García"
+                            lineamientoOficioContinuidad:
+                              type: string
+                              example: "Lineamiento A"
+                            motivo:
+                              type: string
+                              example: "Jubilación"
+                            fechaElaboracionPropuesta:
+                              type: string
+                              example: "2024-01-18"
+                            fechaLiberacionOficio:
+                              type: string
+                              example: "2024-01-19"
+                            periodoAutorizadoOficioInicio:
+                              type: string
+                              example: "2024-02-01"
+                            periodoAutorizadoOficioFin:
+                              type: string
+                              example: "2024-02-28"
+                            observaciones:
+                              type: string
+                              example: "Sin observaciones"
+                            numCarpeta:
+                              type: string
+                              example: "CARP-001"
+                            nombreCandidato:
+                              type: string
+                              example: "Pedro Ramírez"
+                            funcionDesempeniar:
+                              type: string
+                              example: "Gestión administrativa"
+                            familiaFuncional:
+                              type: string
+                              example: "Familia A"
+                            fechaEvaluacionCompetencias:
+                              type: string
+                              example: "2024-01-13"
+                            fechaInicioProcesamiento:
+                              type: string
+                              example: "2024-01-11"
+                            resultadoEvaluacionCompetencias:
+                              type: string
+                              example: "Satisfactorio"
+                            experienciaLaboralSolicitada:
+                              type: string
+                              example: "2 años"
+                            resultadoReferenciasLaborales:
+                              type: string
+                              example: "Positivo"
+                            fechaEnvioEvaluacionDesempenio:
+                              type: string
+                              example: "2024-01-21"
+                            resultadoHabilidadesWord:
+                              type: string
+                              example: "90/100"
+                            resultadoHabilidadesExcel:
+                              type: string
+                              example: "85/100"
+                            resultadoOrtografia:
+                              type: string
+                              example: "95/100"
+                            resultadoProcesoEvaluacion:
+                              type: string
+                              example: "Aprobado"
+                            fechaRevisionOfiEval:
+                              type: string
+                              example: "2024-01-22"
+                            observacionesAnalista:
+                              type: string
+                              example: "Candidato recomendado"
+                            consecutivoExpediente:
+                              type: string
+                              example: "EXP-001"
+                            seguimientoEvaluacionDesempenio:
+                              type: string
+                              example: "En proceso"
+                            fechaEvaluacionDesempenio:
+                              type: string
+                              example: "2024-01-23"
+                            resultadoSeguimientoEvaluacionDesempenio:
+                              type: string
+                              example: "Satisfactorio"
+                            psicometriaComunicacion:
+                              type: string
+                              example: "85"
+                            psicometriaTrabajoEnEquipo:
+                              type: string
+                              example: "90"
+                            psicometriaOrientacionAlServicio:
+                              type: string
+                              example: "88"
+                            psicometriaSensibilidadALineamientos:
+                              type: string
+                              example: "80"
+                            psicometriaPlaneacionOrganizacion:
+                              type: string
+                              example: "75"
+                            psicometriaAnalisisProblemas:
+                              type: string
+                              example: "82"
+                            psicometriaEnfoqueResultados:
+                              type: string
+                              example: "91"
+                            psicometriaControlActividades:
+                              type: string
+                              example: "87"
+                            psicometriaEnfoqueCalidad:
+                              type: string
+                              example: "89"
+                            psicometriaRelacionesInterpersonales:
+                              type: string
+                              example: "93"
+                            psicometriaLiderazgo:
+                              type: string
+                              example: "78"
+                            psicometriaTomaDecisiones:
+                              type: string
+                              example: "84"
+                            psicometriaDinamismo:
+                              type: string
+                              example: "86"
+                            psicometriaInnovacion:
+                              type: string
+                              example: "79"
+                            psicometriaPensamientoEstrategico:
+                              type: string
+                              example: "83"
+                            psicometriaNegociacion:
+                              type: string
+                              example: "77"
+                            resultadoPorcentaje:
+                              type: string
+                              example: "85"
+                            analista:
+                              type: string
+                              description: Nombre completo del analista construido a partir de analistaNombre, analistaPrimerApellido y analistaSegundoApellido.
+                              example: "Laura Sánchez Torres"
+        '404':
+          description: No se encontraron cédulas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "No hay cédulas que mostrar"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /cedula/activas:
+    get:
+      tags: [Cédula]
+      summary: Obtener cédulas activas
+      description: Retorna todas las cédulas activas en el sistema. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Lista de cédulas activas obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: object
+                    properties:
+                      cedulas:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            idCedula:
+                              type: integer
+                              example: 45
+                            FKIdTipoCedula:
+                              type: integer
+                              nullable: true
+                              example: 1
+                            FKIdProceso:
+                              type: integer
+                              nullable: true
+                              example: 10
+                            fechaCedulaInterna:
+                              type: string
+                              example: "2024-01-15"
+                            fechaCedulaResultados:
+                              type: string
+                              example: "2024-01-20"
+                            edad:
+                              type: string
+                              example: "28"
+                            educacionFormal:
+                              type: string
+                              example: "Licenciatura en Administración"
+                            referidoPor:
+                              type: string
+                              example: "Juan Pérez"
+                            antecedentesFamiliaresUV:
+                              type: string
+                              example: "Ninguno"
+                            expectativaLaboral:
+                              type: string
+                              example: "Crecimiento profesional"
+                            experienciaRelacionada:
+                              type: string
+                              example: "3 años en puesto similar"
+                            experiencia:
+                              type: string
+                              example: "Descripción de experiencia general"
+                            conclusiones:
+                              type: string
+                              example: "Candidato apto para el puesto"
+                            resultado:
+                              type: string
+                              example: "Aprobado"
+                            efectoContratacion:
+                              type: string
+                              example: "Contratación definitiva"
+                            competenciaReforzar:
+                              type: string
+                              example: "Liderazgo"
+                            competenciaDesarrollar:
+                              type: string
+                              example: "Comunicación"
+                            competenciasSobresaliente:
+                              type: string
+                              example: "Trabajo en equipo"
+                            evaluacionConocimientos:
+                              type: string
+                              example: "85/100"
+                            FKIdClasificacionCedula:
+                              type: integer
+                              nullable: true
+                              example: 2
+                            FKIdResultado:
+                              type: integer
+                              nullable: true
+                              example: 3
+                            motivoCedulaInterna:
+                              type: string
+                              example: "Vacante por jubilación"
+                            motivoCedulaResultados:
+                              type: string
+                              example: "Evaluación psicométrica completada"
+                            puesto:
+                              type: string
+                              example: "Analista de RRHH"
+                            descripcionDesarrollar:
+                              type: string
+                              example: "Desarrollar habilidades de negociación"
+                            descripcionReforzar:
+                              type: string
+                              example: "Reforzar orientación al servicio"
+                            plaza:
+                              type: string
+                              example: "Plaza 001"
+                            oficioAutorizacionDeOcupacion:
+                              type: string
+                              example: "Oficio-2024-001"
+                            nombreCandidato:
+                              type: string
+                              example: "Pedro Ramírez"
+        '404':
+          description: No se encontraron cédulas activas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "No hay cédulas que mostrar"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /cedula/{idCedula}:
+    put:
+      tags: [Cédula]
+      summary: Editar cédula existente
+      description: Edita los datos de una cédula existente. Todos los campos son opcionales (edición parcial con .partial()). Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: idCedula
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la cédula a editar.
+          example: 45
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                FKIdTipoCedula:
+                  type: integer
+                  nullable: true
+                  example: 1
+                FKIdProceso:
+                  type: integer
+                  nullable: true
+                  example: 10
+                fechaCedulaInterna:
+                  type: string
+                  example: "2024-01-15"
+                fechaCedulaResultados:
+                  type: string
+                  example: "2024-01-20"
+                edad:
+                  type: string
+                  maxLength: 3
+                  example: "28"
+                educacionFormal:
+                  type: string
+                  example: "Licenciatura en Administración"
+                referidoPor:
+                  type: string
+                  example: "Juan Pérez"
+                antecedentesFamiliaresUV:
+                  type: string
+                  example: "Ninguno"
+                expectativaLaboral:
+                  type: string
+                  example: "Crecimiento profesional"
+                experienciaRelacionada:
+                  type: string
+                  example: "3 años en puesto similar"
+                experiencia:
+                  type: string
+                  example: "Descripción de experiencia general"
+                conclusiones:
+                  type: string
+                  example: "Candidato apto para el puesto"
+                resultado:
+                  type: string
+                  maxLength: 50
+                  example: "Aprobado"
+                efectoContratacion:
+                  type: string
+                  example: "Contratación definitiva"
+                competenciaReforzar:
+                  type: string
+                  example: "Liderazgo"
+                competenciaDesarrollar:
+                  type: string
+                  example: "Comunicación"
+                FKIdClasificacionCedula:
+                  type: integer
+                  nullable: true
+                  example: 2
+                FKIdResultado:
+                  type: integer
+                  nullable: true
+                  example: 3
+                motivoCedulaInterna:
+                  type: string
+                  example: "Vacante por jubilación"
+                motivoCedulaResultados:
+                  type: string
+                  example: "Evaluación psicométrica completada"
+                puesto:
+                  type: string
+                  example: "Analista de RRHH"
+                competenciasSobresaliente:
+                  type: string
+                  example: "Trabajo en equipo"
+                descripcionDesarrollar:
+                  type: string
+                  example: "Desarrollar habilidades de negociación"
+                descripcionReforzar:
+                  type: string
+                  example: "Reforzar orientación al servicio"
+                plaza:
+                  type: string
+                  example: "Plaza 001"
+                oficioAutorizacionDeOcupacion:
+                  type: string
+                  example: "Oficio-2024-001"
+                evaluacionConocimientos:
+                  type: string
+                  example: "85/100"
+                estado:
+                  type: boolean
+                  example: true
+      responses:
+        '200':
+          description: Cédula editada correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: string
+                    example: "Los datos han sido actualizados correctamente"
+        '404':
+          description: Cédula no encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "No hay cédulas que mostrar"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /cedula/busqueda/{FKIdProceso}:
+    get:
+      tags: [Cédula]
+      summary: Obtener cédula por ID de proceso
+      description: Busca y retorna la cédula asociada a un proceso. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: FKIdProceso
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del proceso al que pertenece la cédula.
+          example: 10
+      responses:
+        '200':
+          description: Cédula encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: object
+                    properties:
+                      cedula:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            idCedula:
+                              type: integer
+                              example: 45
+                            FKIdTipoCedula:
+                              type: integer
+                              nullable: true
+                              example: 1
+                            FKIdProceso:
+                              type: integer
+                              nullable: true
+                              example: 10
+                            fechaCedulaInterna:
+                              type: string
+                              example: "2024-01-15"
+                            fechaCedulaResultados:
+                              type: string
+                              example: "2024-01-20"
+                            edad:
+                              type: string
+                              example: "28"
+                            educacionFormal:
+                              type: string
+                              example: "Licenciatura en Administración"
+                            referidoPor:
+                              type: string
+                              example: "Juan Pérez"
+                            antecedentesFamiliaresUV:
+                              type: string
+                              example: "Ninguno"
+                            expectativaLaboral:
+                              type: string
+                              example: "Crecimiento profesional"
+                            experienciaRelacionada:
+                              type: string
+                              example: "3 años en puesto similar"
+                            experiencia:
+                              type: string
+                              example: "Descripción de experiencia general"
+                            conclusiones:
+                              type: string
+                              example: "Candidato apto para el puesto"
+                            resultado:
+                              type: string
+                              example: "Aprobado"
+                            efectoContratacion:
+                              type: string
+                              example: "Contratación definitiva"
+                            competenciaReforzar:
+                              type: string
+                              example: "Liderazgo"
+                            competenciaDesarrollar:
+                              type: string
+                              example: "Comunicación"
+                            FKIdClasificacionCedula:
+                              type: integer
+                              nullable: true
+                              example: 2
+                            FKIdResultado:
+                              type: integer
+                              nullable: true
+                              example: 3
+                            motivoCedulaInterna:
+                              type: string
+                              example: "Vacante por jubilación"
+                            motivoCedulaResultados:
+                              type: string
+                              example: "Evaluación psicométrica completada"
+                            puesto:
+                              type: string
+                              example: "Analista de RRHH"
+                            competenciasSobresaliente:
+                              type: string
+                              example: "Trabajo en equipo"
+                            descripcionDesarrollar:
+                              type: string
+                              example: "Desarrollar habilidades de negociación"
+                            descripcionReforzar:
+                              type: string
+                              example: "Reforzar orientación al servicio"
+                            plaza:
+                              type: string
+                              example: "Plaza 001"
+                            oficioAutorizacionDeOcupacion:
+                              type: string
+                              example: "Oficio-2024-001"
+                            evaluacionConocimientos:
+                              type: string
+                              example: "85/100"
+        '400':
+          description: Datos con formato inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 400
+                  mensaje:
+                    type: string
+                    example: "Datos con formato inválido, por favor verifique los datos enviados."
+        '404':
+          description: Cédula no encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "No hay cédulas que mostrar"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /cedula/competencia/{FKIdClasificacionCedula}:
+    get:
+      tags: [Cédula]
+      summary: Obtener competencias por clasificación de cédula
+      description: Retorna las competencias asociadas a una clasificación de cédula. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: FKIdClasificacionCedula
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la clasificación de cédula.
+          example: 2
+      responses:
+        '200':
+          description: Competencias encontradas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: object
+                    properties:
+                      competencias:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            idCompetencia:
+                              type: integer
+                              example: 1
+        '400':
+          description: Datos con formato inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 400
+                  mensaje:
+                    type: string
+                    example: "Datos con formato inválido, por favor verifique los datos enviados."
+        '404':
+          description: Competencia no encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "La competencia no fue encontrada"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /cedula/competencia-resultados/{IdProceso}:
+    get:
+      tags: [Cédula]
+      summary: Obtener resultados por ID de proceso (cédula relacionada)
+      description: Retorna los resultados psicométricos asociados a una cédula relacionada a un proceso. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: IdProceso
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del proceso cuya cédula de resultados se consulta.
+          example: 10
+      responses:
+        '200':
+          description: Resultados encontrados
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: object
+                    properties:
+                      resultados:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            idResultado:
+                              type: integer
+                              example: 5
+                            psicometriaComunicacion:
+                              type: string
+                              example: "85"
+                            psicometriaTrabajoEnEquipo:
+                              type: string
+                              example: "90"
+                            psicometriaOrientacionAlServicio:
+                              type: string
+                              example: "88"
+                            psicometriaSensibilidadALineamientos:
+                              type: string
+                              example: "80"
+                            psicometriaPlaneacionOrganizacion:
+                              type: string
+                              example: "75"
+                            psicometriaAnalisisProblemas:
+                              type: string
+                              example: "82"
+                            psicometriaEnfoqueResultados:
+                              type: string
+                              example: "91"
+                            psicometriaControlActividades:
+                              type: string
+                              example: "87"
+                            psicometriaEnfoqueCalidad:
+                              type: string
+                              example: "89"
+                            psicometriaRelacionesInterpersonales:
+                              type: string
+                              example: "93"
+                            psicometriaLiderazgo:
+                              type: string
+                              example: "78"
+                            psicometriaTomaDecisiones:
+                              type: string
+                              example: "84"
+                            psicometriaDinamismo:
+                              type: string
+                              example: "86"
+                            psicometriaInnovacion:
+                              type: string
+                              example: "79"
+                            psicometriaPensamientoEstrategico:
+                              type: string
+                              example: "83"
+                            psicometriaNegociacion:
+                              type: string
+                              example: "77"
+        '400':
+          description: Datos con formato inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 400
+                  mensaje:
+                    type: string
+                    example: "Datos con formato inválido, por favor verifique los datos enviados."
+        '404':
+          description: Resultado no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "El resultado no fue encontrado"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /cedula/resultado:
+    post:
+      tags: [Resultado]
+      summary: Registrar nuevo resultado
+      description: Registra los resultados psicométricos de una cédula. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - FKIdCedula
+              properties:
+                FKIdCedula:
+                  type: integer
+                  example: 45
+                psicometriaComunicacion:
+                  type: number
+                  nullable: true
+                  example: 85
+                psicometriaTrabajoEnEquipo:
+                  type: number
+                  nullable: true
+                  example: 90
+                psicometriaOrientacionAlServicio:
+                  type: number
+                  nullable: true
+                  example: 88
+                psicometriaSensibilidadALineamientos:
+                  type: number
+                  nullable: true
+                  example: 80
+                psicometriaPlaneacionOrganizacion:
+                  type: number
+                  nullable: true
+                  example: 75
+                psicometriaAnalisisProblemas:
+                  type: number
+                  nullable: true
+                  example: 82
+                psicometriaEnfoqueResultados:
+                  type: number
+                  nullable: true
+                  example: 91
+                psicometriaControlActividades:
+                  type: number
+                  nullable: true
+                  example: 87
+                psicometriaEnfoqueCalidad:
+                  type: number
+                  nullable: true
+                  example: 89
+                psicometriaRelacionesInterpersonales:
+                  type: number
+                  nullable: true
+                  example: 93
+                psicometriaLiderazgo:
+                  type: number
+                  nullable: true
+                  example: 78
+                psicometriaTomaDecisiones:
+                  type: number
+                  nullable: true
+                  example: 84
+                psicometriaDinamismo:
+                  type: number
+                  nullable: true
+                  example: 86
+                psicometriaInnovacion:
+                  type: number
+                  nullable: true
+                  example: 79
+                psicometriaPensamientoEstrategico:
+                  type: number
+                  nullable: true
+                  example: 83
+                psicometriaNegociacion:
+                  type: number
+                  nullable: true
+                  example: 77
+                resultadoPorcentaje:
+                  type: integer
+                  example: 85
+      responses:
+        '200':
+          description: Resultado registrado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: string
+                    example: "Los resultados se registraron correctamente"
+        '400':
+          description: Datos con formato inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 400
+                  mensaje:
+                    type: string
+                    example: "Datos con formato inválido, por favor verifique los datos enviados."
+        '404':
+          description: Resultado no encontrado tras inserción
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "El resultado no fue encontrado"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /cedula/resultado/{idResultado}:
+    put:
+      tags: [Resultado]
+      summary: Editar resultado existente
+      description: Edita los datos de un resultado existente. Todos los campos son opcionales (edición parcial con .partial()). Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: idResultado
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del resultado a editar.
+          example: 5
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                psicometriaComunicacion:
+                  type: number
+                  nullable: true
+                  example: 85
+                psicometriaTrabajoEnEquipo:
+                  type: number
+                  nullable: true
+                  example: 90
+                psicometriaOrientacionAlServicio:
+                  type: number
+                  nullable: true
+                  example: 88
+                psicometriaSensibilidadALineamientos:
+                  type: number
+                  nullable: true
+                  example: 80
+                psicometriaPlaneacionOrganizacion:
+                  type: number
+                  nullable: true
+                  example: 75
+                psicometriaAnalisisProblemas:
+                  type: number
+                  nullable: true
+                  example: 82
+                psicometriaEnfoqueResultados:
+                  type: number
+                  nullable: true
+                  example: 91
+                psicometriaControlActividades:
+                  type: number
+                  nullable: true
+                  example: 87
+                psicometriaEnfoqueCalidad:
+                  type: number
+                  nullable: true
+                  example: 89
+                psicometriaRelacionesInterpersonales:
+                  type: number
+                  nullable: true
+                  example: 93
+                psicometriaLiderazgo:
+                  type: number
+                  nullable: true
+                  example: 78
+                psicometriaTomaDecisiones:
+                  type: number
+                  nullable: true
+                  example: 84
+                psicometriaDinamismo:
+                  type: number
+                  nullable: true
+                  example: 86
+                psicometriaInnovacion:
+                  type: number
+                  nullable: true
+                  example: 79
+                psicometriaPensamientoEstrategico:
+                  type: number
+                  nullable: true
+                  example: 83
+                psicometriaNegociacion:
+                  type: number
+                  nullable: true
+                  example: 77
+      responses:
+        '200':
+          description: Resultado editado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: string
+                    example: "Los datos han sido actualizados correctamente"
+        '404':
+          description: Resultado no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "El resultado no fue encontrado"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /cedula/resultado/busqueda/{FKIdCedula}:
+    get:
+      tags: [Resultado]
+      summary: Obtener resultados por ID de cédula
+      description: Retorna los resultados psicométricos asociados a una cédula. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: FKIdCedula
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la cédula cuyos resultados se consultan.
+          example: 45
+      responses:
+        '200':
+          description: Resultados encontrados
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: object
+                    properties:
+                      resultados:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            idResultado:
+                              type: integer
+                              example: 5
+                            psicometriaComunicacion:
+                              type: string
+                              example: "85"
+                            psicometriaTrabajoEnEquipo:
+                              type: string
+                              example: "90"
+                            psicometriaOrientacionAlServicio:
+                              type: string
+                              example: "88"
+                            psicometriaSensibilidadALineamientos:
+                              type: string
+                              example: "80"
+                            psicometriaPlaneacionOrganizacion:
+                              type: string
+                              example: "75"
+                            psicometriaAnalisisProblemas:
+                              type: string
+                              example: "82"
+                            psicometriaEnfoqueResultados:
+                              type: string
+                              example: "91"
+                            psicometriaControlActividades:
+                              type: string
+                              example: "87"
+                            psicometriaEnfoqueCalidad:
+                              type: string
+                              example: "89"
+                            psicometriaRelacionesInterpersonales:
+                              type: string
+                              example: "93"
+                            psicometriaLiderazgo:
+                              type: string
+                              example: "78"
+                            psicometriaTomaDecisiones:
+                              type: string
+                              example: "84"
+                            psicometriaDinamismo:
+                              type: string
+                              example: "86"
+                            psicometriaInnovacion:
+                              type: string
+                              example: "79"
+                            psicometriaPensamientoEstrategico:
+                              type: string
+                              example: "83"
+                            psicometriaNegociacion:
+                              type: string
+                              example: "77"
+        '400':
+          description: Datos con formato inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 400
+                  mensaje:
+                    type: string
+                    example: "Datos con formato inválido, por favor verifique los datos enviados."
+        '404':
+          description: Resultado no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "El resultado no fue encontrado"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /cedula/externa:
+    post:
+      tags: [Cédula Externa]
+      summary: Insertar documento de cédula externa
+      description: Registra un documento externo asociado a una cédula. El archivo debe enviarse en formato Base64. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                FKIdCedula:
+                  type: integer
+                  example: 45
+                nombre:
+                  type: string
+                  example: "documento_evaluacion.pdf"
+                archivo:
+                  type: string
+                  description: Archivo en formato Base64 válido (solo caracteres A-Z, a-z, 0-9, +, /, =).
+                  example: "JVBERi0xLjQKJeLjz9MK..."
+      responses:
+        '200':
+          description: Documento registrado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: string
+                    example: "La cédula ha sido registrada"
+        '400':
+          description: Datos con formato inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 400
+                  mensaje:
+                    type: string
+                    example: "Datos con formato inválido, por favor verifique los datos enviados."
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"
+
+  /cedula/externa/{FKIdCedula}:
+    get:
+      tags: [Cédula Externa]
+      summary: Obtener documento externo por ID de cédula
+      description: Retorna el documento externo asociado a una cédula. El archivo se retorna en formato Base64. Requiere autenticación JWT mediante cookie access_token.
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: FKIdCedula
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la cédula cuyo documento externo se consulta.
+          example: 45
+      responses:
+        '200':
+          description: Documento encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado:
+                    type: integer
+                    example: 200
+                  documento:
+                    type: object
+                    properties:
+                      idDocumento:
+                        type: integer
+                        example: 1
+                      FKIdCedula:
+                        type: integer
+                        example: 45
+                      nombre:
+                        type: string
+                        example: "documento_evaluacion.pdf"
+                      fechaSubida:
+                        type: string
+                        example: "2024-01-15 10:30:00"
+                      archivo:
+                        type: string
+                        description: Archivo en formato Base64.
+                        example: "JVBERi0xLjQKJeLjz9MK..."
+        '400':
+          description: Datos con formato inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 400
+                  mensaje:
+                    type: string
+                    example: "Datos con formato inválido, por favor verifique los datos enviados."
+        '404':
+          description: Documento no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 404
+                  mensaje:
+                    type: string
+                    example: "No hay cédulas que mostrar"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error en el servidor"

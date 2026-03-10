@@ -8,12 +8,14 @@ import { CrearRutaAcceso } from './rutas/AccesoRuta.js';
 import { CrearRutaCatalogo } from './rutas/CatalogoRuta.js';
 import { CrearRutaCedula } from './rutas/CedulaRuta.js';
 import { CrearRutaProcesoContratacion } from './rutas/ProcesoContratacionRuta.js';
-import { setupSwagger } from './utilidades/swagger.js';
+import swaggerUI from 'swagger-ui-express'
+import SwaggerParser from '@apidevtools/swagger-parser'
 
-export const CrearServidor = ({ModeloAcceso,ModeloCatalogo,ModeloProcesoContratacion,ModeloCedula}) => 
+export const CrearServidor = async ({ModeloAcceso,ModeloCatalogo,ModeloProcesoContratacion,ModeloCedula}) => 
 {
   dotenv.config();
   const app = express();
+  const swaggerDocument = await SwaggerParser.bundle('./src/api_rest/docs/api.yaml');
   
   app.use(cookieparser());
   app.use(json({ limit: '50mb' }));
@@ -21,10 +23,10 @@ export const CrearServidor = ({ModeloAcceso,ModeloCatalogo,ModeloProcesoContrata
 
   app.use(CorsMiddleware());
   app.disable('x-powered-by');
-  setupSwagger(app);
   app.get('/rysuv', (req, res) => {
     res.json({ message: 'Bienvenido al servidor de RySUV' });
   });
+  app.use('/rysuv/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
   app.use('/rysuv/acceso', CrearRutaAcceso({ ModeloAcceso }));
   app.use('/rysuv/catalogo', CrearRutaCatalogo({ ModeloCatalogo }));
   app.use('/rysuv/procesoContratacion', CrearRutaProcesoContratacion({ ModeloProcesoContratacion }));

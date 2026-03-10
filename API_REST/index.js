@@ -4,7 +4,7 @@ import { ModeloCatalogo } from "./src/api_rest/modelo/Sequelize-mssql/CatalogoMo
 import { ModeloProcesoContratacion } from "./src/api_rest/modelo/Sequelize-mssql/ProcesoContratacionModelo.js"
 import { ModeloCedula } from "./src/api_rest/modelo/Sequelize-mssql/CedulaModelo.js";
 
-CrearServidor({ModeloAcceso: ModeloAcceso,
+await CrearServidor({ModeloAcceso: ModeloAcceso,
     ModeloCatalogo:ModeloCatalogo, 
     ModeloProcesoContratacion:ModeloProcesoContratacion,
     ModeloCedula:ModeloCedula
