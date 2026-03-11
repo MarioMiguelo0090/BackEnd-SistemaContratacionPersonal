@@ -10,6 +10,7 @@ export const CrearRutaAcceso = ({ModeloAcceso}) =>
     AccesoEnrutador.post('/login',BitacoraLogger,ControladorAccesoEnrutador.RealizarLogin);
     AccesoEnrutador.delete('/logout',ControladorAccesoEnrutador.RealizarLogout);
     AccesoEnrutador.post('/',ValidarJwt,BitacoraLogger,ControladorAccesoEnrutador.RegistrarAcceso);
+    AccesoEnrutador.get('/sesion',ValidarJwt,ControladorAccesoEnrutador.ObtenerSesionActiva);
     AccesoEnrutador.get('/usuarios',ValidarJwt,ControladorAccesoEnrutador.ObtenerUsuarios);
     AccesoEnrutador.get('/tiposAcceso',ControladorAccesoEnrutador.ObtenerTiposDeAccesos);
     AccesoEnrutador.get('/analistas',ValidarJwt,ControladorAccesoEnrutador.ObtenerTodosAnalistas);

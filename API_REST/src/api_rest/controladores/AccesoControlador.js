@@ -273,6 +273,34 @@ export class AccesoControlador {
     }
   };
 
+  ObtenerSesionActiva = async(req, res) => {
+    try{
+      if(req.cookies?.access_token){
+        res.status(200).json({
+          error: false,
+          estado: 200,
+          mensaje: {
+            tipoDeAcceso: req.tipoDeAcceso,
+            usuario: req.usuario
+          }
+        })
+      }else{
+        res.status(401).json({
+          error: true,
+          estado: 401,
+          mensaje: "No se ha encontrado una sesión activa. Por favor inicie sesión de nuevo."
+        })
+      }
+    }catch(error){
+      logger({mensaje: error});
+      res.status(500).json({
+        error: true,
+        estado: 500,
+        mensaje: 'Ha ocurrido un error al intentar obtener la sesión activa'
+      })
+    }
+  }
+
   RealizarLogout = async (req, res) => {
     try{
       if(req.cookies?.access_token){

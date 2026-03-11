@@ -98,6 +98,67 @@
                     type: string
                     example: "Ha ocurrido un error en el servidor"
 
+  /acceso/sesion:
+    get:
+      tags: [Acceso]
+      summary: Obtener sesión activa
+      description: Obtener la sesión activa si es que la existe de un usuario
+      responses: 
+        '200':
+          description: Sesión obtenida de manera exitosa
+          content: 
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  estado: 
+                    type: integer
+                    example: 200
+                  mensaje:
+                    type: object
+                    properties: 
+                      tipoDeAcceso:
+                        type: integer
+                        example: 1
+                      usuario:
+                        type: string
+                        example: Administrador
+        '401':
+          description: No hay una sesión activa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 401
+                  mensaje:
+                    type: string
+                    example: "No se ha encontrado una sesión activa. Por favor inicie sesión de nuevo."
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: integer
+                    example: 500
+                  mensaje:
+                    type: string
+                    example: "Ha ocurrido un error al intentar obtener la sesión activa"
+
   /acceso/logout:
     delete:
       tags: [Acceso]

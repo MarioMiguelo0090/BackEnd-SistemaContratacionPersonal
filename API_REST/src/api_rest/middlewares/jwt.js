@@ -5,7 +5,6 @@ export const ValidarJwt = (req, res, next) => {
     try {        
         const HeaderAutenticacion = req.header('authorization') || req.header('access_token');
         const Token = req.cookies?.access_token || (HeaderAutenticacion?.startsWith('Bearer ') ? HeaderAutenticacion.split(' ')[1] : null);
-        console.log(req.cookies?.access_token)
         if (!Token) {
             return res.status(401).json({
                 error: true,
@@ -13,7 +12,6 @@ export const ValidarJwt = (req, res, next) => {
                 mensaje: 'No hay un token de autenticación dentro de la solicitud'
             });
         }
-        
         const { correo, usuario, tipoDeAcceso } = jwt.verify(Token, process.env.SECRETO_JWT);        
         req.correo = correo;
         req.usuario = usuario;
