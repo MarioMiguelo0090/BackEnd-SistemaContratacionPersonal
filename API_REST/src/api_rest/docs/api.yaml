@@ -959,6 +959,16 @@ paths:
                             idTipoProceso:
                               type: integer
                               example: 1
+                            proceso:
+                              type: string
+                              example: Asignación
+                        example:
+                          - idTipoProceso: 1
+                            nombreTipoProceso: "Asignación"
+                          - idTipoProceso: 2
+                            nombreTipoProceso: "Requisición"
+                          - idTipoProceso: 3
+                            nombreTipoProceso: "De bolsa"
         '404':
           description: No se encontraron tipos de proceso
           content:
@@ -1024,6 +1034,14 @@ paths:
                             idTipoPersonal:
                               type: integer
                               example: 1
+                            pesonal:
+                              type: string
+                              example: Confianza
+                        example:
+                          - idTipoPersonal: 1
+                          - personal: Confianza
+                          - idTipoPersonal: 2
+                          - personal: Eventual
         '404':
           description: No se encontraron tipos de personal
           content:
@@ -1089,6 +1107,34 @@ paths:
                             idEstadoProcesoContratacion:
                               type: integer
                               example: 1
+                            estado:
+                              type: string
+                              example: "Citado"
+                        example:
+                          - idEstadoProcesoContratacion: 1
+                            estado: "Citado"
+                          - idEstadoProcesoContratacion: 2
+                            estado: "Evaluado"
+                          - idEstadoProcesoContratacion: 3
+                            estado: "En procesamiento"
+                          - idEstadoProcesoContratacion: 4
+                            estado: "En revisión"
+                          - idEstadoProcesoContratacion: 5
+                            estado: "En firma"
+                          - idEstadoProcesoContratacion: 6
+                            estado: "Notificado"
+                          - idEstadoProcesoContratacion: 7
+                            estado: "Cancelado"
+                          - idEstadoProcesoContratacion: 8
+                            estado: "Terminado"
+                          - idEstadoProcesoContratacion: 9
+                            estado: "Solicitud pendiente"
+                          - idEstadoProcesoContratacion: 10
+                            estado: "Solicitud entregado"
+                          - idEstadoProcesoContratacion: 11
+                            estado: "Solicitud notificado"
+                          - idEstadoProcesoContratacion: 12
+                            estado: "Evaluacion"
         '404':
           description: No se encontraron estados de proceso de contratación
           content:
@@ -1104,7 +1150,7 @@ paths:
                     example: 404
                   mensaje:
                     type: string
-                    example: "No se ha encontrado ningún proces de contratación registrado en la base de datos"
+                    example: "No se ha encontrado ningún proceso de contratación registrado en la base de datos"
         '500':
           description: Error interno del servidor
           content:
@@ -1154,6 +1200,14 @@ paths:
                             idTemporalDefinitiva:
                               type: integer
                               example: 1
+                            descripcion:
+                              type: string
+                              example: "Temporal"
+                        example:
+                          - idTemporalDefinitiva: 1
+                            descripcion: "Temporal"
+                          - idTemporalDefinitiva: 2
+                            descripcion: "Definitiva"
         '404':
           description: No se encontraron registros de temporal definitiva
           content:
@@ -1219,6 +1273,16 @@ paths:
                             idTipoCedula:
                               type: integer
                               example: 1
+                            cedula:
+                              type: string
+                              example: "Interna"
+                        example:
+                          - idTipoCedula: 1
+                            cedula: "Interna"
+                          - idTipoCedula: 2
+                            cedula: "Resultados"
+                          - idTipoCedula: 3
+                            cedula: "De bolsa"
         '404':
           description: No se encontraron tipos de cédula
           content:
@@ -1284,6 +1348,88 @@ paths:
                             idDependencia:
                               type: integer
                               example: 1
+                            numDependencia:
+                              type: string
+                              example: "11101"
+                            nombre:
+                              type: string
+                              example: "Unidad Académica de Ingeniería y Ciencias Químicas"
+                            area:
+                              type: string
+                              example: "Técnica"
+                            zona:
+                              type: string
+                              example: "Xalapa"
+                            subzona:
+                              type: string
+                              example: "Xalapa"
+                            areaOrganizacional:
+                              type: string
+                              example: "Secretaría Académica"
+                        example:
+                          - idDependencia: 1
+                            numDependencia: "11101"
+                            nombre: "Unidad Académica de Ingeniería y Ciencias Químicas"
+                            area: "Técnica"
+                            zona: "Xalapa"
+                            subzona: "Xalapa"
+                            areaOrganizacional: "Secretaría Académica"
+                          - idDependencia: 12
+                            numDependencia: "11201"
+                            nombre: "Facultad de Derecho"
+                            area: "Humanidades"
+                            zona: "Xalapa"
+                            subzona: "Xalapa"
+                            areaOrganizacional: "Secretaría Académica"
+                          - idDependencia: 27
+                            numDependencia: "11301"
+                            nombre: "Facultad de Contaduría y Administración"
+                            area: "Económico Administrativa"
+                            zona: "Xalapa"
+                            subzona: "Xalapa"
+                            areaOrganizacional: "Secretaría Académica"
+                          - idDependencia: 35
+                            numDependencia: "11402"
+                            nombre: "Facultad de Medicina"
+                            area: "Ciencias de la Salud"
+                            zona: "Xalapa"
+                            subzona: "Xalapa"
+                            areaOrganizacional: "Secretaría Académica"
+                          - idDependencia: 101
+                            numDependencia: "11902"
+                            nombre: "Rectoría"
+                            area: "Área Administrativa"
+                            zona: "Xalapa"
+                            subzona: "Xalapa"
+                            areaOrganizacional: "Rectoría"
+                          - idDependencia: 224
+                            numDependencia: "21301"
+                            nombre: "Facultad de Administración"
+                            area: "Económico Administrativa"
+                            zona: "Veracruz"
+                            subzona: "Veracruz"
+                            areaOrganizacional: "Secretaría Académica"
+                          - idDependencia: 264
+                            numDependencia: "31101"
+                            nombre: "Facultad de Ciencias Químicas"
+                            area: "Técnica"
+                            zona: "Orizaba-Córdoba"
+                            subzona: "Orizaba"
+                            areaOrganizacional: "Secretaría Académica"
+                          - idDependencia: 289
+                            numDependencia: "41101"
+                            nombre: "Facultad de Ingeniería Civil"
+                            area: "Técnica"
+                            zona: "Poza Rica-Tuxpan"
+                            subzona: "Poza Rica"
+                            areaOrganizacional: "Secretaría Académica"
+                          - idDependencia: 317
+                            numDependencia: "51101"
+                            nombre: "Facultad de Ingeniería"
+                            area: "Técnica"
+                            zona: "Coatzacoalcos-Minatitlán"
+                            subzona: "Coatzacoalcos"
+                            areaOrganizacional: "Secretaría Académica"
         '404':
           description: No se encontraron dependencias
           content:
@@ -1317,7 +1463,7 @@ paths:
                     type: string
                     example: "Ha ocurrido un error en el servidor"
 
-  /catalogo/clasificacionesCedula:
+  /catalogo/clasificacionCedulas:
     get:
       tags: [Catálogo]
       summary: Obtener clasificaciones de cédula
@@ -1341,7 +1487,7 @@ paths:
                   mensaje:
                     type: object
                     properties:
-                      clasificacionesCedula:
+                      clasificacionCedulas:
                         type: array
                         items:
                           type: object
@@ -1349,6 +1495,175 @@ paths:
                             idClasificacionCedulas:
                               type: integer
                               example: 1
+                            numCedula:
+                              type: integer
+                              example: 1
+                            nombre:
+                              type: string
+                              example: "Asistente Académico Administrativo"
+                        example:
+                          - idClasificacionCedulas: 1
+                            numCedula: 1
+                            nombre: "Asistente Académico Administrativo"
+                          - idClasificacionCedulas: 2
+                            numCedula: 2
+                            nombre: "Asistente Administrativo Académico"
+                          - idClasificacionCedulas: 3
+                            numCedula: 3
+                            nombre: "Asistente Administrativo"
+                          - idClasificacionCedulas: 4
+                            numCedula: 6
+                            nombre: "Asistente Salud"
+                          - idClasificacionCedulas: 5
+                            numCedula: 7
+                            nombre: "Asistente Cultura"
+                          - idClasificacionCedulas: 6
+                            numCedula: 8
+                            nombre: "Asistente Deporte"
+                          - idClasificacionCedulas: 7
+                            numCedula: 10
+                            nombre: "Asistente Comunicación Y Edición"
+                          - idClasificacionCedulas: 8
+                            numCedula: 11
+                            nombre: "Asistente Operativo"
+                          - idClasificacionCedulas: 9
+                            numCedula: 12
+                            nombre: "Apoyo Académico Administrativo"
+                          - idClasificacionCedulas: 10
+                            numCedula: 13
+                            nombre: "Apoyo Administrativo Académico"
+                          - idClasificacionCedulas: 11
+                            numCedula: 14
+                            nombre: "Apoyo Administrativo"
+                          - idClasificacionCedulas: 12
+                            numCedula: 15
+                            nombre: "Apoyo Normativo Jurídico Legal"
+                          - idClasificacionCedulas: 13
+                            numCedula: 16
+                            nombre: "Apoyo TICs"
+                          - idClasificacionCedulas: 14
+                            numCedula: 19
+                            nombre: "Apoyo Deporte"
+                          - idClasificacionCedulas: 15
+                            numCedula: 21
+                            nombre: "Apoyo Comunicación Y Edición"
+                          - idClasificacionCedulas: 16
+                            numCedula: 22
+                            nombre: "Apoyo Operativo"
+                          - idClasificacionCedulas: 17
+                            numCedula: 23
+                            nombre: "Enlace Académico Administrativo"
+                          - idClasificacionCedulas: 18
+                            numCedula: 24
+                            nombre: "Enlace Administrativo Académico"
+                          - idClasificacionCedulas: 19
+                            numCedula: 25
+                            nombre: "Enlace Administrativo"
+                          - idClasificacionCedulas: 20
+                            numCedula: 26
+                            nombre: "Enlace Normativo Jurídico Legal"
+                          - idClasificacionCedulas: 21
+                            numCedula: 27
+                            nombre: "Enlace TICs"
+                          - idClasificacionCedulas: 22
+                            numCedula: 28
+                            nombre: "Enlace Salud"
+                          - idClasificacionCedulas: 23
+                            numCedula: 31
+                            nombre: "Enlace Presupuestal Contable"
+                          - idClasificacionCedulas: 24
+                            numCedula: 32
+                            nombre: "Enlace Comunicación Y Edición"
+                          - idClasificacionCedulas: 25
+                            numCedula: 34
+                            nombre: "Analista Académico Administrativo"
+                          - idClasificacionCedulas: 26
+                            numCedula: 35
+                            nombre: "Analista Administrativo Académico"
+                          - idClasificacionCedulas: 27
+                            numCedula: 36
+                            nombre: "Analista Administrativo"
+                          - idClasificacionCedulas: 28
+                            numCedula: 37
+                            nombre: "Analista Normativo Jurídico Legal"
+                          - idClasificacionCedulas: 29
+                            numCedula: 38
+                            nombre: "Analista TICs"
+                          - idClasificacionCedulas: 30
+                            numCedula: 39
+                            nombre: "Analista Salud"
+                          - idClasificacionCedulas: 31
+                            numCedula: 40
+                            nombre: "Analista Cultura"
+                          - idClasificacionCedulas: 32
+                            numCedula: 42
+                            nombre: "Analista Presupuestal Contable"
+                          - idClasificacionCedulas: 33
+                            numCedula: 43
+                            nombre: "Analista Comunicación Y Edición"
+                          - idClasificacionCedulas: 34
+                            numCedula: 44
+                            nombre: "Analista Operativo"
+                          - idClasificacionCedulas: 35
+                            numCedula: 45
+                            nombre: "Gestor Académico Administrativo"
+                          - idClasificacionCedulas: 36
+                            numCedula: 47
+                            nombre: "Gestor Administrativo"
+                          - idClasificacionCedulas: 37
+                            numCedula: 48
+                            nombre: "Gestor Normativo Juridico Legal"
+                          - idClasificacionCedulas: 38
+                            numCedula: 49
+                            nombre: "Gestor TICs"
+                          - idClasificacionCedulas: 39
+                            numCedula: 50
+                            nombre: "Gestor Salud"
+                          - idClasificacionCedulas: 40
+                            numCedula: 51
+                            nombre: "Gestor Cultura"
+                          - idClasificacionCedulas: 41
+                            numCedula: 52
+                            nombre: "Gestor Deporte"
+                          - idClasificacionCedulas: 42
+                            numCedula: 53
+                            nombre: "Gestor Presupuestal Contable"
+                          - idClasificacionCedulas: 43
+                            numCedula: 54
+                            nombre: "Gestor Comunicación Y Edición"
+                          - idClasificacionCedulas: 44
+                            numCedula: 55
+                            nombre: "Gestor Operativo"
+                          - idClasificacionCedulas: 45
+                            numCedula: 56
+                            nombre: "Especialista Académico Administrativo"
+                          - idClasificacionCedulas: 46
+                            numCedula: 57
+                            nombre: "Especialista Administrativo Académico"
+                          - idClasificacionCedulas: 47
+                            numCedula: 58
+                            nombre: "Especialista Administrativo"
+                          - idClasificacionCedulas: 48
+                            numCedula: 59
+                            nombre: "Especialista Normativo Jurídico Legal"
+                          - idClasificacionCedulas: 49
+                            numCedula: 60
+                            nombre: "Especialista TICs"
+                          - idClasificacionCedulas: 50
+                            numCedula: 61
+                            nombre: "Especialista Salud"
+                          - idClasificacionCedulas: 51
+                            numCedula: 62
+                            nombre: "Especialista Cultura"
+                          - idClasificacionCedulas: 52
+                            numCedula: 63
+                            nombre: "Especialista Deporte"
+                          - idClasificacionCedulas: 53
+                            numCedula: 64
+                            nombre: "Especialista Presupuestal Contable"
+                          - idClasificacionCedulas: 54
+                            numCedula: 65
+                            nombre: "Especialista Comunicación Y Edición"
         '404':
           description: No se encontraron clasificaciones de cédula
           content:
@@ -1364,7 +1679,7 @@ paths:
                     example: 404
                   mensaje:
                     type: string
-                    example: "No se ha encontrado una clasificación de cédula registrada en la base de datos"
+                    example: "No se ha encontrado ninguna clasificación de cédula registrada en la base de datos"
         '500':
           description: Error interno del servidor
           content:
@@ -1381,7 +1696,7 @@ paths:
                   mensaje:
                     type: string
                     example: "Ha ocurrido un error en el servidor"
-  
+                    
   /cedula/:
     post:
       tags: [Cédula]
@@ -3217,81 +3532,104 @@ paths:
               properties:
                 folio:
                   type: string
+                  example: FOL12
                   description: Folio del proceso. Texto válido.
                 numPlaza:
                   type: string
+                  example: PLZ123
                   description: Número de plaza. Máximo 10 caracteres.
                   maxLength: 10
                 fechaRecibido:
                   type: string
+                  example: 2025-09-04
                   description: Fecha de recibido.
                 fechaEntrevista:
                   type: string
+                  example: 2025-09-10
                   description: Fecha de entrevista.
                 resultadoEvaluacionConocimiento:
                   type: string
+                  example: APROB
                   description: Resultado de evaluación de conocimiento.
                 fechaEnvioDEyDP:
                   type: string
+                  example: 2025-09-12
                   description: Fecha de envío DEyDP.
                 fechaNotificacion:
                   type: string
+                  example: 2025-09-15
                   description: Fecha de notificación.
                 categoriaPuestoOrigen:
                   type: string
+                  example: Analista Jr
                   description: Categoría (puesto/origen). Máximo 8000 caracteres.
                   maxLength: 8000
                 diasProceso:
                   type: string
+                  example: "15"
                   description: Días de proceso. Máximo 3 caracteres.
                   maxLength: 3
                 beneficiado:
                   type: boolean
+                  example: true
                   description: Indica si el candidato fue beneficiado.
                 FKIdTipoProceso:
                   type: integer
+                  example: 1
                   nullable: true
                   description: ID del tipo de proceso.
                 FKIdTipoPersonal:
                   type: integer
+                  example: 2
                   nullable: true
                   description: ID del tipo de personal.
                 FKIdEstadoProcesoContratacion:
                   type: integer
+                  example: 3
                   nullable: true
                   description: ID del estado del proceso de contratación.
                 FKIdTemporalDefinitiva:
                   type: integer
+                  example: 1
                   nullable: true
                   description: ID de temporal/definitiva.
                 FKIdDependencia:
                   type: integer
+                  example: 10
                   nullable: true
                   description: ID de la dependencia.
                 hermesNotificacion:
                   type: string
+                  example: HERM113
                   description: Hermes de notificación.
                 titularPlaza:
                   type: string
+                  example: Juan Perez
                   description: Titular de la plaza.
                 lineamientoOficioContinuidad:
                   type: string
+                  example: OF-2025-001
                   description: Lineamiento de oficio continuidad.
                 motivo:
                   type: string
+                  example: Cobertura de vacante por promoción
                   description: Motivo del proceso.
                 fechaElaboracionPropuesta:
                   type: string
+                  example: 2025-09-16
                   description: Fecha de elaboración de propuesta.
                 fechaLiberacionOficio:
                   type: string
+                  example: 2025-09-20
                   description: Fecha de liberación de oficio.
                 periodoAutorizadoOficioInicio:
                   type: string
+                  example: 2025-10-01
                   description: Inicio del período autorizado del oficio. Máximo 50 caracteres.
                   maxLength: 50
                 periodoAutorizadoOficioFin:
                   type: string
+                  example: 2025-12-31
                   description: Fin del período autorizado del oficio. Máximo 50 caracteres.
                   maxLength: 50
                 categoriaAutorizadaOficio:
@@ -3299,74 +3637,94 @@ paths:
                   description: Categoría autorizada del oficio.
                 observaciones:
                   type: string
+                  example: Se recomienda proceder con el candidato seleccionado.
                   description: Observaciones del proceso.
                 numCarpeta:
                   type: string
+                  example: "01"
                   description: Número de carpeta. Máximo 10 caracteres.
                   maxLength: 10
                 nombreCandidato:
                   type: string
+                  example: Maria Lopez
                   description: Nombre del candidato. Máximo 100 caracteres.
                   maxLength: 100
                 funcionDesempeniar:
                   type: string
+                  example: Gestión de proyectos
                   description: Función a desempeñar.
                 familiaFuncional:
                   type: string
+                  example: Administrativa
                   description: Familia funcional.
                 fechaEvaluacionCompetencias:
                   type: string
+                  example: 2025-09-18
                   description: Fecha de evaluación de competencias.
                 fechaInicioProcesamiento:
                   type: string
+                  example: 2025-09-05
                   description: Fecha de inicio de procesamiento.
                 resultadoEvaluacionCompetencias:
                   type: string
+                  example: OK
                   description: Resultado de evaluación de competencias. Máximo 6 caracteres.
                   maxLength: 6
                 experienciaLaboralSolicitada:
                   type: string
+                  example: 3 años
                   description: Experiencia laboral solicitada. Máximo 50 caracteres.
                   maxLength: 50
                 resultadoReferenciasLaborales:
                   type: string
+                  example: Positivas
                   description: Resultado de referencias laborales. Máximo 50 caracteres.
                   maxLength: 50
                 fechaEnvioEvaluacionDesempenio:
                   type: string
+                  example: 2025-09-22
                   description: Fecha de envío de evaluación de desempeño.
                 resultadoHabilidadesWord:
                   type: string
+                  example: "90"
                   description: Resultado de habilidades de Word. Máximo 5 caracteres.
                   maxLength: 5
                 resultadoHabilidadesExcel:
                   type: string
+                  example: "85"
                   description: Resultado de habilidades de Excel. Máximo 5 caracteres.
                   maxLength: 5
                 resultadoOrtografia:
                   type: string
+                  example: "95"
                   description: Resultado de ortografía. Máximo 5 caracteres.
                   maxLength: 5
                 resultadoProcesoEvaluacion:
                   type: string
+                  example: Aprobado
                   description: Resultado del proceso de evaluación. Máximo 50 caracteres.
                   maxLength: 50
                 fechaRevisionOfiEval:
                   type: string
+                  example: 2025-09-28
                   description: Fecha de revisión de oficio de evaluación.
                 observacionesAnalista:
                   type: string
+                  example: Buen desempeño en las entrevistas
                   description: Observaciones del analista.
                 consecutivoExpediente:
                   type: string
+                  example: EXP123
                   description: Consecutivo de expediente. Máximo 10 caracteres.
                   maxLength: 10
                 resultadoSeguimientoEvaluacionDesempenio:
                   type: string
+                  example: OK
                   description: Resultado de seguimiento de evaluación de desempeño. Máximo 10 caracteres.
                   maxLength: 10
                 FKIdAcceso:
                   type: integer
+                  example: 1
                   nullable: true
                   description: ID del usuario analista asignado.
                 autorizacion:
@@ -3437,7 +3795,7 @@ paths:
                   mensaje:
                     type: string
                     example: "Ha ocurrido un error en el servidor"
-
+  
   /proceso-contratacion/{idProceso}:
     put:
       tags: [Proceso de Contratación]
@@ -3462,128 +3820,179 @@ paths:
               properties:
                 folio:
                   type: string
+                  example: "FOL12"
                 numPlaza:
                   type: string
                   maxLength: 10
+                  example: "PLZ066"
                 fechaRecibido:
                   type: string
+                  example: "2025-09-04"
                 fechaEntrevista:
                   type: string
+                  example: "2025-09-10"
                 resultadoEvaluacionConocimiento:
                   type: string
+                  example: "APROB"
                 fechaEnvioDEyDP:
                   type: string
+                  example: "2025-09-12"
                 fechaNotificacion:
                   type: string
+                  example: "2025-09-15"
                 categoriaPuestoOrigen:
                   type: string
                   maxLength: 8000
+                  example: "Analista Jr"
                 diasProceso:
                   type: string
                   maxLength: 3
+                  example: "15"
                 beneficiado:
                   type: boolean
+                  example: true
                 FKIdTipoProceso:
                   type: integer
                   nullable: true
+                  example: 1
                 FKIdTipoPersonal:
                   type: integer
                   nullable: true
+                  example: 2
                 FKIdEstadoProcesoContratacion:
                   type: integer
                   nullable: true
+                  example: 8
                 FKIdTemporalDefinitiva:
                   type: integer
                   nullable: true
+                  example: 1
                 FKIdDependencia:
                   type: integer
                   nullable: true
+                  example: 10
                 hermesNotificacion:
                   type: string
+                  example: "HERM113"
                 titularPlaza:
                   type: string
+                  example: "Juan Perez"
                 lineamientoOficioContinuidad:
                   type: string
+                  example: "OF-2025-001"
                 motivo:
                   type: string
+                  example: "Cobertura de vacante por promoción"
                 fechaElaboracionPropuesta:
                   type: string
+                  example: "2025-09-16"
                 fechaLiberacionOficio:
                   type: string
+                  example: "2025-09-20"
                 periodoAutorizadoOficioInicio:
                   type: string
                   maxLength: 50
+                  example: "2025-10-01"
                 periodoAutorizadoOficioFin:
                   type: string
                   maxLength: 50
+                  example: "2025-12-31"
                 categoriaAutorizadaOficio:
                   type: string
+                  example: "Analista Jr"
                 observaciones:
                   type: string
+                  example: "Se recomienda proceder con el candidato seleccionado."
                 numCarpeta:
                   type: string
                   maxLength: 10
+                  example: "CARP01"
                 nombreCandidato:
                   type: string
                   maxLength: 100
+                  example: "Maria Lopez"
                 funcionDesempeniar:
                   type: string
+                  example: "Gestión de proyectos"
                 familiaFuncional:
                   type: string
+                  example: "Administrativa"
                 fechaEvaluacionCompetencias:
                   type: string
+                  example: "2025-09-18"
                 fechaInicioProcesamiento:
                   type: string
+                  example: "2025-09-05"
                 resultadoEvaluacionCompetencias:
                   type: string
                   maxLength: 6
+                  example: "OK"
                 experienciaLaboralSolicitada:
                   type: string
                   maxLength: 50
+                  example: "3 años"
                 resultadoReferenciasLaborales:
                   type: string
                   maxLength: 50
+                  example: "Positivas"
                 fechaEnvioEvaluacionDesempenio:
                   type: string
+                  example: "2025-09-22"
                 resultadoHabilidadesWord:
                   type: string
                   maxLength: 5
+                  example: "90"
                 resultadoHabilidadesExcel:
                   type: string
                   maxLength: 5
+                  example: "85"
                 resultadoOrtografia:
                   type: string
                   maxLength: 5
+                  example: "95"
                 resultadoProcesoEvaluacion:
                   type: string
                   maxLength: 50
+                  example: "Aprobado"
                 fechaRevisionOfiEval:
                   type: string
+                  example: "2025-09-28"
                 observacionesAnalista:
                   type: string
+                  example: "Buen desempeño en las entrevistas"
                 consecutivoExpediente:
                   type: string
                   maxLength: 10
+                  example: "EXP123"
                 seguimientoEvaluacionDesempenio:
                   type: boolean
+                  example: false
                 resultadoSeguimientoEvaluacionDesempenio:
                   type: string
                   maxLength: 10
+                  example: "OK"
                 FKIdAcceso:
                   type: integer
                   nullable: true
+                  example: 1
                 educacionFormal:
                   type: string
+                  example: "Licenciatura en Administración"
                 avaladoPor:
                   type: string
+                  example: "Dirección de Recursos Humanos"
                 fechaAsignacionAnalista:
                   type: string
+                  example: "2025-09-06"
                 capacitado:
                   type: boolean
+                  example: true
                 citaVirtual:
                   type: boolean
+                  example: false
                 atendioCita:
                   type: boolean
+                  example: true
       responses:
         '200':
           description: Proceso de contratación actualizado correctamente
@@ -3692,16 +4101,175 @@ paths:
                           properties:
                             idProceso:
                               type: integer
-                              example: 10
+                              example: 1
                             folio:
                               type: string
-                              example: "FOL-001"
+                              example: "FOL12"
                             numPlaza:
                               type: string
-                              example: "PL-01"
+                              example: "PLZ123"
+                            fechaRecibido:
+                              type: string
+                              example: "2025-09-04"
+                            fechaEntrevista:
+                              type: string
+                              example: "2025-09-10"
+                            resultadoEvaluacionConocimiento:
+                              type: string
+                              example: "APROB"
+                            fechaEnvioDEyDP:
+                              type: string
+                              example: "2025-09-12"
+                            fechaNotificacion:
+                              type: string
+                              example: "2025-09-15"
+                            categoriaPuestoOrigen:
+                              type: string
+                              example: "Analista Jr"
+                            diasProceso:
+                              type: integer
+                              example: 15
                             beneficiado:
                               type: boolean
                               example: false
+                            FKIdTipoProceso:
+                              type: integer
+                              example: 1
+                            FKIdTipoPersonal:
+                              type: integer
+                              example: 2
+                            FKIdEstadoProcesoContratacion:
+                              type: integer
+                              example: 3
+                            FKIdTemporalDefinitiva:
+                              type: integer
+                              example: 1
+                            FKIdDependencia:
+                              type: integer
+                              example: 10
+                            hermesNotificacion:
+                              type: string
+                              example: "HERM113"
+                            titularPlaza:
+                              type: string
+                              example: "Juan Perez"
+                            lineamientoOficioContinuidad:
+                              type: string
+                              example: "OF-2025-001"
+                            motivo:
+                              type: string
+                              example: "Cobertura de vacante por promoción"
+                            fechaElaboracionPropuesta:
+                              type: string
+                              example: "2025-09-16"
+                            fechaLiberacionOficio:
+                              type: string
+                              example: "2025-09-20"
+                            periodoAutorizadoOficioInicio:
+                              type: string
+                              example: "2025-10-01"
+                            periodoAutorizadoOficioFin:
+                              type: string
+                              example: "2025-12-31"
+                            categoriaAutorizadaOficio:
+                              type: string
+                              nullable: true
+                              example: null
+                            observaciones:
+                              type: string
+                              example: "Se recomienda proceder con el candidato seleccionado."
+                            numCarpeta:
+                              type: integer
+                              example: 1
+                            nombreCandidato:
+                              type: string
+                              example: "Maria Lopez"
+                            funcionDesempeniar:
+                              type: string
+                              example: "Gestión de proyectos"
+                            familiaFuncional:
+                              type: string
+                              example: "Administrativa"
+                            fechaEvaluacionCompetencias:
+                              type: string
+                              example: "2025-09-18"
+                            fechaInicioProcesamiento:
+                              type: string
+                              example: "2025-09-05"
+                            resultadoEvaluacionCompetencias:
+                              type: string
+                              example: "OK"
+                            experienciaLaboralSolicitada:
+                              type: string
+                              example: "3 años"
+                            resultadoReferenciasLaborales:
+                              type: string
+                              example: "Positivas"
+                            fechaEnvioEvaluacionDesempenio:
+                              type: string
+                              example: "2025-09-22"
+                            fechaEntregaEvaluacionDesempenio:
+                              type: string
+                              nullable: true
+                              example: null
+                            resultadoEvaluacionDesempenio:
+                              type: string
+                              nullable: true
+                              example: null
+                            resultadoHabilidadesWord:
+                              type: integer
+                              example: 90
+                            resultadoHabilidadesExcel:
+                              type: integer
+                              example: 85
+                            resultadoOrtografia:
+                              type: integer
+                              example: 95
+                            resultadoProcesoEvaluacion:
+                              type: string
+                              example: "Aprobado"
+                            fechaRevisionOfiEval:
+                              type: string
+                              example: "2025-09-28"
+                            observacionesAnalista:
+                              type: string
+                              example: "Buen desempeño en las entrevistas"
+                            consecutivoExpediente:
+                              type: string
+                              example: "EXP123"
+                            seguimientoEvaluacionDesempenio:
+                              type: boolean
+                              nullable: true
+                              example: null
+                            fechaEvaluacionDesempenio:
+                              type: string
+                              nullable: true
+                              example: null
+                            resultadoSeguimientoEvaluacionDesempenio:
+                              type: string
+                              example: "OK"
+                            FKIdAcceso:
+                              type: integer
+                              example: 1
+                            autorizacion:
+                              type: boolean
+                              example: false
+                            educacionFormal:
+                              type: string
+                              nullable: true
+                              example: null
+                            avaladoPor:
+                              type: string
+                              nullable: true
+                              example: null
+                            fechaAsignacionAnalista:
+                              type: string
+                              nullable: true
+                              example: null
+                            capacitado:
+                              type: boolean
+                              nullable: true
+                              example: null
         '404':
           description: No se encontraron procesos
           content:
@@ -3766,13 +4334,34 @@ paths:
                           properties:
                             idProceso:
                               type: integer
-                              example: 10
+                              example: 1
                             folio:
                               type: string
-                              example: "FOL-001"
+                              example: "FOL12"
                             numPlaza:
                               type: string
-                              example: "PL-01"
+                              example: "PLZ123"
+                            fechaRecibido:
+                              type: string
+                              example: "2025-09-04"
+                            fechaEntrevista:
+                              type: string
+                              example: "2025-09-10"
+                            resultadoEvaluacionConocimiento:
+                              type: string
+                              example: "APROB"
+                            fechaEnvioDEyDP:
+                              type: string
+                              example: "2025-09-12"
+                            fechaNotificacion:
+                              type: string
+                              example: "2025-09-15"
+                            categoriaPuestoOrigen:
+                              type: string
+                              example: "Analista Jr"
+                            diasProceso:
+                              type: integer
+                              example: 15
                             beneficiado:
                               type: boolean
                               example: true
@@ -3784,16 +4373,136 @@ paths:
                               example: 2
                             FKIdEstadoProcesoContratacion:
                               type: integer
-                              example: 1
+                              example: 3
                             FKIdTemporalDefinitiva:
                               type: integer
                               example: 1
                             FKIdDependencia:
                               type: integer
-                              example: 3
+                              example: 10
+                            hermesNotificacion:
+                              type: string
+                              example: "HERM113"
+                            titularPlaza:
+                              type: string
+                              example: "Juan Perez"
+                            lineamientoOficioContinuidad:
+                              type: string
+                              example: "OF-2025-001"
+                            motivo:
+                              type: string
+                              example: "Cobertura de vacante por promoción"
+                            fechaElaboracionPropuesta:
+                              type: string
+                              example: "2025-09-16"
+                            fechaLiberacionOficio:
+                              type: string
+                              example: "2025-09-20"
+                            periodoAutorizadoOficioInicio:
+                              type: string
+                              example: "2025-10-01"
+                            periodoAutorizadoOficioFin:
+                              type: string
+                              example: "2025-12-31"
+                            categoriaAutorizadaOficio:
+                              type: string
+                              nullable: true
+                              example: null
+                            observaciones:
+                              type: string
+                              example: "Se recomienda proceder con el candidato seleccionado."
+                            numCarpeta:
+                              type: integer
+                              example: 1
+                            nombreCandidato:
+                              type: string
+                              example: "Maria Lopez"
+                            funcionDesempeniar:
+                              type: string
+                              example: "Gestión de proyectos"
+                            familiaFuncional:
+                              type: string
+                              example: "Administrativa"
+                            fechaEvaluacionCompetencias:
+                              type: string
+                              example: "2025-09-18"
+                            fechaInicioProcesamiento:
+                              type: string
+                              example: "2025-09-05"
+                            resultadoEvaluacionCompetencias:
+                              type: string
+                              example: "OK"
+                            experienciaLaboralSolicitada:
+                              type: string
+                              example: "3 años"
+                            resultadoReferenciasLaborales:
+                              type: string
+                              example: "Positivas"
+                            fechaEnvioEvaluacionDesempenio:
+                              type: string
+                              example: "2025-09-22"
+                            fechaEntregaEvaluacionDesempenio:
+                              type: string
+                              nullable: true
+                              example: null
+                            resultadoEvaluacionDesempenio:
+                              type: string
+                              nullable: true
+                              example: null
+                            resultadoHabilidadesWord:
+                              type: integer
+                              example: 90
+                            resultadoHabilidadesExcel:
+                              type: integer
+                              example: 85
+                            resultadoOrtografia:
+                              type: integer
+                              example: 95
+                            resultadoProcesoEvaluacion:
+                              type: string
+                              example: "Aprobado"
+                            fechaRevisionOfiEval:
+                              type: string
+                              example: "2025-09-28"
+                            observacionesAnalista:
+                              type: string
+                              example: "Buen desempeño en las entrevistas"
+                            consecutivoExpediente:
+                              type: string
+                              example: "EXP123"
+                            seguimientoEvaluacionDesempenio:
+                              type: boolean
+                              nullable: true
+                              example: null
+                            fechaEvaluacionDesempenio:
+                              type: string
+                              nullable: true
+                              example: null
+                            resultadoSeguimientoEvaluacionDesempenio:
+                              type: string
+                              example: "OK"
                             FKIdAcceso:
                               type: integer
-                              example: 5
+                              example: 1
+                            autorizacion:
+                              type: boolean
+                              example: false
+                            educacionFormal:
+                              type: string
+                              nullable: true
+                              example: null
+                            avaladoPor:
+                              type: string
+                              nullable: true
+                              example: null
+                            fechaAsignacionAnalista:
+                              type: string
+                              nullable: true
+                              example: null
+                            capacitado:
+                              type: boolean
+                              nullable: true
+                              example: null
         '404':
           description: No se encontraron procesos
           content:
@@ -3844,7 +4553,7 @@ paths:
                 idProceso:
                   type: integer
                   description: ID del proceso de contratación a buscar.
-                  example: 10
+                  example: 1
       responses:
         '200':
           description: Proceso de contratación encontrado
@@ -3869,13 +4578,34 @@ paths:
                           properties:
                             idProceso:
                               type: integer
-                              example: 10
+                              example: 1
                             folio:
                               type: string
-                              example: "FOL-001"
+                              example: "FOL12"
                             numPlaza:
                               type: string
-                              example: "PL-01"
+                              example: "PLZ123"
+                            fechaRecibido:
+                              type: string
+                              example: "2025-09-04"
+                            fechaEntrevista:
+                              type: string
+                              example: "2025-09-10"
+                            resultadoEvaluacionConocimiento:
+                              type: string
+                              example: "APROB"
+                            fechaEnvioDEyDP:
+                              type: string
+                              example: "2025-09-12"
+                            fechaNotificacion:
+                              type: string
+                              example: "2025-09-15"
+                            categoriaPuestoOrigen:
+                              type: string
+                              example: "Analista Jr"
+                            diasProceso:
+                              type: integer
+                              example: 15
                             beneficiado:
                               type: boolean
                               example: true
@@ -3887,16 +4617,136 @@ paths:
                               example: 2
                             FKIdEstadoProcesoContratacion:
                               type: integer
-                              example: 1
+                              example: 3
                             FKIdTemporalDefinitiva:
                               type: integer
                               example: 1
                             FKIdDependencia:
                               type: integer
-                              example: 3
+                              example: 10
+                            hermesNotificacion:
+                              type: string
+                              example: "HERM113"
+                            titularPlaza:
+                              type: string
+                              example: "Juan Perez"
+                            lineamientoOficioContinuidad:
+                              type: string
+                              example: "OF-2025-001"
+                            motivo:
+                              type: string
+                              example: "Cobertura de vacante por promoción"
+                            fechaElaboracionPropuesta:
+                              type: string
+                              example: "2025-09-16"
+                            fechaLiberacionOficio:
+                              type: string
+                              example: "2025-09-20"
+                            periodoAutorizadoOficioInicio:
+                              type: string
+                              example: "2025-10-01"
+                            periodoAutorizadoOficioFin:
+                              type: string
+                              example: "2025-12-31"
+                            categoriaAutorizadaOficio:
+                              type: string
+                              nullable: true
+                              example: null
+                            observaciones:
+                              type: string
+                              example: "Se recomienda proceder con el candidato seleccionado."
+                            numCarpeta:
+                              type: integer
+                              example: 1
+                            nombreCandidato:
+                              type: string
+                              example: "Maria Lopez"
+                            funcionDesempeniar:
+                              type: string
+                              example: "Gestión de proyectos"
+                            familiaFuncional:
+                              type: string
+                              example: "Administrativa"
+                            fechaEvaluacionCompetencias:
+                              type: string
+                              example: "2025-09-18"
+                            fechaInicioProcesamiento:
+                              type: string
+                              example: "2025-09-05"
+                            resultadoEvaluacionCompetencias:
+                              type: string
+                              example: "OK"
+                            experienciaLaboralSolicitada:
+                              type: string
+                              example: "3 años"
+                            resultadoReferenciasLaborales:
+                              type: string
+                              example: "Positivas"
+                            fechaEnvioEvaluacionDesempenio:
+                              type: string
+                              example: "2025-09-22"
+                            fechaEntregaEvaluacionDesempenio:
+                              type: string
+                              nullable: true
+                              example: null
+                            resultadoEvaluacionDesempenio:
+                              type: string
+                              nullable: true
+                              example: null
+                            resultadoHabilidadesWord:
+                              type: integer
+                              example: 90
+                            resultadoHabilidadesExcel:
+                              type: integer
+                              example: 85
+                            resultadoOrtografia:
+                              type: integer
+                              example: 95
+                            resultadoProcesoEvaluacion:
+                              type: string
+                              example: "Aprobado"
+                            fechaRevisionOfiEval:
+                              type: string
+                              example: "2025-09-28"
+                            observacionesAnalista:
+                              type: string
+                              example: "Buen desempeño en las entrevistas"
+                            consecutivoExpediente:
+                              type: string
+                              example: "EXP123"
+                            seguimientoEvaluacionDesempenio:
+                              type: boolean
+                              nullable: true
+                              example: null
+                            fechaEvaluacionDesempenio:
+                              type: string
+                              nullable: true
+                              example: null
+                            resultadoSeguimientoEvaluacionDesempenio:
+                              type: string
+                              example: "OK"
                             FKIdAcceso:
                               type: integer
-                              example: 5
+                              example: 1
+                            autorizacion:
+                              type: boolean
+                              example: false
+                            educacionFormal:
+                              type: string
+                              nullable: true
+                              example: null
+                            avaladoPor:
+                              type: string
+                              nullable: true
+                              example: null
+                            fechaAsignacionAnalista:
+                              type: string
+                              nullable: true
+                              example: null
+                            capacitado:
+                              type: boolean
+                              nullable: true
+                              example: null
         '400':
           description: Datos con formato inválido
           content:
@@ -3960,7 +4810,7 @@ paths:
           schema:
             type: integer
           description: ID del acceso (analista) por el que se filtran los procesos.
-          example: 5
+          example: 1
       responses:
         '200':
           description: Procesos encontrados para el analista
@@ -3985,13 +4835,175 @@ paths:
                           properties:
                             idProceso:
                               type: integer
-                              example: 10
+                              example: 1
                             folio:
                               type: string
-                              example: "FOL-001"
+                              example: "FOL12"
+                            numPlaza:
+                              type: string
+                              example: "PLZ123"
+                            fechaRecibido:
+                              type: string
+                              example: "2025-09-04"
+                            fechaEntrevista:
+                              type: string
+                              example: "2025-09-10"
+                            resultadoEvaluacionConocimiento:
+                              type: string
+                              example: "APROB"
+                            fechaEnvioDEyDP:
+                              type: string
+                              example: "2025-09-12"
+                            fechaNotificacion:
+                              type: string
+                              example: "2025-09-15"
+                            categoriaPuestoOrigen:
+                              type: string
+                              example: "Analista Jr"
+                            diasProceso:
+                              type: integer
+                              example: 15
+                            beneficiado:
+                              type: boolean
+                              example: true
+                            FKIdTipoProceso:
+                              type: integer
+                              example: 1
+                            FKIdTipoPersonal:
+                              type: integer
+                              example: 2
+                            FKIdEstadoProcesoContratacion:
+                              type: integer
+                              example: 3
+                            FKIdTemporalDefinitiva:
+                              type: integer
+                              example: 1
+                            FKIdDependencia:
+                              type: integer
+                              example: 10
+                            hermesNotificacion:
+                              type: string
+                              example: "HERM113"
+                            titularPlaza:
+                              type: string
+                              example: "Juan Perez"
+                            lineamientoOficioContinuidad:
+                              type: string
+                              example: "OF-2025-001"
+                            motivo:
+                              type: string
+                              example: "Cobertura de vacante por promoción"
+                            fechaElaboracionPropuesta:
+                              type: string
+                              example: "2025-09-16"
+                            fechaLiberacionOficio:
+                              type: string
+                              example: "2025-09-20"
+                            periodoAutorizadoOficioInicio:
+                              type: string
+                              example: "2025-10-01"
+                            periodoAutorizadoOficioFin:
+                              type: string
+                              example: "2025-12-31"
+                            categoriaAutorizadaOficio:
+                              type: string
+                              nullable: true
+                              example: null
+                            observaciones:
+                              type: string
+                              example: "Se recomienda proceder con el candidato seleccionado."
+                            numCarpeta:
+                              type: integer
+                              example: 1
+                            nombreCandidato:
+                              type: string
+                              example: "Maria Lopez"
+                            funcionDesempeniar:
+                              type: string
+                              example: "Gestión de proyectos"
+                            familiaFuncional:
+                              type: string
+                              example: "Administrativa"
+                            fechaEvaluacionCompetencias:
+                              type: string
+                              example: "2025-09-18"
+                            fechaInicioProcesamiento:
+                              type: string
+                              example: "2025-09-05"
+                            resultadoEvaluacionCompetencias:
+                              type: string
+                              example: "OK"
+                            experienciaLaboralSolicitada:
+                              type: string
+                              example: "3 años"
+                            resultadoReferenciasLaborales:
+                              type: string
+                              example: "Positivas"
+                            fechaEnvioEvaluacionDesempenio:
+                              type: string
+                              example: "2025-09-22"
+                            fechaEntregaEvaluacionDesempenio:
+                              type: string
+                              nullable: true
+                              example: null
+                            resultadoEvaluacionDesempenio:
+                              type: string
+                              nullable: true
+                              example: null
+                            resultadoHabilidadesWord:
+                              type: integer
+                              example: 90
+                            resultadoHabilidadesExcel:
+                              type: integer
+                              example: 85
+                            resultadoOrtografia:
+                              type: integer
+                              example: 95
+                            resultadoProcesoEvaluacion:
+                              type: string
+                              example: "Aprobado"
+                            fechaRevisionOfiEval:
+                              type: string
+                              example: "2025-09-28"
+                            observacionesAnalista:
+                              type: string
+                              example: "Buen desempeño en las entrevistas"
+                            consecutivoExpediente:
+                              type: string
+                              example: "EXP123"
+                            seguimientoEvaluacionDesempenio:
+                              type: boolean
+                              nullable: true
+                              example: null
+                            fechaEvaluacionDesempenio:
+                              type: string
+                              nullable: true
+                              example: null
+                            resultadoSeguimientoEvaluacionDesempenio:
+                              type: string
+                              example: "OK"
                             FKIdAcceso:
                               type: integer
-                              example: 5
+                              example: 1
+                            autorizacion:
+                              type: boolean
+                              example: false
+                            educacionFormal:
+                              type: string
+                              nullable: true
+                              example: null
+                            avaladoPor:
+                              type: string
+                              nullable: true
+                              example: null
+                            fechaAsignacionAnalista:
+                              type: string
+                              nullable: true
+                              example: null
+                            capacitado:
+                              type: boolean
+                              nullable: true
+                              example: null
         '400':
           description: Datos con formato inválido
           content:
@@ -4055,7 +5067,7 @@ paths:
           schema:
             type: integer
           description: ID del estado del proceso de contratación.
-          example: 1
+          example: 3
       responses:
         '200':
           description: Procesos encontrados para el estado indicado
@@ -4080,13 +5092,175 @@ paths:
                           properties:
                             idProceso:
                               type: integer
-                              example: 10
+                              example: 1
                             folio:
                               type: string
-                              example: "FOL-001"
-                            FKIdEstadoProcesoContratacion:
+                              example: "FOL12"
+                            numPlaza:
+                              type: string
+                              example: "PLZ123"
+                            fechaRecibido:
+                              type: string
+                              example: "2025-09-04"
+                            fechaEntrevista:
+                              type: string
+                              example: "2025-09-10"
+                            resultadoEvaluacionConocimiento:
+                              type: string
+                              example: "APROB"
+                            fechaEnvioDEyDP:
+                              type: string
+                              example: "2025-09-12"
+                            fechaNotificacion:
+                              type: string
+                              example: "2025-09-15"
+                            categoriaPuestoOrigen:
+                              type: string
+                              example: "Analista Jr"
+                            diasProceso:
+                              type: integer
+                              example: 15
+                            beneficiado:
+                              type: boolean
+                              example: true
+                            FKIdTipoProceso:
                               type: integer
                               example: 1
+                            FKIdTipoPersonal:
+                              type: integer
+                              example: 2
+                            FKIdEstadoProcesoContratacion:
+                              type: integer
+                              example: 3
+                            FKIdTemporalDefinitiva:
+                              type: integer
+                              example: 1
+                            FKIdDependencia:
+                              type: integer
+                              example: 10
+                            hermesNotificacion:
+                              type: string
+                              example: "HERM113"
+                            titularPlaza:
+                              type: string
+                              example: "Juan Perez"
+                            lineamientoOficioContinuidad:
+                              type: string
+                              example: "OF-2025-001"
+                            motivo:
+                              type: string
+                              example: "Cobertura de vacante por promoción"
+                            fechaElaboracionPropuesta:
+                              type: string
+                              example: "2025-09-16"
+                            fechaLiberacionOficio:
+                              type: string
+                              example: "2025-09-20"
+                            periodoAutorizadoOficioInicio:
+                              type: string
+                              example: "2025-10-01"
+                            periodoAutorizadoOficioFin:
+                              type: string
+                              example: "2025-12-31"
+                            categoriaAutorizadaOficio:
+                              type: string
+                              nullable: true
+                              example: null
+                            observaciones:
+                              type: string
+                              example: "Se recomienda proceder con el candidato seleccionado."
+                            numCarpeta:
+                              type: integer
+                              example: 1
+                            nombreCandidato:
+                              type: string
+                              example: "Maria Lopez"
+                            funcionDesempeniar:
+                              type: string
+                              example: "Gestión de proyectos"
+                            familiaFuncional:
+                              type: string
+                              example: "Administrativa"
+                            fechaEvaluacionCompetencias:
+                              type: string
+                              example: "2025-09-18"
+                            fechaInicioProcesamiento:
+                              type: string
+                              example: "2025-09-05"
+                            resultadoEvaluacionCompetencias:
+                              type: string
+                              example: "OK"
+                            experienciaLaboralSolicitada:
+                              type: string
+                              example: "3 años"
+                            resultadoReferenciasLaborales:
+                              type: string
+                              example: "Positivas"
+                            fechaEnvioEvaluacionDesempenio:
+                              type: string
+                              example: "2025-09-22"
+                            fechaEntregaEvaluacionDesempenio:
+                              type: string
+                              nullable: true
+                              example: null
+                            resultadoEvaluacionDesempenio:
+                              type: string
+                              nullable: true
+                              example: null
+                            resultadoHabilidadesWord:
+                              type: integer
+                              example: 90
+                            resultadoHabilidadesExcel:
+                              type: integer
+                              example: 85
+                            resultadoOrtografia:
+                              type: integer
+                              example: 95
+                            resultadoProcesoEvaluacion:
+                              type: string
+                              example: "Aprobado"
+                            fechaRevisionOfiEval:
+                              type: string
+                              example: "2025-09-28"
+                            observacionesAnalista:
+                              type: string
+                              example: "Buen desempeño en las entrevistas"
+                            consecutivoExpediente:
+                              type: string
+                              example: "EXP123"
+                            seguimientoEvaluacionDesempenio:
+                              type: boolean
+                              nullable: true
+                              example: null
+                            fechaEvaluacionDesempenio:
+                              type: string
+                              nullable: true
+                              example: null
+                            resultadoSeguimientoEvaluacionDesempenio:
+                              type: string
+                              example: "OK"
+                            FKIdAcceso:
+                              type: integer
+                              example: 1
+                            autorizacion:
+                              type: boolean
+                              example: false
+                            educacionFormal:
+                              type: string
+                              nullable: true
+                              example: null
+                            avaladoPor:
+                              type: string
+                              nullable: true
+                              example: null
+                            fechaAsignacionAnalista:
+                              type: string
+                              nullable: true
+                              example: null
+                            capacitado:
+                              type: boolean
+                              nullable: true
+                              example: null
         '400':
           description: Datos con formato inválido
           content:
@@ -4150,7 +5324,7 @@ paths:
           schema:
             type: integer
           description: ID del acceso (analista) para obtener estadísticas.
-          example: 5
+          example: 1
       responses:
         '200':
           description: Evaluaciones del analista obtenidas correctamente
@@ -4175,10 +5349,10 @@ paths:
                           properties:
                             idProceso:
                               type: integer
-                              example: 10
+                              example: 1
                             folio:
                               type: string
-                              example: "FOL-001"
+                              example: "FOL12"
                             nombre:
                               type: string
                               example: "Juan"
@@ -4190,7 +5364,7 @@ paths:
                               example: "García"
                             FKIdAcceso:
                               type: integer
-                              example: 5
+                              example: 1
         '400':
           description: Datos con formato inválido
           content:
@@ -4239,7 +5413,6 @@ paths:
                   mensaje:
                     type: string
                     example: "Ha ocurrido un error en el servidor"
-
   /proceso-contratacion/eliminacion/{idProceso}:
     delete:
       tags: [Proceso de Contratación]
@@ -4346,7 +5519,7 @@ paths:
                 jsonDatos:
                   type: string
                   description: Datos del proceso en formato JSON serializado.
-                  example: "{\"folio\":\"FOL-001\"}"
+                  example: "{\"idProcesoContratacion\":1,\"folio\":\"F-1001\",\"hermes\":\"\",\"fechaRecibido\":\"2025-06-01\",\"numDependencia\":\"11102\",\"entidad\":\"Facultad de Ingeniería Civil\",\"area\":\"Técnica\",\"region\":\"Xalapa\",\"tipoPersonal\":1,\"numPlaza\":\"P-001\",\"categoria\":\"\",\"titular\":\"\",\"lineamiento\":\"\",\"motivo\":\"\",\"fechaPropuesta\":\"\",\"fechaLiberacion\":\"\",\"pInicio\":\"\",\"pTermino\":\"\",\"categoriaAutorizada\":\"\",\"tipo\":\"Temporal\",\"observacionesRegistro\":\"\",\"analista\":\"\",\"estado\":\"Notificado\",\"tipoAsignacion\":\"asignacion\",\"nCarpeta\":\"\",\"candidato\":\"\",\"experienciaLaboral\":\"\",\"resultadoConocimiento\":\"\",\"fechaEnvioEval\":\"\",\"resultadoReferencias\":\"\",\"resultadoOrtografia\":\"\",\"resultadoWord\":\"\",\"resultadoExcel\":\"\",\"resultadoEvaluacion\":\"Recomendable\",\"beneficiado\":\"no\",\"fechaRevision\":\"\",\"fechaEnvio\":\"\",\"fechaNotificacion\":\"2025-10-23\",\"tiempoProceso\":\"\",\"observacionesAnalista\":\"\",\"consecutivo\":\"\",\"seguimientoDesempeno\":\"No\",\"resultadoSeguimiento\":\"\",\"estadoFinal\":\"\",\"terminado\":false,\"FKIdDependencia\":2,\"fechaEvaluacionDesempeno\":\"2026-01-23\"}"
       responses:
         '200':
           description: Control de versión registrado correctamente
@@ -4445,7 +5618,7 @@ paths:
                               example: "Juan Pérez García"
                             jsonDatos:
                               type: string
-                              example: "{\"folio\":\"FOL-001\"}"
+                              example: "{\"idProcesoContratacion\":1,\"folio\":\"F-1001\",\"hermes\":\"\",\"fechaRecibido\":\"2025-06-01\",\"numDependencia\":\"11102\",\"entidad\":\"Facultad de Ingeniería Civil\",\"area\":\"Técnica\",\"region\":\"Xalapa\",\"tipoPersonal\":1,\"numPlaza\":\"P-001\",\"categoria\":\"\",\"titular\":\"\",\"lineamiento\":\"\",\"motivo\":\"\",\"fechaPropuesta\":\"\",\"fechaLiberacion\":\"\",\"pInicio\":\"\",\"pTermino\":\"\",\"categoriaAutorizada\":\"\",\"tipo\":\"Temporal\",\"observacionesRegistro\":\"\",\"analista\":\"\",\"estado\":\"Notificado\",\"tipoAsignacion\":\"asignacion\",\"nCarpeta\":\"\",\"candidato\":\"\",\"experienciaLaboral\":\"\",\"resultadoConocimiento\":\"\",\"fechaEnvioEval\":\"\",\"resultadoReferencias\":\"\",\"resultadoOrtografia\":\"\",\"resultadoWord\":\"\",\"resultadoExcel\":\"\",\"resultadoEvaluacion\":\"Recomendable\",\"beneficiado\":\"no\",\"fechaRevision\":\"\",\"fechaEnvio\":\"\",\"fechaNotificacion\":\"2025-10-23\",\"tiempoProceso\":\"\",\"observacionesAnalista\":\"\",\"consecutivo\":\"\",\"seguimientoDesempeno\":\"No\",\"resultadoSeguimiento\":\"\",\"estadoFinal\":\"\",\"terminado\":false,\"FKIdDependencia\":2,\"fechaEvaluacionDesempeno\":\"2026-01-23\"}"
         '400':
           description: Datos con formato inválido
           content:
