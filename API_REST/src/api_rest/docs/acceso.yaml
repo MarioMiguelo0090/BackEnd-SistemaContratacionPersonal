@@ -921,6 +921,7 @@
                     type: string
                     example: "Ha ocurrido un error al intentar editar los datos de acceso"
 
+
   securitySchemes:
     cookieAuth:
       type: apiKey

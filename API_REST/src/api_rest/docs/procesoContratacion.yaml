@@ -1730,3 +1730,5 @@
                   mensaje:
                     type: string
                     example: "Ha ocurrido un error en el servidor"
+
+                    
