@@ -1100,9 +1100,9 @@ paths:
                               example: Confianza
                         example:
                           - idTipoPersonal: 1
-                          - personal: Confianza
+                            personal: Confianza
                           - idTipoPersonal: 2
-                          - personal: Eventual
+                            personal: Eventual
         '404':
           description: No se encontraron tipos de personal
           content:

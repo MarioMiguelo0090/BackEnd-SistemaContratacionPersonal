@@ -3,6 +3,7 @@ import { CodigosDeEstado, MensajeGeneralesBD, MensajeNoEncontrado} from "../../u
 import { QueryTypes } from "sequelize";
 
 export class ModeloCatalogo {
+    
     static async ObtenerTiposDeProceso({tipoDeAcceso})
     {
         const sequelize = obtenerConexion(tipoDeAcceso);
