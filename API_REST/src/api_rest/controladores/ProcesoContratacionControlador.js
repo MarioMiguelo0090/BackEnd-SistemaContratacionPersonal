@@ -169,7 +169,6 @@ export class ProcesoContratacionControlador
                     error: true,
                     estado: 400,
                     mensaje: 'Algunos campos contienen errores.',
-                    detalles: errores
                 });
             }
         }
@@ -188,7 +187,8 @@ export class ProcesoContratacionControlador
     {
         try
         {
-            const {idProceso} = req.body;
+            const {procesoID} = req.params;
+            let idProceso = parseInt(procesoID)
             const Datos = {idProceso};
             const ResultadoValidacion = ValidarEdicionParcialProcesoContratacion(Datos);
             if(ResultadoValidacion.success){
@@ -233,7 +233,7 @@ export class ProcesoContratacionControlador
                     error: resultadoConsulta !== 200,
                     estado: resultadoConsulta,
                     mensaje: (resultadoConsulta === 200
-                        ? {procesoContratacion: ResultadoConsulta.procesoContratacion}
+                        ? {procesos: ResultadoConsulta.procesoContratacion}
                         : ResultadoConsulta.mensaje
                     )
                 });
@@ -268,7 +268,7 @@ export class ProcesoContratacionControlador
                     error: resultadoConsulta !== 200,
                     estado: resultadoConsulta,
                     mensaje: (resultadoConsulta === 200
-                        ? {procesoContratacion: ResultadoConsulta.procesoContratacion}
+                        ? {procesos: ResultadoConsulta.procesoContratacion}
                         : ResultadoConsulta.mensaje
                     )
                 });

@@ -20,6 +20,7 @@ export function Cifrar(texto){
 
 export function Descifrar(texto){
     if(texto !== null && texto !== undefined && texto !== ""){
+        if(typeof texto !== 'string') return texto;
         const [ivHex, cifradoHex] = texto.split(':');
         const iv       = Buffer.from(ivHex, 'hex');
         const cifrado  = Buffer.from(cifradoHex, 'hex');

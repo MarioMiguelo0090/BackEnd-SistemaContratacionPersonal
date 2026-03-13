@@ -18,8 +18,10 @@ export class CedulaControlador
                 res.status(ResultadoInsercion.estado).json({
                     error: ResultadoInsercion.estado !== 200,
                     estado: ResultadoInsercion.estado,
-                    mensaje: ResultadoInsercion.mensaje,
-                    idCedula: ResultadoInsercion.idCedula,
+                    mensaje: {
+                        mensaje: ResultadoInsercion.mensaje,
+                        idCedula: ResultadoInsercion.idCedula,
+                    }
                 });
             }else {
                 res.status(400).json({
@@ -353,7 +355,7 @@ export class CedulaControlador
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !== 200,
                     estado: resultadoConsulta,
-                    ...(resultadoConsulta === 200
+                    mensaje: (resultadoConsulta === 200
                         ? {documento: ResultadoConsulta.documento}
                         : {mensaje: ResultadoConsulta.mensaje}
                     )

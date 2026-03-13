@@ -11,7 +11,7 @@ export const CrearRutaProcesoContratacion = ({ModeloProcesoContratacion}) =>
     ProcesoContratacionEnrutador.get('/noBeneficiados',ValidarJwt,ControladorProcesoContratacionEnrutador.ObtenerTodosNoBeneficiados);
     ProcesoContratacionEnrutador.get('/busqueda/procesos/',ValidarJwt,ControladorProcesoContratacionEnrutador.ObtenerProcesosContratacion);
     ProcesoContratacionEnrutador.put('/:idProceso',ValidarJwt,BitacoraLogger,ControladorProcesoContratacionEnrutador.EditarProcesoContratacionExistente);
-    ProcesoContratacionEnrutador.post('/busqueda',ValidarJwt,ControladorProcesoContratacionEnrutador.ObtenerProcesoContratacionPorIdProceso);
+    ProcesoContratacionEnrutador.get('/busqueda/proceso/:procesoID',ValidarJwt,ControladorProcesoContratacionEnrutador.ObtenerProcesoContratacionPorIdProceso);
     ProcesoContratacionEnrutador.get('/busqueda/:FKIdAcceso',ValidarJwt,ControladorProcesoContratacionEnrutador.ObtenerProcesoPorFKIdAcceso);
     ProcesoContratacionEnrutador.get('/busqueda/estado/:FKIdEstadoProcesoContratacion',ValidarJwt,ControladorProcesoContratacionEnrutador.ObtenerProcesosPorFKIdEstado);
     ProcesoContratacionEnrutador.get('/estadistica/:FKIdAcceso',ValidarJwt,ControladorProcesoContratacionEnrutador.ObtenerDatosAnalistaParaEstadistica);

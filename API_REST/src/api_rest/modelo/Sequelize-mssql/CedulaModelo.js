@@ -33,7 +33,7 @@ export class ModeloCedula {
                 @competenciasSobresaliente = :competenciasSobresaliente, @descripcionDesarrollar = :descripcionDesarrollar, 
                 @descripcionReforzar = :descripcionReforzar, @puesto = :puesto, @plaza = :plaza, 
                 @oficioAutorizacionDeOcupacion = :oficioAutorizacionDeOcupacion, @evaluacionConocimientos = :evaluacionConocimientos, 
-                @aprobadoJefeOficina = :aprobadoJefeOficina, @aprobadoDireccion = :aprobadoDireccion, @archivoAdjunto = :archivoAdjunto`,
+                @aprobadoJefeOficina = :aprobadoJefeOficina, @aprobadoDireccion = :aprobadoDireccion, @archivoAdjunto = :archivoAdjunto, @estado = :estado`,
                 {
                     replacements: {
                         FKIdTipoCedula, FKIdProceso, fechaCedulaInterna, fechaCedulaResultados,
@@ -45,7 +45,7 @@ export class ModeloCedula {
                         oficioAutorizacionDeOcupacion: Cifrar(oficioAutorizacionDeOcupacion), evaluacionConocimientos: Cifrar(evaluacionConocimientos),
                         aprobadoJefeOficina: aprobadoJefeOficina ? 1 : 0,
                         aprobadoDireccion: aprobadoDireccion ? 1 : 0,
-                        archivoAdjunto: archivoAdjunto ? 1 : 0
+                        archivoAdjunto: archivoAdjunto ? 1 : 0, estado: 0
                     },
                     type: QueryTypes.RAW
                 }
@@ -191,7 +191,7 @@ export class ModeloCedula {
                     };
                 });
                 if (ResultadoQueryCedula[0].idCedula > 0) {
-                    resultadoConsulta = { estado: CodigosDeEstado.OK, cedula: ResultadoQueryCedula }
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, cedula: ResultadoQueryCedula[0] }
                 }
                 else {
                     resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
@@ -399,7 +399,7 @@ export class ModeloCedula {
                     }
                 })
                 if (resultadoConsultado[0].idResultado > 0) {
-                    resultadoConsulta = { estado: CodigosDeEstado.OK, resultados: resultadoConsultado }
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, resultados: resultadoConsultado[0] }
                 } else {
                     resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
                 }
@@ -437,7 +437,7 @@ export class ModeloCedula {
                     }
                 })
                 if (resultadoConsultado[0].idResultado > 0) {
-                    resultadoConsulta = { estado: CodigosDeEstado.OK, resultados: resultadoConsultado }
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, resultados: resultadoConsultado[0] }
                 } else {
                     resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
                 }

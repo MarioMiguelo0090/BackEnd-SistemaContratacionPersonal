@@ -247,7 +247,7 @@ export class ModeloProcesoContratacion {
                 });
                 if (ResultadoQueryProceso[0].idProceso > 0) {
                     
-                    resultadoConsulta = { estado: CodigosDeEstado.OK, procesoContratacion: ResultadoQueryProceso };
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, procesoContratacion: ResultadoQueryProceso[0] };
                 } else {
                     resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
                 }
