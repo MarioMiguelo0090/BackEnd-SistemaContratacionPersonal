@@ -12,10 +12,14 @@ export const ValidarJwt = (req, res, next) => {
                 mensaje: 'No hay un token de autenticación dentro de la solicitud'
             });
         }
-        const { correo, usuario, tipoDeAcceso } = jwt.verify(Token, process.env.SECRETO_JWT);        
+        const { correo, usuario, tipoDeAcceso, idAcceso, nombre, primerApellido, segundoApellido } = jwt.verify(Token, process.env.SECRETO_JWT);        
         req.correo = correo;
         req.usuario = usuario;
-        req.tipoDeAcceso = tipoDeAcceso
+        req.tipoDeAcceso = tipoDeAcceso;
+        req.idAcceso = idAcceso;
+        req.nombre = nombre;
+        req.primerApellido = primerApellido;
+        req.segundoApellido = segundoApellido;
         next();
     } catch (error) {
         logger(error);

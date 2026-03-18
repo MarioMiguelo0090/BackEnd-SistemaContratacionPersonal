@@ -240,6 +240,10 @@ export class AccesoControlador {
             correo: req.body.correo,
             usuario: req.body.usuario,
             tipoDeAcceso: ResultadoLogin.usuario.tipoDeAcceso,
+            idAcceso: ResultadoLogin.usuario.idAcceso,
+            nombre: ResultadoLogin.usuario.nombre,
+            primerApellido: ResultadoLogin.usuario.primerApellido,
+            segundoApellido: ResultadoLogin.usuario.segundoApellido
           };
           token = await GenerarJWT(DatosUsuario);
           res.cookie("access_token", token, {
@@ -281,7 +285,11 @@ export class AccesoControlador {
           estado: 200,
           mensaje: {
             tipoDeAcceso: req.tipoDeAcceso,
-            usuario: req.usuario
+            usuario: req.usuario,
+            idAcceso: req.idAcceso,
+            nombre: req.nombre,
+            primerApellido: req.primerApellido,
+            segundoApellido: req.segundoApellido
           }
         })
       }else{
