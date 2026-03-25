@@ -669,9 +669,15 @@ export class ModeloProcesoContratacion {
             );
             const ResultadoQueryResultado = resultadoProcedimiento[0];
             if (ResultadoQueryResultado.length > 0) {
-                const resultadoConsultado = ResultadoQueryResultado[0];
-                if (resultadoConsultado.Resultado > 0) {
-                    resultadoConsulta = { estado: CodigosDeEstado.OK, oficios: ResultadoQueryResultado };
+                const resultadoConsultado = ResultadoQueryResultado;
+                if (resultadoConsultado[0].idOficio > 0) {
+                    const oficiosDescifrados = ResultadoQueryResultado.map(oficio => ({
+                        ...oficio,
+                        folio: Descifrar(oficio.folio), fecha: Descifrar(oficio.fecha), dirigido: Descifrar(oficio.dirigido),
+                        puestoDirigido: Descifrar(oficio.puestoDirigido), machote: Descifrar(oficio.machote), piePagina: Descifrar(oficio.piePagina),
+                        tipo: Descifrar(oficio.tipo),
+                    }));
+                    resultadoConsulta = { estado: CodigosDeEstado.OK, oficios: oficiosDescifrados };
                 } else {
                     resultadoConsulta = { estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB };
                 }

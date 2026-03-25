@@ -508,7 +508,7 @@ export class ProcesoContratacionControlador
             const Datos = {FKIdProcesoContratacion};
             const ResultadoValidacion = ValidarEdicionParcialOficio(Datos);
             if(ResultadoValidacion.success){
-                const ResultadoConsulta = await this.modeloProcesoContratacion.ObtenerOficiosPorIdProceso(FKIdProcesoContratacion);
+                const ResultadoConsulta = await this.modeloProcesoContratacion.ObtenerOficiosPorIdProceso(FKIdProcesoContratacion, {tipoDeAcceso: req.tipoDeAcceso});
                 let resultadoConsulta = parseInt(ResultadoConsulta.estado);
                 res.status(resultadoConsulta).json({
                     error: resultadoConsulta !== 200,
