@@ -254,10 +254,10 @@ export class ModeloAcceso {
                 }
             );
             const ResultadoQuery = resultadoProcedimiento[0]?.[0];
+            transaction = await sequelize.transaction();
             if (ResultadoQuery.Resultado === 0) {
                 const contraseniasCoinciden = await bcrypt.compare(contrasenia,ResultadoQuery.contrasenia);
                 if(contraseniasCoinciden){
-                    transaction = await sequelize.transaction();
                     const {contrasenia: _, ...usuarioSinContrasenia} = ResultadoQuery;
                     const usuarioDescifrado = {
                             ...usuarioSinContrasenia,

@@ -165,6 +165,7 @@ export class ProcesoContratacionControlador
                         mensaje: e.message
                     }));
                 }
+                console.log(ResultadoValidacion.error?.message)
                 res.status(400).json({
                     error: true,
                     estado: 400,
@@ -480,6 +481,7 @@ export class ProcesoContratacionControlador
                     mensaje: ResultadoInsercion.mensaje
                 });
             }else {
+                console.log(ResultadoValidacion.error?.message)
                 res.status(400).json({
                     error: true,
                     estado: 400,

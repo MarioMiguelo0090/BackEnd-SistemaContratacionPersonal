@@ -391,7 +391,7 @@ export class ModeloProcesoContratacion {
                         resultadoHabilidadesExcel: Descifrar(proceso.resultadoHabilidadesExcel), resultadoOrtografia: Descifrar(proceso.resultadoOrtografia),
                         resultadoProcesoEvaluacion: Descifrar(proceso.resultadoProcesoEvaluacion), fechaRevisionOfiEval: Descifrar(proceso.fechaRevisionOfiEval),
                         observacionesAnalista: Descifrar(proceso.observacionesAnalista), consecutivoExpediente: Descifrar(proceso.consecutivoExpediente),
-                        resultadoSeguimientoEvaluacionDesempenio: Descifrar(proceso.resultadoSeguimientoEvaluacionDesempenio)
+                        resultadoSeguimientoEvaluacionDesempenio: Descifrar(proceso.resultadoSeguimientoEvaluacionDesempenio), categoriaAutorizadaOficio: Descifrar(proceso.categoriaAutorizadaOficio)
                     };
                 });
                 if (ResultadoQueryProceso[0].idProceso > 0) {
@@ -633,7 +633,7 @@ export class ModeloProcesoContratacion {
             const Resultado = resultadoProcedimiento[0];
             if (Resultado.length > 0) {
                 const Registro = Resultado[0];
-                if (Registro.Resultado > 0) {
+                if (Registro.resultado > 0) {
                     if(bitacoraFn){
                         await bitacoraFn(`Se ha registrado la actualización de un oficio asociado al proceso de contratación: ${FKIdProcesoContratacion}`,transaction);
                     }

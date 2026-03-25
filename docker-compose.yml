@@ -6,9 +6,8 @@ services:
     container_name: sqlserver_db
     env_file:
       - ./API_REST/initdb-scripts/.env
-    expose:
-      - "1433"
-
+    ports:
+      - "1434:1433"
     volumes:
       - sql_data:/var/opt/mssql
     restart: unless-stopped
