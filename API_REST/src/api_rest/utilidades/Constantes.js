@@ -18,7 +18,8 @@ export const MensajeNoEncontrado = {
     TEMPORAL_DEFINITIVA_COMPLETA: 'No se ha encontrado ningún tipo de temporal definitiva completa',
     TIPOS_DE_CEDULA: 'No se ha encontrado ningún tipo de cédula registrada en la base de datos',
     DEPENDENCIA_COMPLETAS: 'No se ha encontrado ninguna dependencia completa registrada en la base de datos',
-    CLASIFICACION_CEDULA: 'No se ha encontrado una clasificación de cédula registrada en la base de datos'
+    CLASIFICACION_CEDULA: 'No se ha encontrado una clasificación de cédula registrada en la base de datos',
+    DEPENDENCIA: "No se ha encontrado la dependencia con el identificador ingresado"
 }
 
 export const MensajeGeneralesBD = {

@@ -13,7 +13,6 @@ export class CatalogoControlador
         {
             const ResultadoConsulta = await this.modeloCatalogo.ObtenerTiposDeProceso({tipoDeAcceso: req.tipoDeAcceso});
             let resultadoConsulta = parseInt(ResultadoConsulta.estado);
-            console.log(ResultadoConsulta.tipos)
             res.status(resultadoConsulta).json({
                 error: resultadoConsulta !== 200,
                 estado: resultadoConsulta,
@@ -23,6 +22,45 @@ export class CatalogoControlador
                 )
             });
 
+        }
+        catch(error)
+        {
+            logger({mensaje:error});
+            res.status(500).json(
+                {
+                    error: true,
+                    estado: 500,
+                    mensaje: "Ha ocurrido un error en el servidor"
+                }
+            )
+        }
+    }
+
+    ObtenerDependenciaPorID = async(req, res) => 
+    {
+        try 
+        {
+            const idDependencia = parseInt(req.params.idDependencia);
+            if(Number.isInteger(idDependencia) && idDependencia > 0)
+            {
+                const ResultadoConsulta = await this.modeloCatalogo.ObtenerDependenciaPorID({tipoDeAcceso: req.tipoDeAcceso, idDependencia: idDependencia});
+                res.status(parseInt(ResultadoConsulta.estado)).json({
+                    error: ResultadoConsulta.estado !== 200,
+                    estado: parseInt(ResultadoConsulta.estado),
+                    mensaje: (ResultadoConsulta.estado === 200 
+                        ? {dependencia: ResultadoConsulta.dependencia[0]}
+                        : ResultadoConsulta.mensaje
+                    )
+                });
+            }
+            else
+            {
+                res.status(400).json({
+                    error: true,
+                    estado: 400,
+                    mensaje: "El identificador de la dependencia debe ser un número entero positivo"
+                })
+            }
         }
         catch(error)
         {

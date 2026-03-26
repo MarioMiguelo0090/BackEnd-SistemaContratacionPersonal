@@ -31,6 +31,35 @@ export class ModeloCatalogo {
         return resultadoConsulta;
     }
 
+    static async ObtenerDependenciaPorID({tipoDeAcceso, idDependencia})
+    {
+        const sequelize = obtenerConexion(tipoDeAcceso);
+        let resultadoConsulta;
+        try{
+            const resultadoProcedimiento = await sequelize.query(
+                `EXEC sp_ObtenerDependenciaPorID 
+                @idDependencia = :idDependencia`,
+                {
+                    replacements: {
+                        idDependencia: idDependencia
+                    },
+                    type: QueryTypes.RAW
+                }
+            );
+            let dependencia = resultadoProcedimiento[0]
+            if(dependencia[0].idDependencia === -1){
+                resultadoConsulta = {estado: CodigosDeEstado.InternalServerError, mensaje: MensajeGeneralesBD.ERROR_DB }
+            }else if(dependencia[0].idDependencia > 0){
+                resultadoConsulta = {estado: CodigosDeEstado.OK, dependencia};
+            }else{
+                resultadoConsulta = {estado: CodigosDeEstado.NotFound, mensaje: MensajeNoEncontrado.DEPENDENCIA}
+            }
+        }catch(error){
+            throw error;
+        }
+        return resultadoConsulta;
+    }
+
     static async ObtenerTiposDePersonal({ tipoDeAcceso }) {
         const sequelize = obtenerConexion(tipoDeAcceso);
         let resultadoConsulta;

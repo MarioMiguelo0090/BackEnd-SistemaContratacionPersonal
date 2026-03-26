@@ -11,6 +11,8 @@ export const CrearRutaCatalogo = ({ModeloCatalogo}) =>
     CatalogoEnrutador.get('/estadosProcesoContratacion',ValidarJwt,ControladorCatalogoEnrutador.ObtenerEstadosProcesoContratacion);
     CatalogoEnrutador.get('/temporalDefinitiva',ValidarJwt,ControladorCatalogoEnrutador.ObtenerTemporalDefinitiva);
     CatalogoEnrutador.get('/tiposCedula',ValidarJwt,ControladorCatalogoEnrutador.ObtenerTiposCedula);
+    //Documentar el id de la dependencia
+    CatalogoEnrutador.get('/dependencia/:idDependencia',ValidarJwt,ControladorCatalogoEnrutador.ObtenerDependenciaPorID);
     CatalogoEnrutador.get('/dependencias',ValidarJwt,ControladorCatalogoEnrutador.ObtenerDependencias);
     CatalogoEnrutador.get('/clasificacionesCedula',ValidarJwt,ControladorCatalogoEnrutador.ObtenerClasificacionesCedula)
     return CatalogoEnrutador;
