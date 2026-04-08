@@ -159,8 +159,8 @@ export class ModeloProcesoContratacion {
                         idProceso,
                         folio: Cifrar(folio), numPlaza: Cifrar(numPlaza), fechaRecibido: Cifrar(fechaRecibido), fechaEntrevista: Cifrar(fechaEntrevista), resultadoEvaluacionConocimiento: Cifrar(resultadoEvaluacionConocimiento),
                         fechaEnvioDEyDP: Cifrar(fechaEnvioDEyDP), fechaNotificacion: Cifrar(fechaNotificacion), categoriaPuestoOrigen: Cifrar(categoriaPuestoOrigen), diasProceso: Cifrar(diasProceso),
-                        beneficiado: beneficiado ? 1 : 0, FKIdTipoProceso, FKIdTipoPersonal,
-                        FKIdEstadoProcesoContratacion, FKIdTemporalDefinitiva, FKIdDependencia,
+                        beneficiado: beneficiado ? 1 : 0, FKIdTipoProceso: FKIdTipoProceso ?? null, FKIdTipoPersonal: FKIdTipoPersonal ?? null,
+                        FKIdEstadoProcesoContratacion: FKIdEstadoProcesoContratacion ?? null, FKIdTemporalDefinitiva: FKIdTemporalDefinitiva ?? null, FKIdDependencia: FKIdDependencia ?? null,
                         hermesNotificacion: Cifrar(hermesNotificacion), titularPlaza: Cifrar(titularPlaza), lineamientoOficioContinuidad: Cifrar(lineamientoOficioContinuidad), motivo: Cifrar(motivo),
                         fechaElaboracionPropuesta: Cifrar(fechaElaboracionPropuesta), fechaLiberacionOficio: Cifrar(fechaLiberacionOficio), periodoAutorizadoOficioInicio: Cifrar(periodoAutorizadoOficioInicio),
                         periodoAutorizadoOficioFin: Cifrar(periodoAutorizadoOficioFin), categoriaAutorizadaOficio: Cifrar(categoriaAutorizadaOficio), observaciones: Cifrar(observaciones), numCarpeta: Cifrar(numCarpeta),
@@ -170,7 +170,7 @@ export class ModeloProcesoContratacion {
                         resultadoHabilidadesExcel: Cifrar(resultadoHabilidadesExcel), resultadoOrtografia: Cifrar(resultadoOrtografia), resultadoProcesoEvaluacion: Cifrar(resultadoProcesoEvaluacion),
                         fechaRevisionOfiEval: Cifrar(fechaRevisionOfiEval), observacionesAnalista: Cifrar(observacionesAnalista), consecutivoExpediente: Cifrar(consecutivoExpediente),
                         seguimientoEvaluacionDesempenio: seguimientoEvaluacionDesempenio ? 1 : 0,
-                        resultadoSeguimientoEvaluacionDesempenio: Cifrar(resultadoSeguimientoEvaluacionDesempenio), FKIdAcceso,
+                        resultadoSeguimientoEvaluacionDesempenio: Cifrar(resultadoSeguimientoEvaluacionDesempenio), FKIdAcceso: FKIdAcceso ?? null,
                         educacionFormal: Cifrar(educacionFormal), avaladoPor: Cifrar(avaladoPor), fechaAsignacionAnalista: Cifrar(fechaAsignacionAnalista),
                         capacitado: capacitado ? 1 : 0
                     },
@@ -242,7 +242,8 @@ export class ModeloProcesoContratacion {
                         resultadoHabilidadesExcel: Descifrar(proceso.resultadoHabilidadesExcel), resultadoOrtografia: Descifrar(proceso.resultadoOrtografia),
                         resultadoProcesoEvaluacion: Descifrar(proceso.resultadoProcesoEvaluacion), fechaRevisionOfiEval: Descifrar(proceso.fechaRevisionOfiEval),
                         observacionesAnalista: Descifrar(proceso.observacionesAnalista), consecutivoExpediente: Descifrar(proceso.consecutivoExpediente),
-                        resultadoSeguimientoEvaluacionDesempenio: Descifrar(proceso.resultadoSeguimientoEvaluacionDesempenio)
+                        resultadoSeguimientoEvaluacionDesempenio: Descifrar(proceso.resultadoSeguimientoEvaluacionDesempenio), educacionFormal: Descifrar(proceso.educacionFormal),
+                        avaladoPor: Descifrar(proceso.avaladoPor), fechaAsignacionAnalista: Descifrar(proceso.fechaAsignacionAnalista), categoriaAutorizadaOficio: Descifrar(proceso.categoriaAutorizadaOficio)
                     };
                 });
                 if (ResultadoQueryProceso[0].idProceso > 0) {
@@ -292,7 +293,8 @@ export class ModeloProcesoContratacion {
                         resultadoHabilidadesExcel: Descifrar(proceso.resultadoHabilidadesExcel), resultadoOrtografia: Descifrar(proceso.resultadoOrtografia),
                         resultadoProcesoEvaluacion: Descifrar(proceso.resultadoProcesoEvaluacion), fechaRevisionOfiEval: Descifrar(proceso.fechaRevisionOfiEval),
                         observacionesAnalista: Descifrar(proceso.observacionesAnalista), consecutivoExpediente: Descifrar(proceso.consecutivoExpediente),
-                        resultadoSeguimientoEvaluacionDesempenio: Descifrar(proceso.resultadoSeguimientoEvaluacionDesempenio)
+                        resultadoSeguimientoEvaluacionDesempenio: Descifrar(proceso.resultadoSeguimientoEvaluacionDesempenio), educacionFormal: Descifrar(proceso.educacionFormal),
+                        avaladoPor: Descifrar(proceso.avaladoPor), fechaAsignacionAnalista: Descifrar(proceso.fechaAsignacionAnalista), categoriaAutorizadaOficio: Descifrar(proceso.categoriaAutorizadaOficio)
                     };
                 });
                 if (ResultadoQueryProceso[0].idProceso > 0) {
@@ -342,7 +344,8 @@ export class ModeloProcesoContratacion {
                         resultadoHabilidadesExcel: Descifrar(proceso.resultadoHabilidadesExcel), resultadoOrtografia: Descifrar(proceso.resultadoOrtografia),
                         resultadoProcesoEvaluacion: Descifrar(proceso.resultadoProcesoEvaluacion), fechaRevisionOfiEval: Descifrar(proceso.fechaRevisionOfiEval),
                         observacionesAnalista: Descifrar(proceso.observacionesAnalista), consecutivoExpediente: Descifrar(proceso.consecutivoExpediente),
-                        resultadoSeguimientoEvaluacionDesempenio: Descifrar(proceso.resultadoSeguimientoEvaluacionDesempenio)
+                        resultadoSeguimientoEvaluacionDesempenio: Descifrar(proceso.resultadoSeguimientoEvaluacionDesempenio), educacionFormal: Descifrar(proceso.educacionFormal),
+                        avaladoPor: Descifrar(proceso.avaladoPor), fechaAsignacionAnalista: Descifrar(proceso.fechaAsignacionAnalista), categoriaAutorizadaOficio: Descifrar(proceso.categoriaAutorizadaOficio)
                     };
                 });
                 if (ResultadoQueryProceso[0].idProceso > 0) {
@@ -391,7 +394,8 @@ export class ModeloProcesoContratacion {
                         resultadoHabilidadesExcel: Descifrar(proceso.resultadoHabilidadesExcel), resultadoOrtografia: Descifrar(proceso.resultadoOrtografia),
                         resultadoProcesoEvaluacion: Descifrar(proceso.resultadoProcesoEvaluacion), fechaRevisionOfiEval: Descifrar(proceso.fechaRevisionOfiEval),
                         observacionesAnalista: Descifrar(proceso.observacionesAnalista), consecutivoExpediente: Descifrar(proceso.consecutivoExpediente),
-                        resultadoSeguimientoEvaluacionDesempenio: Descifrar(proceso.resultadoSeguimientoEvaluacionDesempenio), categoriaAutorizadaOficio: Descifrar(proceso.categoriaAutorizadaOficio)
+                        resultadoSeguimientoEvaluacionDesempenio: Descifrar(proceso.resultadoSeguimientoEvaluacionDesempenio), categoriaAutorizadaOficio: Descifrar(proceso.categoriaAutorizadaOficio), educacionFormal: Descifrar(proceso.educacionFormal),
+                        avaladoPor: Descifrar(proceso.avaladoPor), fechaAsignacionAnalista: Descifrar(proceso.fechaAsignacionAnalista)
                     };
                 });
                 if (ResultadoQueryProceso[0].idProceso > 0) {
@@ -440,7 +444,8 @@ export class ModeloProcesoContratacion {
                         resultadoHabilidadesExcel: Descifrar(proceso.resultadoHabilidadesExcel), resultadoOrtografia: Descifrar(proceso.resultadoOrtografia),
                         resultadoProcesoEvaluacion: Descifrar(proceso.resultadoProcesoEvaluacion), fechaRevisionOfiEval: Descifrar(proceso.fechaRevisionOfiEval),
                         observacionesAnalista: Descifrar(proceso.observacionesAnalista), consecutivoExpediente: Descifrar(proceso.consecutivoExpediente),
-                        resultadoSeguimientoEvaluacionDesempenio: Descifrar(proceso.resultadoSeguimientoEvaluacionDesempenio)
+                        resultadoSeguimientoEvaluacionDesempenio: Descifrar(proceso.resultadoSeguimientoEvaluacionDesempenio), categoriaAutorizadaOficio: Descifrar(proceso.categoriaAutorizadaOficio), educacionFormal: Descifrar(proceso.educacionFormal),
+                        avaladoPor: Descifrar(proceso.avaladoPor), fechaAsignacionAnalista: Descifrar(proceso.fechaAsignacionAnalista), motivo: Descifrar(proceso.motivo)
                     };
                 });
                 if (ResultadoQueryProceso[0].idProceso > 0) {
@@ -490,8 +495,7 @@ export class ModeloProcesoContratacion {
                         resultadoHabilidadesExcel: Descifrar(proceso.resultadoHabilidadesExcel), resultadoOrtografia: Descifrar(proceso.resultadoOrtografia),
                         resultadoProcesoEvaluacion: Descifrar(proceso.resultadoProcesoEvaluacion), fechaRevisionOfiEval: Descifrar(proceso.fechaRevisionOfiEval),
                         observacionesAnalista: Descifrar(proceso.observacionesAnalista), consecutivoExpediente: Descifrar(proceso.consecutivoExpediente),
-                        resultadoSeguimientoEvaluacionDesempenio: Descifrar(proceso.resultadoSeguimientoEvaluacionDesempenio), nombre: Descifrar(proceso.nombre), primerApellido: Descifrar(proceso.primerApellido),
-                        segundoApellido: Descifrar(proceso.segundoApellido)
+                        resultadoSeguimientoEvaluacionDesempenio: Descifrar(proceso.resultadoSeguimientoEvaluacionDesempenio)
                     };
                 });
                 if (ResultadoQueryProceso[0].idProceso > 0) {
