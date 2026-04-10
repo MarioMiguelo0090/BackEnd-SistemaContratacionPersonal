@@ -1,3 +1,6 @@
+USE [SistemaServicioSocial]
+GO
+
 CREATE TYPE [dbo].[TVP_SeguimientoHermes] AS TABLE(
 	[folio] [nvarchar](max) NULL,
 	[fechaRecepcion] [nvarchar](max) NULL,

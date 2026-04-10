@@ -1,27 +1,30 @@
 #!/bin/bash
+set -e
 
-# Este script inicia SQL Server y espera a que esté listo antes de ejecutar la inicialización de la BD.
+# Arranca SQL Server en segundo plano
+/opt/mssql/bin/sqlservr &
 
-/opt/mssql/bin/sqlservr & # Inicia SQL Server en segundo plano
-
-# Bucle para esperar que el servidor SQL esté listo
-echo "Esperando que SQL Server inicie..."
-# Intentamos conectar con sqlcmd. $SA_PASSWORD viene de docker-compose.yml/.env
-/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -Q "SELECT 1" -C -h -1 > /dev/null 2>&1
-STATUS=$?
-while [ $STATUS -ne 0 ]; do
-    sleep 5s
-    echo "SQL Server aún no está listo. Reintentando..."
-    /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -Q "SELECT 1" -C -h -1 > /dev/null 2>&1
-    STATUS=$?
+# Espera hasta que esté listo
+until /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -Q "SELECT 1" -C -h -1 > /dev/null 2>&1; do
+  echo "Esperando SQL Server..."
+  sleep 5
 done
 
-echo "SQL Server iniciado. Ejecutando script de inicialización de BD..."
+echo "SQL Server listo. Ejecutando inicialización..."
 
-# Ejecuta el script de inicialización (crea BD, usuario, tablas, SPs)
-/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -i /usr/config/sqlinit.sql -C
+run_sql() {
+  local file=$1
+  echo "  Ejecutando $file"
+  /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -i "$file" -C || {
+    echo "Error al ejecutar $file"
+    exit 1
+  }
+}
 
-echo "Base de datos SistemaServicioSocial inicializada correctamente."
+for script in /usr/config/*.sql; do
+  run_sql "$script"
+done
 
-# Mantén el proceso principal de SQL Server en ejecución para que el contenedor no se detenga
+echo "Inicialización finalizada"
+
 wait

@@ -1,3 +1,6 @@
+USE [SistemaServicioSocial]
+GO
+
 -- Procedure - 1 ----------------------------------------------------------------------
 CREATE PROCEDURE [dbo].[ObtenerAccesosAnalistas] 
 WITH EXECUTE AS OWNER
@@ -286,24 +289,26 @@ CREATE PROCEDURE [dbo].[sp_ActualizarCedula]
     @FKIdResultado INT = NULL,
     @motivoCedulaInterna VARCHAR(MAX) = NULL,
     @motivoCedulaResultados VARCHAR(MAX) = NULL,
-	@competenciasSobresaliente VARCHAR(MAX) = NULL,
-	@descripcionDesarrollar VARCHAR(MAX) = NULL,
-	@descripcionReforzar VARCHAR(MAX) = NULL,
+    @competenciasSobresaliente VARCHAR(MAX) = NULL,
+    @descripcionDesarrollar VARCHAR(MAX) = NULL,
+    @descripcionReforzar VARCHAR(MAX) = NULL,
     @puesto VARCHAR(MAX) = NULL,
-	@plaza VARCHAR(MAX) = NULL, 
-	@oficioAutorizacionDeOcupacion VARCHAR(MAX) = NULL,
-	@evaluacionConocimientos VARCHAR(MAX) = NULL,
-	@estado BIT = NULL
+    @plaza VARCHAR(MAX) = NULL, 
+    @oficioAutorizacionDeOcupacion VARCHAR(MAX) = NULL,
+    @evaluacionConocimientos VARCHAR(MAX) = NULL,
+    @estado BIT = NULL
 WITH EXECUTE AS OWNER
 AS
 BEGIN
     SET NOCOUNT ON;
+
     BEGIN TRY        
         IF NOT EXISTS (SELECT 1 FROM Cedula WHERE idCedula = @idCedula)
         BEGIN
             SELECT 2 AS Resultado; 
             RETURN;
         END        
+
         UPDATE Cedula
         SET
             FKIdTipoCedula = COALESCE(@FKIdTipoCedula, FKIdTipoCedula),
@@ -326,26 +331,30 @@ BEGIN
             FKIdResultado = COALESCE(@FKIdResultado, FKIdResultado),
             motivoCedulaInterna = COALESCE(@motivoCedulaInterna, motivoCedulaInterna),
             motivoCedulaResultados = COALESCE(@motivoCedulaResultados, motivoCedulaResultados),
-			competenciasSobresaliente = COALESCE(@competenciasSobresaliente, competenciasSobresaliente),
-			descripcionDesarrollar = COALESCE(@descripcionDesarrollar, descripcionDesarrollar),
-			descripcionReforzar = COALESCE(@descripcionReforzar,descripcionReforzar),
+            competenciasSobresaliente = COALESCE(@competenciasSobresaliente, competenciasSobresaliente),
+            descripcionDesarrollar = COALESCE(@descripcionDesarrollar, descripcionDesarrollar),
+            descripcionReforzar = COALESCE(@descripcionReforzar, descripcionReforzar),
             puesto = COALESCE(@puesto, puesto),
-			plaza = COALESCE(@plaza, plaza), 
-			oficioAutorizacionDeOcupacion = COALESCE(@oficioAutorizacionDeOcupacion, oficioAutorizacionDeOcupacion),
-			evaluacionConocimientos = COALESCE(@evaluacionConocimientos, evaluacionConocimientos),
-			estado = COALESCE(@estado, estado)
+            plaza = COALESCE(@plaza, plaza), 
+            oficioAutorizacionDeOcupacion = COALESCE(@oficioAutorizacionDeOcupacion, oficioAutorizacionDeOcupacion),
+            evaluacionConocimientos = COALESCE(@evaluacionConocimientos, evaluacionConocimientos),
+            estado = COALESCE(@estado, estado)
         WHERE idCedula = @idCedula;
+
         SELECT 1 AS Resultado; 
     END TRY
     BEGIN CATCH
-        SELECT -1 AS Resultado;
-        DECLARE @msg VARCHAR(MAX) = 'sp_ActualizarCedula ERROR: ' + ERROR_MESSAGE() + 
-            ' | Línea: ' + CAST(ERROR_LINE() AS VARCHAR) +
-            ' | Número: ' + CAST(ERROR_NUMBER() AS VARCHAR);
+        DECLARE @msg VARCHAR(MAX);
+        SET @msg = 'sp_ActualizarCedula ERROR: ' + ERROR_MESSAGE() + 
+                   ' | Línea: ' + CAST(ERROR_LINE() AS VARCHAR) +
+                   ' | Número: ' + CAST(ERROR_NUMBER() AS VARCHAR);
+
         RAISERROR(@msg, 16, 1) WITH LOG;  
-        SELECT CAST(-1 AS INT) AS idProceso, @msg AS errorMensaje; 
+        SELECT -1 AS Resultado, @msg AS errorMensaje; 
     END CATCH
 END;
+GO
+
 
 -- Procedure - 8 ----------------------------------------------------------------------
 CREATE PROCEDURE [dbo].[sp_ActualizarProcesoContratacion]
@@ -2313,3 +2322,4 @@ BEGIN
             0
         );
 END;
+GO

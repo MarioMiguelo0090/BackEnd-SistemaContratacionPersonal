@@ -45,8 +45,6 @@ ALTER ROLE [db_datareader] ADD MEMBER [LoginUsuario]
 GO
 ALTER ROLE [db_datawriter] ADD MEMBER [LoginUsuario]
 GO
-GRANT EXECUTE ON OBJECT::[sp_LoginAcceso] TO [LoginUsuario]
-GO
 
 -- User - Administrador ---------------------------------------------------------------
 CREATE LOGIN [Administrador] WITH PASSWORD = 'gEnN%sZ3$8d.ig#g', DEFAULT_DATABASE=[SistemaServicioSocial]

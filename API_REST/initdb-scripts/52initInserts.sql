@@ -1,3 +1,6 @@
+USE [SistemaServicioSocial]
+GO
+
 SET IDENTITY_INSERT [dbo].[Dependencia] ON 
 INSERT [dbo].[Dependencia] ([idDependencia], [numDependencia], [nombre], [area], [zona], [subzona], [areaOrganizacional]) VALUES (1, N'11101', N'Unidad Académica de Ingeniería y Ciencias Químicas', N'Técnica', N'Xalapa', N'Xalapa', N'Secretaría Académica')
 INSERT [dbo].[Dependencia] ([idDependencia], [numDependencia], [nombre], [area], [zona], [subzona], [areaOrganizacional]) VALUES (2, N'11102', N'Facultad de Ingeniería Civil', N'Técnica', N'Xalapa', N'Xalapa', N'Secretaría Académica')

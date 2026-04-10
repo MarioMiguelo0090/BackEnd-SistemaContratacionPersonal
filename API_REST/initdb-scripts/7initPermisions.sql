@@ -1,3 +1,9 @@
+USE [SistemaServicioSocial]
+GO
+
+GRANT EXECUTE ON OBJECT::[sp_LoginAcceso] TO [LoginUsuario]
+GO
+
 GRANT EXECUTE ON OBJECT::dbo.sp_RegistrarProcesoContratacion TO [JefeDeDepartamentoUsuario]
 GRANT EXECUTE ON OBJECT::dbo.sp_ObtenerDependencias TO [JefeDeDepartamentoUsuario]
 GRANT EXECUTE ON OBJECT::dbo.sp_ObtenerTodosProcesosContratacion TO [JefeDeDepartamentoUsuario]
