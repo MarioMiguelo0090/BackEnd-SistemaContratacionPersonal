@@ -18,21 +18,22 @@ export function Cifrar(texto){
     return null;
 }
 
-export function Descifrar(texto){
-    if(texto !== null && texto !== undefined && texto !== ""){
-        if(typeof texto !== 'string') return texto;
-        const [ivHex, cifradoHex] = texto.split(':');
-        const iv       = Buffer.from(ivHex, 'hex');
-        const cifrado  = Buffer.from(cifradoHex, 'hex');
+export function Descifrar(texto) {
+    if (texto !== null && texto !== undefined && texto !== "") {
+        if (typeof texto !== 'string') return texto;
+        const separador = texto.indexOf(':');        
+        const ivHex     = texto.slice(0, separador);
+        const cifradoHex = texto.slice(separador + 1); 
+        const iv      = Buffer.from(ivHex, 'hex');
+        const cifrado = Buffer.from(cifradoHex, 'hex');
         const decipher = crypto.createDecipheriv(ALGORITMO, CLAVE, iv);
-        
         const resultado = Buffer.concat([
             decipher.update(cifrado),
             decipher.final()
         ]).toString('utf8');
         const posibleNumero = Number(resultado);
-        return !isNaN(posibleNumero) && resultado.trim() !== '' 
-            ? posibleNumero 
+        return !isNaN(posibleNumero) && resultado.trim() !== ''
+            ? posibleNumero
             : resultado;
     }
     return null;
